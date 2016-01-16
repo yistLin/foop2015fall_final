@@ -203,6 +203,15 @@ public class GameWindow extends JFrame {
         });
       }
     }
+
+    protected void serverShutdown(String message) {
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          JOptionPane.showMessageDialog(GameWindow.this, "Your opponent has quit.\nThe game is over.");
+          System.exit(0);
+        }
+      });
+    }
   }
 
   private void addMessage(String nickname, String message) {
