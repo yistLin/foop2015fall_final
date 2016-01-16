@@ -15,11 +15,14 @@ public class Main {
     welcome.setFont(new Font("Phosphate", Font.BOLD, 72));
     JLabel message = new JLabel("To lie or not to lie.", JLabel.CENTER);
     message.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
+    
+    final JTextField nameInput = new JTextField(10);
+    
     // Connection port
     final JTextField listeningPortInput = new JTextField("" + DEFAULT_PORT, 5);
     final JTextField hostInput = new JTextField(30);
     final JTextField connectPortInput = new JTextField("" + DEFAULT_PORT, 5);
-
+    
     // Buttons for setting mode
     final JRadioButton selectServerMode = new JRadioButton("Start a new game.");
     final JRadioButton selectClientMode = new JRadioButton("Connect to existing game.");
@@ -76,6 +79,12 @@ public class Main {
     row = new JPanel();
     row.setLayout(new GridLayout(0, 1));
     
+    column = new JPanel();
+    column.setLayout(new FlowLayout(FlowLayout.LEFT));
+    column.add(new JLabel("Please type your nickname (length<11):"));
+    column.add(nameInput);
+    row.add(column);
+    
     // Server mode
     row.add(selectServerMode); // select button
     column = new JPanel();
@@ -113,7 +122,13 @@ public class Main {
 
       if (selectServerMode.isSelected()) {
         int port;
+        String nickname;
         try {
+          nickname = nameInput.getText().trim();
+          if (nickname.length() == 0)
+            throw new IllegalNameException("You must enter a nickname!");
+          else if (nickname.length() > 10)
+            throw new IllegalNameException("Nickname is too long.");
           port = Integer.parseInt(listeningPortInput.getText().trim());
           if (port <= 0 || port >= 65536)
             throw new IllegalPortException("Illegal port number!");
@@ -128,6 +143,11 @@ public class Main {
           message.setForeground(Color.red);
           listeningPortInput.selectAll();
           listeningPortInput.requestFocus();
+          continue;
+        } catch (IllegalNameException e) {
+          message.setText(e.getMessage());
+          message.setForeground(Color.red);
+          nameInput.requestFocus();
           continue;
         }
         /*
@@ -144,9 +164,15 @@ public class Main {
         */
         break;
       } else {
+    	String nickname;
         String host;
         int port;
         try {
+          nickname = nameInput.getText().trim();
+          if (nickname.length() == 0)
+            throw new IllegalNameException("You must enter a nickname!");
+          else if (nickname.length() > 10)
+            throw new IllegalNameException("Nickname is too long.");
           host = hostInput.getText().trim();
           if (host.length() == 0)
             throw new IllegalURLException("You must enter a host URL!");
@@ -171,6 +197,11 @@ public class Main {
           message.setForeground(Color.red);
           listeningPortInput.selectAll();
           listeningPortInput.requestFocus();
+          continue;
+        } catch (IllegalNameException e) {
+          message.setText(e.getMessage());
+          message.setForeground(Color.red);
+          nameInput.requestFocus();
           continue;
         }
         /*
@@ -202,5 +233,17 @@ public class Main {
       super(message);
     }
   }
+  
+  private static class IllegalNameException extends Exception {
+
+	public IllegalNameException() {
+	  super("Illegal name!");
+	}
+
+	public IllegalNameException(String message) {
+	  super(message);
+	}
+  }
 }
+
 
