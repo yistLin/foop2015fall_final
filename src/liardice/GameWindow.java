@@ -6,7 +6,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.net.URL;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -60,7 +62,12 @@ public class GameWindow extends JFrame {
       }
     });
     */
-    
+  
+    try {
+      console.append("Your IP is " + InetAddress.getLocalHost().getHostAddress());
+    } catch (UnknownHostException e) {
+    }
+
     new Thread() {
       public void run() {
         try {
@@ -157,7 +164,7 @@ public class GameWindow extends JFrame {
       buttonSend.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           if (e.getSource() == buttonSend) {
-            sendChatMessage(fieldInput.getText());
+            sendChatMessage(fieldInput.getText().trim());
             fieldInput.setText("");
           }
         }

@@ -3,6 +3,7 @@ package liardice;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.IOException;
 
 public class Main {
 
@@ -182,9 +183,8 @@ public class Main {
           nameInput.requestFocus();
           continue;
         }
-        /*
         try {
-          new Hub();
+          new GameHub(port, playerNumber);
         } catch (IOException e) {
           message.setText("Error: Can't listen on port " + port);
           message.setForeground(Color.red);
@@ -192,7 +192,6 @@ public class Main {
           listeningPortInput.requestFocus();
           continue;
         }
-        */
         new GameWindow("localhost", port, nickname);
         break;
       } else {
