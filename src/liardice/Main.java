@@ -15,7 +15,8 @@ public class Main {
     welcome.setFont(new Font("Phosphate", Font.BOLD, 72));
     JLabel message = new JLabel("To lie or not to lie.", JLabel.CENTER);
     message.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
-    
+   
+    // Input text
     final JTextField nameInput = new JTextField(10);
     final JTextField playerNumberInput = new JTextField(1);
     final JTextField listeningPortInput = new JTextField("" + DEFAULT_PORT, 5);
@@ -26,7 +27,7 @@ public class Main {
     final JRadioButton selectServerMode = new JRadioButton("Start a new game.");
     final JRadioButton selectClientMode = new JRadioButton("Connect to existing game.");
     
-    // Put mode button together
+    // Set mode button together
     ButtonGroup group = new ButtonGroup();
     group.add(selectServerMode);
     group.add(selectClientMode);
@@ -74,6 +75,7 @@ public class Main {
     // Add welcome and message to main panel
     row = new JPanel();
     row.setLayout(new GridLayout(0, 1));
+    row.add(new JPanel()); // reserved space
     row.add(welcome);
     row.add(message);
     inputPanel.add(row);
@@ -82,23 +84,24 @@ public class Main {
     row = new JPanel();
     row.setLayout(new GridLayout(0, 1));
     
+    // Player name input
     column = new JPanel();
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(new JLabel("Please type your nickname (length<11):"));
     column.add(nameInput);
     row.add(column);
     
-    
     // Server mode
     row.add(selectServerMode); // select button
-    column = new JPanel();
+
+    column = new JPanel(); // number of player input
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(Box.createHorizontalStrut(40)); // reserved space
     column.add(new JLabel("Number of player (2~6):"));
     column.add(playerNumberInput);
     row.add(column);
     
-    column = new JPanel();
+    column = new JPanel(); // port input
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(Box.createHorizontalStrut(40)); // reserved space
     column.add(new JLabel("Listen on port:"));
@@ -107,14 +110,15 @@ public class Main {
 
     // Client mode
     row.add(selectClientMode); // select button
-    column = new JPanel();
+
+    column = new JPanel(); // host input
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(Box.createHorizontalStrut(40)); // reserved space
     column.add(new JLabel("Host URL:"));
     column.add(hostInput);
     row.add(column);
     
-    column = new JPanel();
+    column = new JPanel(); // port input
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(Box.createHorizontalStrut(40)); // reserved space
     column.add(new JLabel("Port Number:"));
@@ -132,9 +136,8 @@ public class Main {
         return;
 
       if (selectServerMode.isSelected()) {
-        int port;
         String nickname;
-        int playerNumber;
+        int playerNumber, port;
         try {
           playerNumber = Integer.parseInt(playerNumberInput.getText().trim());
           if (playerNumber < 2 || playerNumber > 6)
@@ -193,8 +196,7 @@ public class Main {
         */
         break;
       } else {
-    	String nickname;
-        String host;
+        String nickname, host;
         int port;
         try {
           nickname = nameInput.getText().trim();
@@ -285,5 +287,4 @@ public class Main {
 	}
   }
 }
-
 
