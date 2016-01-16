@@ -219,6 +219,8 @@ public class GameWindow extends JFrame {
   }
 
   private void sendChatMessage(String message) {
+    if (message.length() == 0)
+      return ;
     connection.send(new ChatMessage(myName, message));
   }
 
