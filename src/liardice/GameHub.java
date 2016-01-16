@@ -3,6 +3,8 @@ package liardice;
 import java.io.IOException;
 import netgame.common.ForwardedMessage;
 import netgame.common.Hub;
+import sun.misc.Signal;
+import sun.misc.SignalHandler;
 
 public class GameHub extends Hub{
 
@@ -35,6 +37,13 @@ public class GameHub extends Hub{
 		super(port);
 		this.NUM_OF_PLAYERS = numberOfPlayers;
 		nicknames = new String[numberOfPlayers];
+
+		Signal.handle(new Signal("INT"), new SignalHandler() {
+			public void handle(Signal signo) {
+				System.out.println("GameHub is shutting down.");
+				shutDownHub();
+			}
+		});
 	}
 
 	protected void playerConnected(int playerID) {
