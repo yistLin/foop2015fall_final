@@ -7,37 +7,63 @@ import netgame.common.Hub;
 public class GameHub extends Hub{
 
 	private static int PORT = 42857;
+	private static int NUM_OF_PLAYERS = 2;
 
 	public static void main(String[] args) {
 
-		if (args.length > 0) {
+		if (args.length > 1) {
 			PORT = Integer.parseInt(args[0]);
+			NUM_OF_PLAYERS = Integer.parseInt(args[1]);
+		}
+		else {
+			System.out.println("usage: java ... liardice.GameHub [port] [numberOfPlayers]");
+			return;
 		}
 
 		try {
-			new GameHub(PORT);
+			new GameHub(PORT, NUM_OF_PLAYERS);
 		}
 		catch (IOException e) {
 			System.out.println("Can't create listening socket.  Shutting down.");
 		}
 	}
 
-	public GameHub(int port) throws IOException {
+	private int topOfNicknames = 0;
+	private String[] nicknames;
+
+	public GameHub(int port, int numberOfPlayers) throws IOException {
 		super(port);
+		this.NUM_OF_PLAYERS = numberOfPlayers;
+		nicknames = new String[numberOfPlayers];
 	}
 
 	protected void playerConnected(int playerID) {
-		System.out.println("Someone " + Integer.toString(playerID) + " connected!");
+		System.out.println("Player " + Integer.toString(playerID) + " connected!");
 	}
 
 	protected void messageReceived(int playerID, Object message) {
-		if (message.equals("query")) {
-			// send a dice number to the player
-			System.out.println("receive a DICE query from client");
-			sendToOne(playerID, new ForwardedMessage(playerID,new Dice()));
+
+		// players send their nicknames
+		if (message instanceof String) {
+			nicknames[ playerID - 1 ] = (String)message;
+			topOfNicknames++;
+			System.out.println("Player #" + Integer.toString(playerID) + " says his nickname is " + (String)message);
+
+			// It's time to send nickname to all players
+			if (topOfNicknames == NUM_OF_PLAYERS) {
+				sendToAll(new ForwardedMessage(0, nicknames));
+				System.out.println("Send nicknames to all players");
+			}
 		}
+
+		// redirect ChatMessage to all players
+		else if (message instanceof ChatMessage) {
+			sendToAll(new ForwardedMessage(playerID, (ChatMessage)message));
+		}
+
+		// something need to discuss
 		else {
-			sendToAll(new ForwardedMessage(playerID,message));
+			// TODO:
 		}
 	}
 }
