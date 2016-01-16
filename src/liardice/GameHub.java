@@ -10,7 +10,9 @@ public class GameHub extends Hub{
 
 	private static int PORT = 42857;
 	private static int NUM_OF_PLAYERS = 2;
-
+	private static int NUM_OF_DICES = 5;
+	private Dice[][] dicesTable;
+	
 	public static void main(String[] args) {
 
 		if (args.length > 1) {
@@ -37,7 +39,8 @@ public class GameHub extends Hub{
 		super(port);
 		this.NUM_OF_PLAYERS = numberOfPlayers;
 		nicknames = new String[numberOfPlayers];
-
+		dicesTable = new Dice[numberOfPlayers][NUM_OF_DICES];
+		
 		Signal.handle(new Signal("INT"), new SignalHandler() {
 			public void handle(Signal signo) {
 				System.out.println("GameHub is shutting down.");
@@ -49,7 +52,17 @@ public class GameHub extends Hub{
 	protected void playerConnected(int playerID) {
 		System.out.println("Player " + Integer.toString(playerID) + " connected!");
 	}
-
+	
+	//deal dices to all players
+	private void dealDices() {
+		for(int playerID = 1; playerID <= NUM_OF_PLAYERS; playerID++) {
+			for(int i = 0; i < NUM_OF_DICES; i++) {
+				dicesTable[playerID - 1][i] = new Dice();
+			}
+			sendToOne(playerID, dicesTable[playerID - 1]);
+		}
+	}
+	
 	protected void messageReceived(int playerID, Object message) {
 
 		// players send their nicknames
@@ -58,10 +71,12 @@ public class GameHub extends Hub{
 			topOfNicknames++;
 			System.out.println("Player #" + Integer.toString(playerID) + " says his nickname is " + (String)message);
 
-			// It's time to send nickname to all players
+			// It's time to send nickname and deal dices to all players
 			if (topOfNicknames == NUM_OF_PLAYERS) {
 				sendToAll(new ForwardedMessage(0, nicknames));
 				System.out.println("Send nicknames to all players");
+				dealDices();
+				System.out.println("Deal dices to all players");
 			}
 		}
 
@@ -75,4 +90,5 @@ public class GameHub extends Hub{
 			// TODO:
 		}
 	}
+	
 }
