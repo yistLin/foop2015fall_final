@@ -12,7 +12,7 @@ import java.util.Date;
 
 public class GameWindow extends JFrame {
 
-  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
+  private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm");
   
   private String myName;
 
@@ -47,10 +47,6 @@ public class GameWindow extends JFrame {
     setLocation(200, 100);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     setVisible(true);
-
-    for (int i = 0; i != 100; i++)
-      addMessage("Rikiu", "kerker");
-    addMessage("YOYO", "aasdfgh jklp tre wzxcvbnfo sdfjoi sdfjoisd afjp odfjdosia");
 
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent evt) {
