@@ -192,8 +192,8 @@ public class Main {
           listeningPortInput.requestFocus();
           continue;
         }
-        new Window();
         */
+        new GameWindow("localhost", port, nickname);
         break;
       } else {
         String nickname, host;
@@ -235,9 +235,7 @@ public class Main {
           nameInput.requestFocus();
           continue;
         }
-        /*
-        new Window();
-        */
+        new GameWindow(host, port, nickname);
         break;
       }
     }
@@ -267,24 +265,24 @@ public class Main {
   
   private static class IllegalNameException extends Exception {
 
-	public IllegalNameException() {
-	  super("Illegal name!");
-	}
+	  public IllegalNameException() {
+	    super("Illegal name!");
+	  }
 
-	public IllegalNameException(String message) {
-	  super(message);
-	}
+	  public IllegalNameException(String message) {
+	    super(message);
+	  }
   }
   
   private static class IllegalPlayerNumberException extends Exception {
     
-	public IllegalPlayerNumberException() {
+	  public IllegalPlayerNumberException() {
       super("Illegal number of player!");
     }
     
     public IllegalPlayerNumberException(String message) {
-	  super(message);
-	}
+	    super(message);
+	  }
   }
 }
 
