@@ -15,7 +15,6 @@ public class Main {
     welcome.setFont(new Font("Phosphate", Font.BOLD, 72));
     JLabel message = new JLabel("To lie or not to lie.", JLabel.CENTER);
     message.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
-
     // Connection port
     final JTextField listeningPortInput = new JTextField("" + DEFAULT_PORT, 5);
     final JTextField hostInput = new JTextField(30);
@@ -124,6 +123,12 @@ public class Main {
           listeningPortInput.selectAll();
           listeningPortInput.requestFocus();
           continue;
+        } catch (NumberFormatException e) {
+          message.setText("You must enter a port number!");
+          message.setForeground(Color.red);
+          listeningPortInput.selectAll();
+          listeningPortInput.requestFocus();
+          continue;
         }
         /*
         try {
@@ -160,6 +165,12 @@ public class Main {
           message.setForeground(Color.red);
           connectPortInput.selectAll();
           connectPortInput.requestFocus();
+          continue;
+        } catch (NumberFormatException e) {
+          message.setText("You must enter a port number!");
+          message.setForeground(Color.red);
+          listeningPortInput.selectAll();
+          listeningPortInput.requestFocus();
           continue;
         }
         /*
