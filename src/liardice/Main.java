@@ -17,8 +17,7 @@ public class Main {
     message.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
     
     final JTextField nameInput = new JTextField(10);
-    
-    // Connection port
+    final JTextField playerNumberInput = new JTextField(1);
     final JTextField listeningPortInput = new JTextField("" + DEFAULT_PORT, 5);
     final JTextField hostInput = new JTextField(30);
     final JTextField connectPortInput = new JTextField("" + DEFAULT_PORT, 5);
@@ -35,16 +34,20 @@ public class Main {
       public void actionPerformed(ActionEvent e) {
         if (e.getSource() == selectServerMode) {
           listeningPortInput.setEnabled(true);
+          playerNumberInput.setEnabled(true);
           hostInput.setEnabled(false);
           connectPortInput.setEnabled(false);
           listeningPortInput.setEditable(true);
+          playerNumberInput.setEditable(true);
           hostInput.setEditable(false);
           connectPortInput.setEditable(false);
         } else {
           listeningPortInput.setEnabled(false);
+          playerNumberInput.setEnabled(false);
           hostInput.setEnabled(true);
           connectPortInput.setEnabled(true);
           listeningPortInput.setEditable(false);
+          playerNumberInput.setEditable(false);
           hostInput.setEditable(true);
           connectPortInput.setEditable(true);
         }
@@ -85,8 +88,16 @@ public class Main {
     column.add(nameInput);
     row.add(column);
     
+    
     // Server mode
     row.add(selectServerMode); // select button
+    column = new JPanel();
+    column.setLayout(new FlowLayout(FlowLayout.LEFT));
+    column.add(Box.createHorizontalStrut(40)); // reserved space
+    column.add(new JLabel("Number of player (2~6):"));
+    column.add(playerNumberInput);
+    row.add(column);
+    
     column = new JPanel();
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(Box.createHorizontalStrut(40)); // reserved space
@@ -123,6 +134,24 @@ public class Main {
       if (selectServerMode.isSelected()) {
         int port;
         String nickname;
+        int playerNumber;
+        try {
+          playerNumber = Integer.parseInt(playerNumberInput.getText().trim());
+          if (playerNumber < 2 || playerNumber > 6)
+            throw new IllegalPlayerNumberException("Illegal number of player");
+        } catch (NumberFormatException e) {
+          message.setText("You must enter number of player!");
+          message.setForeground(Color.red);
+          playerNumberInput.selectAll();
+          playerNumberInput.requestFocus();
+          continue;
+        } catch (IllegalPlayerNumberException e) {
+          message.setText(e.getMessage());
+          message.setForeground(Color.red);
+          playerNumberInput.selectAll();
+          playerNumberInput.requestFocus();
+          continue;
+        }
         try {
           nickname = nameInput.getText().trim();
           if (nickname.length() == 0)
@@ -241,6 +270,17 @@ public class Main {
 	}
 
 	public IllegalNameException(String message) {
+	  super(message);
+	}
+  }
+  
+  private static class IllegalPlayerNumberException extends Exception {
+    
+	public IllegalPlayerNumberException() {
+      super("Illegal number of player!");
+    }
+    
+    public IllegalPlayerNumberException(String message) {
 	  super(message);
 	}
   }
