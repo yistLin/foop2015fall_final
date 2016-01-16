@@ -64,7 +64,7 @@ public class GameWindow extends JFrame {
     */
   
     try {
-      console.append("Your IP is " + InetAddress.getLocalHost().getHostAddress());
+      console.append("Your IP is " + InetAddress.getLocalHost().getHostAddress() + "\n");
     } catch (UnknownHostException e) {
     }
 
@@ -190,17 +190,27 @@ public class GameWindow extends JFrame {
             if (fm.message instanceof ChatMessage) {
               ChatMessage cm = (ChatMessage)fm.message;
               addMessage(cm.id, cm.message);
-            }
-            /*
-            else if (fm.message instanceof String[]) {
-              // TODO
+            } else if (fm.message instanceof String[]) {
+              String[] playerList = (String[])fm.message;
+              for (String name: playerList) {
+                console.append(name + " has connected.\n");
+              }
+              console.append("Game started!!!\n");
             } else if (fm.message instanceof Dice[]) {
               // TODO
             }
-            */
           }
         });
       }
+    }
+
+    protected void serverShutdown(String message) {
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          JOptionPane.showMessageDialog(GameWindow.this, "Your opponent has quit.\nThe game is over.");
+          System.exit(0);
+        }
+      });
     }
   }
 
