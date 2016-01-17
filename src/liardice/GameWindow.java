@@ -343,9 +343,9 @@ public class GameWindow extends JFrame {
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(Box.createHorizontalStrut(40)); // reserved space
     column.add(new JLabel("Value of dice:"));
+    column.add(valueInput);
     if (lastValue != 0)
       column.add(new JLabel("last value: " + lastValue));
-    column.add(valueInput);
     row.add(column);
     
     askPanel.add(row);
