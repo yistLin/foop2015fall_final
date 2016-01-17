@@ -21,13 +21,15 @@ public class GameWindow extends JFrame {
   private Dice[] dice;
   private int lastNumber = 0, lastValue = 0;
 
-  private JTextArea console;
-  private JTextField fieldInput;
-  private JButton buttonSend;
-
   private Display display;
   private Board board;
   private Chatroom chatroom;
+
+  private JPanel bidPanel;
+
+  private JTextArea console;
+  private JTextField fieldInput;
+  private JButton buttonSend;
 
   private DiceSet diceSet;
   private Image diceImages;
@@ -115,10 +117,10 @@ public class GameWindow extends JFrame {
     Board() {
       setLayout(new BorderLayout());
       setPreferredSize(new Dimension(675, 585));
-      setBackground(new Color(172, 252, 252));
       setBorder(BorderFactory.createLineBorder(brown, 8));
 
-      add(new JPanel(), BorderLayout.CENTER);
+      bidPanel = new JPanel();
+      add(bidPanel, BorderLayout.CENTER);
 
       diceSet = new DiceSet();
       add(diceSet, BorderLayout.SOUTH);
@@ -335,8 +337,8 @@ public class GameWindow extends JFrame {
   }
 
   private void askBid() {
-    JPanel askPanel = new JPanel();
-    askPanel.setLayout(new GridLayout(0, 1));
+    bidPanel = new JPanel();
+    bidPanel.setLayout(new GridLayout(0, 1));
 
     JLabel question = new JLabel("What's your bid?", JLabel.CENTER);
     question.setFont(new Font("Phosphate", Font.BOLD, 48));
@@ -347,8 +349,8 @@ public class GameWindow extends JFrame {
     JTextField numberInput = new JTextField(2);
     JTextField valueInput = new JTextField(1);
 
-    askPanel.add(question);
-    askPanel.add(message);
+    bidPanel.add(question);
+    bidPanel.add(message);
 
     JPanel row, column;
 
@@ -373,12 +375,12 @@ public class GameWindow extends JFrame {
       column.add(new JLabel("last value: " + lastValue));
     row.add(column);
     
-    askPanel.add(row);
+    bidPanel.add(row);
 
     String[] options = {"OK"};
 
     while (true) {
-      int action = JOptionPane.showOptionDialog(null, askPanel, "title", JOptionPane.NO_OPTION,
+      int action = JOptionPane.showOptionDialog(null, bidPanel, "title", JOptionPane.NO_OPTION,
           JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
       if (action != 0)
