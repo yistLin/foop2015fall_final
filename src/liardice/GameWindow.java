@@ -127,17 +127,38 @@ public class GameWindow extends JFrame {
 
   private class DiceSet extends JPanel {
 
+    private DicePanel[] dicePanel = new DicePanel[5];
+    
     DiceSet() {
-      setPreferredSize(new Dimension(675, 150));
+      setLayout(new GridLayout(1, 5));
+      setPreferredSize(new Dimension(675, 135));
       setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+      
+      for (int i = 0; i < 5; i++) {
+        dicePanel[i] = new DicePanel(i);
+        add(dicePanel[i]);
+      }
+    }
+    
+    public void reDraw() {
+      for (int i = 0; i < 5; i++) {
+        dicePanel[i].repaint();
+      }
+    }
+  }
+
+  private class DicePanel extends JPanel {
+    
+    private int num;
+    
+    DicePanel(final int num) {
+      this.num = num;
     }
     
     protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       if(dice != null) {
-        for (int i = 0; i < 5; i ++) {
-          drawDice(g, dice[i].value, 45 + 120 * i, 30);
-        }
+        drawDice(g, dice[num].value, 30, 30);
       }
     }
     
@@ -152,7 +173,7 @@ public class GameWindow extends JFrame {
       g.drawImage(diceImages, x, y, x+75, y+75, cx, cy, cx+225, cy+225, this);
     }
   }
-
+  
   private class Chatroom extends JPanel {
 
     Chatroom() {
@@ -224,7 +245,7 @@ public class GameWindow extends JFrame {
               addMessage(name + " has connected.\n");
             } else if (fm.message instanceof Dice[]) {
               dice = (Dice[])fm.message;
-              diceSet.repaint();
+              diceSet.reDraw();
               addMessage("I got ");
               for (Dice d: dice) {
                 addMessage(d.value + " ");
