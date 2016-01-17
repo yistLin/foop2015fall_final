@@ -289,8 +289,8 @@ public class GameWindow extends JFrame {
     } else if (gs.status == GameStatus.ROUND_END) {
       addMessage(playerList[gs.currentPlayer - 1] + " losed.\n");
       addMessage("Total dice: ");
-      for (int i = 0; i != gs.diceTable.length; i++)
-        addMessage(gs.diceTable + " ");
+      for (int i = 1; i != 7; i++)
+        addMessage(gs.diceTable[i] + " ");
       addMessage("\n");
       Frame question = JOptionPane.getRootFrame();
       if (question != null)
