@@ -326,6 +326,7 @@ public class GameWindow extends JFrame {
       if (question != null)
         question.dispose();
 
+      Thread.sleep(500);
       askContinue(playerList[gs.currentPlayer - 1], gs.diceTable);
     }
   }
