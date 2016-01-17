@@ -26,18 +26,15 @@ public class GameWindow extends JFrame {
   private Board board;
   private Chatroom chatroom;
 
-  // private Image diceImages;
+  private Image diceImages;
   
   private GameClient connection;
 
   public GameWindow(final String hubHostName, final int hubPort, final String myName) {
     super("Liar's Dice");
 
-    /*
-    ClassLoader cl = getClass().getClassLoader();
-    URL imageURL = cl.getResource("liardice/dice.png");
-    diceImages = Toolkit.getDefaultTookit().createImage(imageURL);
-    */
+    
+    
 
     this.myName = myName;
 
@@ -50,6 +47,10 @@ public class GameWindow extends JFrame {
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     setVisible(true);
 
+    ClassLoader cl = getClass().getClassLoader();
+    URL imageURL = cl.getResource("src/liardice/dice.png");
+    diceImages = Toolkit.getDefaultToolkit().createImage(imageURL);
+    
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent evt) {
         doQuit();
@@ -64,7 +65,7 @@ public class GameWindow extends JFrame {
     */
   
     try {
-      console.append("Your IP is " + InetAddress.getLocalHost().getHostAddress() + "\n");
+      addMessage("Your IP is " + InetAddress.getLocalHost().getHostAddress() + "\n");
     } catch (UnknownHostException e) {
     }
 
@@ -137,6 +138,19 @@ public class GameWindow extends JFrame {
       add(button);
       return button;
     }
+    protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      //if (state == null)
+      //{
+        //Wait for connecting
+        //return;
+      //}
+      //if (state.hand == null) //Before deal
+      //{
+      console.append("before painting\n");
+      g.drawImage(diceImages, 0, 0, this); 
+      console.append("after painting\n");
+    }
   }
 
   private class Chatroom extends JPanel {
@@ -193,9 +207,9 @@ public class GameWindow extends JFrame {
             } else if (fm.message instanceof String[]) {
               String[] playerList = (String[])fm.message;
               for (String name: playerList) {
-                console.append(name + " has connected.\n");
+                addMessage(name + " has connected.\n");
               }
-              console.append("Game started!!!\n");
+              addMessage("Game started!!!\n");
             } else if (fm.message instanceof Dice[]) {
               // TODO
             }
@@ -214,11 +228,17 @@ public class GameWindow extends JFrame {
     }
   }
 
+  private void addMessage(String message) {
+    console.append(message);
+  }
+
   private void addMessage(String nickname, String message) {
     console.append(DATE_FORMAT.format(new Date()) + " " + nickname + ": " + message + "\n");
   }
 
   private void sendChatMessage(String message) {
+    if (message.length() == 0)
+      return ;
     connection.send(new ChatMessage(myName, message));
   }
 
