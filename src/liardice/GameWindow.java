@@ -19,6 +19,7 @@ public class GameWindow extends JFrame {
   private String myName;
   private String[] playerList;
   private Dice[] dice;
+  private int lastNumber = 0, lastValue = 0;
 
   private JTextArea console;
   private JTextField fieldInput;
@@ -269,6 +270,8 @@ public class GameWindow extends JFrame {
       connection.send(new ReadyMessage());
     } else if (gs.status == GameStatus.DO_CATCH) {
       addMessage(playerList[gs.currentPlayer - 1] + " number: " + gs.numberOfDice + " value: " + gs.valueOfDice + "\n");
+      lastNumber = gs.numberOfDice;
+      lastValue = gs.valueOfDice;
       if (gs.currentPlayer != connection.getID())
         askCatch(playerList[gs.currentPlayer - 1], gs.numberOfDice, gs.valueOfDice);
     } else if (gs.status == GameStatus.DO_BID) {
@@ -276,6 +279,13 @@ public class GameWindow extends JFrame {
       if (gs.currentPlayer == connection.getID())
         askBid();
     } else if (gs.status == GameStatus.DO_CONTINUE) {
+    } else if (gs.status == GameStatus.NO_CATCH) {
+      addMessage(playerList[gs.currentPlayer - 1] + " don't catch.\n");
+    } else if (gs.status == GameStatus.ROUND_END) {
+      addMessage(playerList[gs.currentPlayer - 1] + " losed.\n");
+      Frame question = JOptionPane.getRootFrame();
+      if (question != null)
+        question.dispose();
     }
   }
 
@@ -309,7 +319,7 @@ public class GameWindow extends JFrame {
 
     column = new JPanel();
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
-    column.add(Box.createHorizontalStrut(40));
+    column.add(Box.createHorizontalStrut(40)); // reserved space
     column.add(new JLabel("Value of dice:"));
     column.add(valueInput);
     row.add(column);
@@ -329,7 +339,9 @@ public class GameWindow extends JFrame {
       try {
         number = Integer.parseInt(numberInput.getText().trim());
         if (number < 0)
-            throw new IllegalNumberException("Illegal number of dice");
+          throw new IllegalNumberException("Illegal number of dice");
+        if (number < lastNumber)
+          throw new IllegalNumberException("Number can't less than last");
       } catch (NumberFormatException e) {
         message.setText("You must enter number of dice!");
         message.setForeground(Color.red);
@@ -347,6 +359,8 @@ public class GameWindow extends JFrame {
         value = Integer.parseInt(valueInput.getText().trim());
         if (value < 0 || value > 6)
           throw new IllegalNumberException("Illegal value of dice");
+        if (number == lastNumber && value <= lastValue)
+          throw new IllegalNumberException("Value must greater than last");
       } catch (NumberFormatException e) {
         message.setText("You must enter value of dice!");
         message.setForeground(Color.red);
