@@ -127,6 +127,7 @@ public class GameHub extends Hub{
                 currentPlayer = 1;
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_BID, currentPlayer)));
                 currentStatus = BID_STATUS;
+                topOfReadyPlayers = 0;
             }
         }
 
