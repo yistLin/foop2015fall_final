@@ -29,6 +29,7 @@ public class GameWindow extends JFrame {
   private Board board;
   private Chatroom chatroom;
 
+  private DiceSet diceSet;
   private Image diceImages;
   
   private GameClient connection;
@@ -110,47 +111,25 @@ public class GameWindow extends JFrame {
   private class Board extends JPanel {
 
     final Color brown = new Color(130, 70, 0);
-    final Color green = new Color(0, 100, 0);
 
     Board() {
-      setLayout(null);
+      setLayout(new BorderLayout());
       setPreferredSize(new Dimension(675, 585));
       setBackground(new Color(172, 252, 252));
       setBorder(BorderFactory.createLineBorder(brown, 8));
 
-      // messageFromServer = makeLabel(30, 205, 500, 25, 16, brown);
-      
-    }
+      add(new JPanel(), BorderLayout.CENTER);
 
-    JLabel makeLabel(int x, int y, int width, int height, int fontSize, Color color) {
-      JLabel label = new JLabel();
-      label.setBounds(x, y, width, height);
-      label.setOpaque(false);
-      label.setForeground(color);
-      label.setFont(new Font("Serif", Font.BOLD, fontSize));
-      add(label);
-      return label;
+      diceSet = new DiceSet();
+      add(diceSet, BorderLayout.SOUTH);
     }
+  }
 
-    JButton makeButton(String text, int x, int y, ActionListener listener) {
-      JButton button = new JButton(text);
-      button.setEnabled(false);
-      button.setBounds(x, y, 80, 35);
-      button.setFont(new Font("SansSerif", Font.BOLD, 24));
-      button.addActionListener(listener);
-      add(button);
-      return button;
-    }
-    protected void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      //if (state == null)
-      //{
-        //Wait for connecting
-        //return;
-      //}
-      //if (state.hand == null) //Before deal
-      //{
-      g.drawImage(diceImages, 0, 0, this); 
+  private class DiceSet extends JPanel {
+
+    DiceSet() {
+      setPreferredSize(new Dimension(675, 150));
+      setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
     }
   }
 
