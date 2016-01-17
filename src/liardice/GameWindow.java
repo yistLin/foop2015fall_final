@@ -125,7 +125,7 @@ public class GameWindow extends JFrame {
 
       JPanel statusPanel = new JPanel();
       statusPanel.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
-      JLabel statusMessage = new JLabel("Waiting for other players.", JLabel.CENTER);
+      statusMessage = new JLabel("Waiting for other players.", JLabel.CENTER);
       statusMessage.setFont(new Font("Phosphate", Font.BOLD, 48));
       statusPanel.add(statusMessage);
       add(statusPanel, BorderLayout.NORTH);
@@ -156,7 +156,6 @@ public class GameWindow extends JFrame {
       question.setFont(new Font("Phosphate", Font.BOLD, 48));
       add(question);
 
-      //catchDiscription = new JLabel(player + " bid number: " + number + " value: " + value + "\n", JLabel.CENTER);
       catchDiscription = new JLabel();
       catchDiscription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
       add(catchDiscription);
@@ -306,6 +305,7 @@ public class GameWindow extends JFrame {
                 addMessage("Player" + (i + 1) + ": " + playerList[i] + "\n");
               }
               addMessage("Game started!!!\n");
+              statusMessage.setText("Game started!!!\n");
             } else if (fm.message instanceof String) {
               String name = (String)fm.message;
               addMessage(name + " has connected.\n");
