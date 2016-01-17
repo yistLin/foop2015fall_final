@@ -180,7 +180,7 @@ public class GameWindow extends JFrame {
       column = new JPanel();
       column.setLayout(new FlowLayout(FlowLayout.LEFT));
       //column.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
-      column.setPreferredSize(new Dimension(270, 150));
+      column.setPreferredSize(new Dimension(270, 50));
       column.add(Box.createHorizontalStrut(15)); // reserved space
       column.add(new JLabel("Number of dice:"));
       column.add(bidNumberInput);
@@ -190,7 +190,7 @@ public class GameWindow extends JFrame {
       column = new JPanel();
       column.setLayout(new FlowLayout(FlowLayout.LEFT));
       //column.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
-      column.setPreferredSize(new Dimension(270, 150));
+      column.setPreferredSize(new Dimension(270, 50));
       column.add(Box.createHorizontalStrut(15)); // reserved space
       column.add(new JLabel("Value of dice:"));
       column.add(bidValueInput);
@@ -198,12 +198,12 @@ public class GameWindow extends JFrame {
       row.add(column);
 
       column = new JPanel();
-      column.setLayout(new FlowLayout(FlowLayout.LEFT));
+      column.setLayout(new BorderLayout());
       //column.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
-      column.setPreferredSize(new Dimension(80, 150));
+      column.setPreferredSize(new Dimension(90, 50));
       bidButton = new JButton("Bid!");
       bidButton.setEnabled(false);
-      column.add(bidButton);
+      column.add(bidButton, BorderLayout.CENTER);
       row.add(column);
 
       add(row);
