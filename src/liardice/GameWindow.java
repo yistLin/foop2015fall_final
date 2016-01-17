@@ -305,7 +305,7 @@ public class GameWindow extends JFrame {
       if (question != null)
         question.dispose();
 
-      askContinue();
+      askContinue(playerList[gs.currentPlayer - 1], gs.diceTable);
     }
   }
 
@@ -426,7 +426,7 @@ public class GameWindow extends JFrame {
     }
   }
 
-  private void askContinue() {
+  private void askContinue(String losedPlayer, int[] diceTable) {
     JPanel askPanel = new JPanel();
     askPanel.setLayout(new GridLayout(0, 1));
 
@@ -434,9 +434,9 @@ public class GameWindow extends JFrame {
     question.setFont(new Font("Phosphate", Font.BOLD, 48));
     askPanel.add(question);
 
-    //JLabel discription = new JLabel(player + " bid number: " + number + " value: " + value + "\n", JLabel.CENTER);
-    //discription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
-    //askPanel.add(discription);
+    JLabel discription = new JLabel(losedPlayer + " losed. QAQ~", JLabel.CENTER);
+    discription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
+    askPanel.add(discription);
 
     int action = JOptionPane.showConfirmDialog(null, askPanel, "Continue?",
         JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
