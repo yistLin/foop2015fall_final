@@ -19,15 +19,17 @@ public class GameStatus implements Serializable {
     GameStatus(int status) {
         this.status = status;
     };
-    //GameStatus for ROUND_START & DO_BID & DO_CATCH
+    //GameStatus for ROUND_START & DO_BID & NO_CATCH & YES_CATCH
     GameStatus(int status, int msg) {
         this.status = status;
         if(status == ROUND_START)
             this.round = msg;
-        else if(status == DO_BID)
+        else if (status == DO_BID)
             this.currentPlayer = msg;
         else if (status == NO_CATCH)
         	this.currentPlayer = msg;
+        else if (status == YES_CATCH)
+            this.currentPlayer = msg;
     }
     //GameStatus for DO_CATCH
     GameStatus(int status, int numberOfDice, int valueOfDice, int currentPlayer) {
