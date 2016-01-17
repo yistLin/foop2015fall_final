@@ -25,7 +25,11 @@ public class GameWindow extends JFrame {
   private Board board;
   private Chatroom chatroom;
 
-  private JPanel bidPanel;
+  private JLabel statusMessage;
+
+  private JLabel catchDiscription;
+  private JButton catchNoButton;
+  private JButton catchYesButton;
 
   private JTextArea console;
   private JTextField fieldInput;
@@ -119,11 +123,71 @@ public class GameWindow extends JFrame {
       setPreferredSize(new Dimension(675, 585));
       setBorder(BorderFactory.createLineBorder(brown, 8));
 
-      bidPanel = new JPanel();
-      add(bidPanel, BorderLayout.CENTER);
+      JPanel statusPanel = new JPanel();
+      statusPanel.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+      JLabel statusMessage = new JLabel("Waiting for other players.", JLabel.CENTER);
+      statusMessage.setFont(new Font("Phosphate", Font.BOLD, 48));
+      statusPanel.add(statusMessage);
+      add(statusPanel, BorderLayout.NORTH);
+
+      JPanel gamePanel = new JPanel();
+      gamePanel.setLayout(new GridLayout(0, 1));
+
+      JPanel bidPanel = new JPanel();
+      bidPanel.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+
+      JPanel catchPanel = new CatchPanel();
+      gamePanel.add(bidPanel);
+      gamePanel.add(catchPanel);
+      add(gamePanel, BorderLayout.CENTER);
 
       diceSet = new DiceSet();
       add(diceSet, BorderLayout.SOUTH);
+    }
+  }
+
+  private class CatchPanel extends JPanel {
+
+    CatchPanel() {
+      setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+      setLayout(new GridLayout(0, 1));
+
+      JLabel question = new JLabel("Catch Panel", JLabel.CENTER);
+      question.setFont(new Font("Phosphate", Font.BOLD, 48));
+      add(question);
+
+      //catchDiscription = new JLabel(player + " bid number: " + number + " value: " + value + "\n", JLabel.CENTER);
+      catchDiscription = new JLabel();
+      catchDiscription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
+      add(catchDiscription);
+
+      JPanel row = new JPanel();
+      row.setLayout(new GridLayout(1, 2));
+
+      catchNoButton = new JButton("No");
+      catchNoButton.setEnabled(false);
+      row.add(catchNoButton);
+
+      catchYesButton = new JButton("Yes");
+      catchYesButton.setEnabled(false);
+      row.add(catchYesButton);
+
+      add(row);
+
+      ActionListener buttonListener = new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          if (e.getSource() == catchNoButton) {
+            connection.send(new CatchMessage(false));
+          } else {
+            connection.send(new CatchMessage(true));
+          }
+          catchNoButton.setEnabled(false);
+          catchYesButton.setEnabled(false);
+        }
+      };
+
+      catchNoButton.addActionListener(buttonListener);
+      catchYesButton.addActionListener(buttonListener);
     }
   }
 
@@ -337,7 +401,7 @@ public class GameWindow extends JFrame {
   }
 
   private void askBid() {
-    bidPanel = new JPanel();
+    JPanel bidPanel = new JPanel();
     bidPanel.setLayout(new GridLayout(0, 1));
 
     JLabel question = new JLabel("What's your bid?", JLabel.CENTER);
@@ -432,25 +496,12 @@ public class GameWindow extends JFrame {
   }
 
   private void askCatch(String player, int number, int value) {
-    JPanel askPanel = new JPanel();
-    askPanel.setLayout(new GridLayout(0, 1));
+    statusMessage.setText("Do you want to catch?");
 
-    JLabel question = new JLabel("To catch or not to catch?", JLabel.CENTER);
-    question.setFont(new Font("Phosphate", Font.BOLD, 48));
-    askPanel.add(question);
+    catchNoButton.setEnabled(true);
+    catchYesButton.setEnabled(true);
 
-    JLabel discription = new JLabel(player + " bid number: " + number + " value: " + value + "\n", JLabel.CENTER);
-    discription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
-    askPanel.add(discription);
-
-    int action = JOptionPane.showConfirmDialog(null, askPanel, "To catch or not to catch?",
-        JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
-
-    if (action == 0) { // yes
-      connection.send(new CatchMessage(true));
-    } else { // no
-      connection.send(new CatchMessage(false));
-    }
+    catchDiscription.setText(player + " bid number: " + number + " value: " + value);
   }
 
   private void askContinue(String losedPlayer, int[] diceTable) {
