@@ -17,6 +17,8 @@ public class GameWindow extends JFrame {
   private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm");
   
   private String myName;
+  private String[] playerList;
+  private Dice[] dice;
 
   private JTextArea console;
   private JTextField fieldInput;
@@ -205,13 +207,22 @@ public class GameWindow extends JFrame {
               ChatMessage cm = (ChatMessage)fm.message;
               addMessage(cm.id, cm.message);
             } else if (fm.message instanceof String[]) {
-              String[] playerList = (String[])fm.message;
-              for (String name: playerList) {
-                addMessage(name + " has connected.\n");
-              }
+              playerList = (String[])fm.message;
+              addMessage("Get player list\n");
               addMessage("Game started!!!\n");
+            } else if (fm.message instanceof String) {
+              String name = (String)fm.message;
+              addMessage(name + " has connected.\n");
             } else if (fm.message instanceof Dice[]) {
-              // TODO
+              dice = (Dice[])fm.message;
+              addMessage("I got ");
+              for (Dice d: dice) {
+                addMessage(d.value + " ");
+              }
+              addMessage("\n");
+            } else if (fm.message instanceof GameStatus) {
+              GameStatus gs = (GameStatus)fm.message;
+              handleGameStatus(gs);
             }
           }
         });
@@ -253,5 +264,26 @@ public class GameWindow extends JFrame {
     }
     System.exit(0);
   }
+
+  private void handleGameStatus(GameStatus gs) {
+    if (gs.status == GameStatus.ROUND_START) {
+      addMessage("Round " + gs.round + " start.\n");
+      connection.send(new ReadyMessage());
+    } else if (gs.status == GameStatus.DO_CATCH) {
+    } else if (gs.status == GameStatus.DO_BID) {
+    } else if (gs.status == GameStatus.DO_CONTINUE) {
+    }
+  }
+
+  private void askBid() {
+
+  }
+
+  /*
+  private void askCatch() {
+    int action = JOptionPane.showConfirmDialog(null, inputPanel, "Liar's Dice",
+        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+  }
+  */
 }
 
