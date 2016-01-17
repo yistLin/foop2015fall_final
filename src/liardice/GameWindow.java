@@ -219,6 +219,7 @@ public class GameWindow extends JFrame {
                 addMessage(d.value + " ");
               }
               addMessage("\n");
+              connection.send(new ReadyMessage());
             } else if (fm.message instanceof GameStatus) {
               GameStatus gs = (GameStatus)fm.message;
               handleGameStatus(gs);
@@ -267,7 +268,8 @@ public class GameWindow extends JFrame {
   private void handleGameStatus(GameStatus gs) {
     if (gs.status == GameStatus.ROUND_START) {
       addMessage("Round " + gs.round + " start.\n");
-      connection.send(new ReadyMessage());
+      lastNumber = gs.numberOfDice;
+      lastValue = gs.valueOfDice;
     } else if (gs.status == GameStatus.DO_CATCH) {
       addMessage(playerList[gs.currentPlayer - 1] + " number: " + gs.numberOfDice + " value: " + gs.valueOfDice + "\n");
       lastNumber = gs.numberOfDice;
