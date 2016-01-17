@@ -10,9 +10,10 @@ public class GameHub extends Hub{
 
     private static int PORT = 42857;
     private static int NUM_OF_PLAYERS = 2;
-    private static int NUM_OF_DICES = 5;
-    private Dice[][] dicesTable;
-    
+    private static int NUM_OF_DICE = 5;
+    private final int BID_STATUS = 1;
+    private final int CATCH_STATUS = 2;
+
     public static void main(String[] args) {
 
         if (args.length > 1) {
@@ -35,14 +36,17 @@ public class GameHub extends Hub{
     private int topOfNicknames = 0;
     private int topOfReadyPlayers = 0;
     private String[] nicknames;
-    private int rounds = 0;
+    private int[] diceTable;
+    private int rounds = 1;
+    private int currentPlayer;
+    private int currentStatus;
 
     public GameHub(int port, int numberOfPlayers) throws IOException {
         super(port);
         this.NUM_OF_PLAYERS = numberOfPlayers;
         nicknames = new String[numberOfPlayers];
-        dicesTable = new Dice[numberOfPlayers][NUM_OF_DICES];
-        
+        diceTable = new int[7];
+
         Signal.handle(new Signal("INT"), new SignalHandler() {
             public void handle(Signal signo) {
                 System.out.println("GameHub is shutting down.");
@@ -57,11 +61,17 @@ public class GameHub extends Hub{
 
     //deal dices to all players
     private void dealDice() {
+        Dice[] playerDice;
+        Dice tmpDice;
+
         for(int playerID = 1; playerID <= NUM_OF_PLAYERS; playerID++) {
-            for(int i = 0; i < NUM_OF_DICES; i++) {
-                dicesTable[playerID - 1][i] = new Dice();
+            playerDice = new Dice[NUM_OF_DICE];
+            for(int i = 0; i < NUM_OF_DICE; i++) {
+                tmpDice = new Dice();
+                playerDice[i] = tmpDice;
+                diceTable[tmpDice.value]++;
             }
-            sendToOne(playerID, new ForwardedMessage(0, dicesTable[playerID - 1]));
+            sendToOne(playerID, new ForwardedMessage(0, playerDice));
         }
     }
 
@@ -90,7 +100,7 @@ public class GameHub extends Hub{
                 doSleep(0.5);
 
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_START, rounds)));
-                System.out.println("[Status] Send GameStatus.ROUND_START to all players");
+                System.out.println("[Status] Send GameStatus.ROUND_START, round = " + Integer.toString(rounds) + ", to all players");
                 doSleep(0.5);
 
                 dealDice();
@@ -104,8 +114,32 @@ public class GameHub extends Hub{
             topOfReadyPlayers++;
 
             if (topOfReadyPlayers == NUM_OF_PLAYERS) {
-                // TODO:
+                currentPlayer = 1;
+                sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_BID, currentPlayer)));
+                currentStatus = BID_STATUS;
             }
+        }
+
+        // receive BidMessage from currentPlayer
+        else if (message instanceof BidMessage && playerID == currentPlayer && currentStatus == BID_STATUS) {
+            int n = ((BidMessage)message).numberOfDice;
+            int v = ((BidMessage)message).valueOfDice;
+
+            // TODO: check the correctness of valueOfDice and numberOfDice
+
+            sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CATCH, n, v, currentPlayer)));
+            currentPlayer++;
+            currentStatus = CATCH_STATUS;
+
+            if (currentPlayer == (NUM_OF_PLAYERS+1) )
+                currentPlayer = 1;
+        }
+
+        // receive CatchMessage from some players
+        else if (message instanceof CatchMessage && currentStatus == CATCH_STATUS) {
+            currentStatus = BID_STATUS;
+
+            // TODO: 
         }
 
         // redirect ChatMessage to all players
