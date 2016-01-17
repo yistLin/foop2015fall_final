@@ -65,7 +65,7 @@ public class GameWindow extends JFrame {
     */
   
     try {
-      console.append("Your IP is " + InetAddress.getLocalHost().getHostAddress() + "\n");
+      addMessage("Your IP is " + InetAddress.getLocalHost().getHostAddress() + "\n");
     } catch (UnknownHostException e) {
     }
 
@@ -207,9 +207,9 @@ public class GameWindow extends JFrame {
             } else if (fm.message instanceof String[]) {
               String[] playerList = (String[])fm.message;
               for (String name: playerList) {
-                console.append(name + " has connected.\n");
+                addMessage(name + " has connected.\n");
               }
-              console.append("Game started!!!\n");
+              addMessage("Game started!!!\n");
             } else if (fm.message instanceof Dice[]) {
               // TODO
             }
@@ -226,6 +226,10 @@ public class GameWindow extends JFrame {
         }
       });
     }
+  }
+
+  private void addMessage(String message) {
+    console.append(message);
   }
 
   private void addMessage(String nickname, String message) {
