@@ -152,6 +152,8 @@ public class GameWindow extends JFrame {
 
   private class BidPanel extends JPanel {
 
+    private JLabel message;
+
     BidPanel() {
       setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       setLayout(new GridLayout(0, 1));
@@ -160,7 +162,7 @@ public class GameWindow extends JFrame {
       panelName.setFont(new Font("Phosphate", Font.BOLD, 48));
       add(panelName);
 
-      JLabel message = new JLabel("Enter number and value", JLabel.CENTER);
+      message = new JLabel("Enter number and value", JLabel.CENTER);
       message.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
       add(message);
 
@@ -168,6 +170,23 @@ public class GameWindow extends JFrame {
       bidValueInput = new JTextField(1);
       bidNumberInput.setEnabled(false);
       bidValueInput.setEnabled(false);
+
+      bidNumberInput.addKeyListener(new KeyAdapter() {
+        public void keyPressed(KeyEvent e) {
+          if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            bidValueInput.selectAll();
+            bidValueInput.requestFocus();
+          }
+        }
+      });
+
+      bidValueInput.addKeyListener(new KeyAdapter() {
+        public void keyPressed(KeyEvent e) {
+          if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            bidIt();
+          }
+        }
+      });
 
       bidLastNumber = new JLabel("", JLabel.CENTER);
       bidLastValue = new JLabel("", JLabel.CENTER);
@@ -211,64 +230,69 @@ public class GameWindow extends JFrame {
       ActionListener buttonListener = new ActionListener() {
         public void actionPerformed(ActionEvent ae) {
           if (ae.getSource() == bidButton) {
-            boolean success = true;
-            int number = 0, value = 0;
-            try {
-              number = Integer.parseInt(bidNumberInput.getText().trim());
-              if (number < 0)
-                throw new IllegalNumberException("Illegal number of dice");
-              if (number < lastNumber)
-                throw new IllegalNumberException("Number can't less than last");
-            } catch (NumberFormatException e) {
-              message.setText("You must enter number of dice!");
-              message.setForeground(Color.red);
-              bidNumberInput.selectAll();
-              bidNumberInput.requestFocus();
-              success = false;
-            } catch (IllegalNumberException e) {
-              message.setText(e.getMessage());
-              message.setForeground(Color.red);
-              bidNumberInput.selectAll();
-              bidNumberInput.requestFocus();
-              success = false;
-            }
-            try {
-              value = Integer.parseInt(bidValueInput.getText().trim());
-              if (value < 0 || value > 6)
-                throw new IllegalNumberException("Illegal value of dice");
-              if (number == lastNumber && value <= lastValue)
-                throw new IllegalNumberException("Value must greater than last");
-            } catch (NumberFormatException e) {
-              message.setText("You must enter value of dice!");
-              message.setForeground(Color.red);
-              bidValueInput.selectAll();
-              bidValueInput.requestFocus();
-              success = false;
-            } catch (IllegalNumberException e) {
-              message.setText(e.getMessage());
-              message.setForeground(Color.red);
-              bidValueInput.selectAll();
-              bidValueInput.requestFocus();
-              success = false;
-            }
-
-            if (success) {
-              connection.send(new BidMessage(number, value));
-
-              bidNumberInput.setText("");
-              bidValueInput.setText("");
-              bidLastNumber.setText("");
-              bidLastValue.setText("");
-
-              bidNumberInput.setEnabled(false);
-              bidValueInput.setEnabled(false);
-              bidButton.setEnabled(false);
-            }
+            bidIt();
           }
         }
       };
 
       bidButton.addActionListener(buttonListener);
+    }
+
+    private void bidIt() {
+      boolean success = true;
+      int number = 0, value = 0;
+      try {
+        number = Integer.parseInt(bidNumberInput.getText().trim());
+        if (number < 0)
+          throw new IllegalNumberException("Illegal number of dice");
+        if (number < lastNumber)
+          throw new IllegalNumberException("Number can't less than last");
+      } catch (NumberFormatException e) {
+        message.setText("You must enter number of dice!");
+        message.setForeground(Color.red);
+        bidNumberInput.selectAll();
+        bidNumberInput.requestFocus();
+        success = false;
+      } catch (IllegalNumberException e) {
+        message.setText(e.getMessage());
+        message.setForeground(Color.red);
+        bidNumberInput.selectAll();
+        bidNumberInput.requestFocus();
+        success = false;
+      }
+      try {
+        value = Integer.parseInt(bidValueInput.getText().trim());
+        if (value < 0 || value > 6)
+          throw new IllegalNumberException("Illegal value of dice");
+        if (number == lastNumber && value <= lastValue)
+          throw new IllegalNumberException("Value must greater than last");
+      } catch (NumberFormatException e) {
+        message.setText("You must enter value of dice!");
+        message.setForeground(Color.red);
+        bidValueInput.selectAll();
+        bidValueInput.requestFocus();
+        success = false;
+      } catch (IllegalNumberException e) {
+        message.setText(e.getMessage());
+        message.setForeground(Color.red);
+        bidValueInput.selectAll();
+        bidValueInput.requestFocus();
+        success = false;
+      }
+
+      if (success) {
+        connection.send(new BidMessage(number, value));
+
+        bidNumberInput.setText("");
+        bidValueInput.setText("");
+        bidLastNumber.setText("");
+        bidLastValue.setText("");
+
+        bidNumberInput.setEnabled(false);
+        bidValueInput.setEnabled(false);
+        bidButton.setEnabled(false);
+      }
+
     }
   }
 
@@ -500,13 +524,14 @@ public class GameWindow extends JFrame {
       lastValue = gs.valueOfDice;
       if (gs.currentPlayer != connection.getID())
         askCatch(playerList[gs.currentPlayer - 1], gs.numberOfDice, gs.valueOfDice);
+      else
+        statusMessage.setText("Wait for other's catching");
     } else if (gs.status == GameStatus.DO_BID) {
       addMessage(playerList[gs.currentPlayer - 1] + " is bidding...\n");
       if (gs.currentPlayer == connection.getID())
         askBid();
-      else {
+      else
         statusMessage.setText("Wait for other's bidding");
-      }
     } else if (gs.status == GameStatus.NO_CATCH) {
       addMessage(playerList[gs.currentPlayer - 1] + " didn't catch.\n");
     } else if (gs.status == GameStatus.YES_CATCH) {
