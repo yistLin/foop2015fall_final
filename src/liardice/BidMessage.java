@@ -8,6 +8,6 @@ public class BidMessage implements Serializable {
     
 	public BidMessage(int numberOfDice, int valueOfDice) {
         this.numberOfDice = numberOfDice;
-		this.valueOfDice = valueOfDice;
+        this.valueOfDice = valueOfDice;
     }
 }
