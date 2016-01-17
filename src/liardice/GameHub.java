@@ -126,6 +126,7 @@ public class GameHub extends Hub{
                 currentPlayer = 1;
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_BID, currentPlayer)));
                 currentStatus = BID_STATUS;
+                topOfReadyPlayers = 0;
             }
         }
 
@@ -136,13 +137,13 @@ public class GameHub extends Hub{
 
             // TODO: check the correctness of valueOfDice and numberOfDice
 
-            sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CATCH, n, v, currentPlayer)));
-            currentPlayer++;
             currentStatus = CATCH_STATUS;
             topOfCatchPlyaers = 0;
             lastNumberOfDice = n;
             lastValueOfDice = v;
             lastPlayerID = playerID;
+            sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CATCH, n, v, currentPlayer)));
+            currentPlayer++;
             System.out.println("[Status] Player #" + Integer.toString(playerID) +
                 " bid valueOfDice = " + Integer.toString(lastValueOfDice) +
                 ", numberOfDice = " + Integer.toString(lastNumberOfDice));
