@@ -14,10 +14,12 @@ public class GameStatus implements Serializable {
     int numberOfDice;
     int valueOfDice;
     int currentPlayer;
+    int[] diceTable;
+    
     GameStatus(int status) {
         this.status = status;
     };
-    //GameStatus for ROUND_START and DO_BID
+    //GameStatus for ROUND_START & DO_BID & DO_CATCH
     GameStatus(int status, int msg) {
         this.status = status;
         if(status == ROUND_START)
@@ -26,8 +28,6 @@ public class GameStatus implements Serializable {
             this.currentPlayer = msg;
         else if (status == NO_CATCH)
         	this.currentPlayer = msg;
-        else if (status == ROUND_END)
-        	this.currentPlayer = msg;
     }
     //GameStatus for DO_CATCH
     GameStatus(int status, int numberOfDice, int valueOfDice, int currentPlayer) {
@@ -35,5 +35,11 @@ public class GameStatus implements Serializable {
         this.numberOfDice = numberOfDice;
         this.valueOfDice = valueOfDice;
         this.currentPlayer = currentPlayer;
+    }
+    //GameStatus for ROUND_END
+    GameStatus(int status, int currentPlayer, int[] diceTable) {
+        this.status = status;
+        this.currentPlayer = currentPlayer;
+        this.diceTable = diceTable;
     }
 }

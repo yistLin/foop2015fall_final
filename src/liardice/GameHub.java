@@ -71,10 +71,11 @@ public class GameHub extends Hub{
     private void dealDice() {
         Dice[] playerDice;
         Dice tmpDice;
-
-        for(int playerID = 1; playerID <= NUM_OF_PLAYERS; playerID++) {
+        for (int element : diceTable)
+            element = 0;
+        for (int playerID = 1; playerID <= NUM_OF_PLAYERS; playerID++) {
             playerDice = new Dice[NUM_OF_DICE];
-            for(int i = 0; i < NUM_OF_DICE; i++) {
+            for (int i = 0; i < NUM_OF_DICE; i++) {
                 tmpDice = new Dice();
                 playerDice[i] = tmpDice;
                 diceTable[tmpDice.value]++;
@@ -126,7 +127,6 @@ public class GameHub extends Hub{
                 currentPlayer = 1;
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_BID, currentPlayer)));
                 currentStatus = BID_STATUS;
-                topOfReadyPlayers = 0;
             }
         }
 
@@ -137,13 +137,13 @@ public class GameHub extends Hub{
 
             // TODO: check the correctness of valueOfDice and numberOfDice
 
+            sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CATCH, n, v, currentPlayer)));
+            currentPlayer++;
             currentStatus = CATCH_STATUS;
             topOfCatchPlyaers = 0;
             lastNumberOfDice = n;
             lastValueOfDice = v;
             lastPlayerID = playerID;
-            sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CATCH, n, v, currentPlayer)));
-            currentPlayer++;
             System.out.println("[Status] Player #" + Integer.toString(playerID) +
                 " bid valueOfDice = " + Integer.toString(lastValueOfDice) +
                 ", numberOfDice = " + Integer.toString(lastNumberOfDice));
@@ -158,9 +158,9 @@ public class GameHub extends Hub{
             if (cm.doCatch) {
                 currentStatus = BID_STATUS;
                 if (diceTable[lastValueOfDice] < lastNumberOfDice)
-                    sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, lastPlayerID)));
+                    sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, lastPlayerID, diceTable.clone())));
                 else
-                    sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, playerID)));
+                    sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, playerID, diceTable.clone())));
 
                 doSleep(1.5);
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CONTINUE)));
@@ -189,11 +189,6 @@ public class GameHub extends Hub{
         // redirect ChatMessage to all players
         else if (message instanceof ChatMessage) {
             sendToAll(new ForwardedMessage(playerID, (ChatMessage)message));
-        }
-
-        // something need to discuss
-        else {
-            // TODO:
         }
     }
 }
