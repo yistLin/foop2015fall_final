@@ -156,7 +156,7 @@ public class GameWindow extends JFrame {
       question.setFont(new Font("Phosphate", Font.BOLD, 48));
       add(question);
 
-      catchDiscription = new JLabel();
+      catchDiscription = new JLabel("", JLabel.CENTER);
       catchDiscription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
       add(catchDiscription);
 
@@ -381,6 +381,8 @@ public class GameWindow extends JFrame {
     } else if (gs.status == GameStatus.NO_CATCH) {
       addMessage(playerList[gs.currentPlayer - 1] + " didn't catch.\n");
     } else if (gs.status == GameStatus.YES_CATCH) {
+      catchNoButton.setEnabled(false);
+      catchYesButton.setEnabled(false);
       addMessage(playerList[gs.currentPlayer - 1] + " catched.\n");
     } else if (gs.status == GameStatus.ROUND_END) {
       addMessage(playerList[gs.currentPlayer - 1] + " losed.\n");
