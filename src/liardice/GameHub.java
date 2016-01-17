@@ -160,6 +160,7 @@ public class GameHub extends Hub{
             if (cm.doCatch) {
                 currentStatus = BID_STATUS;
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.YES_CATCH, playerID)));
+                doSleep(0.3);
                 if (diceTable[lastValueOfDice] < lastNumberOfDice)
                     sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, lastPlayerID, diceTable.clone())));
                 else
