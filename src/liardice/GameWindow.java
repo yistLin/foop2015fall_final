@@ -284,6 +284,7 @@ public class GameWindow extends JFrame {
       if (gs.currentPlayer == connection.getID())
         askBid();
     } else if (gs.status == GameStatus.DO_CONTINUE) {
+      askContinue();
     } else if (gs.status == GameStatus.NO_CATCH) {
       addMessage(playerList[gs.currentPlayer - 1] + " didn't catch.\n");
     } else if (gs.status == GameStatus.YES_CATCH) {
@@ -410,6 +411,28 @@ public class GameWindow extends JFrame {
       connection.send(new CatchMessage(true));
     } else { // no
       connection.send(new CatchMessage(false));
+    }
+  }
+
+  private void askContinue() {
+    JPanel askPanel = new JPanel();
+    askPanel.setLayout(new GridLayout(0, 1));
+
+    JLabel question = new JLabel("Continue?", JLabel.CENTER);
+    question.setFont(new Font("Phosphate", Font.BOLD, 48));
+    askPanel.add(question);
+
+    //JLabel discription = new JLabel(player + " bid number: " + number + " value: " + value + "\n", JLabel.CENTER);
+    //discription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
+    //askPanel.add(discription);
+
+    int action = JOptionPane.showConfirmDialog(null, askPanel, "Continue?",
+        JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    if (action == 0) { // yes
+      connection.send(new ContinueMessage(true));
+    } else { // no
+      connection.send(new ContinueMessage(false));
     }
   }
 
