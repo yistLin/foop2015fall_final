@@ -207,7 +207,10 @@ public class GameWindow extends JFrame {
               addMessage(cm.id, cm.message);
             } else if (fm.message instanceof String[]) {
               playerList = (String[])fm.message;
-              addMessage("Get player list\n");
+              addMessage("Every player is here.\n");
+              for (int i = 0; i != playerList.length; i++) {
+                addMessage("Player" + (i + 1) + ": " + playerList[i] + "\n");
+              }
               addMessage("Game started!!!\n");
             } else if (fm.message instanceof String) {
               String name = (String)fm.message;
@@ -268,8 +271,8 @@ public class GameWindow extends JFrame {
   private void handleGameStatus(GameStatus gs) {
     if (gs.status == GameStatus.ROUND_START) {
       addMessage("Round " + gs.round + " start.\n");
-      lastNumber = gs.numberOfDice;
-      lastValue = gs.valueOfDice;
+      lastNumber = 0;
+      lastValue = 0;
     } else if (gs.status == GameStatus.DO_CATCH) {
       addMessage(playerList[gs.currentPlayer - 1] + " number: " + gs.numberOfDice + " value: " + gs.valueOfDice + "\n");
       lastNumber = gs.numberOfDice;
@@ -282,9 +285,13 @@ public class GameWindow extends JFrame {
         askBid();
     } else if (gs.status == GameStatus.DO_CONTINUE) {
     } else if (gs.status == GameStatus.NO_CATCH) {
-      addMessage(playerList[gs.currentPlayer - 1] + " don't catch.\n");
+      addMessage(playerList[gs.currentPlayer - 1] + " didn't catch.\n");
     } else if (gs.status == GameStatus.ROUND_END) {
       addMessage(playerList[gs.currentPlayer - 1] + " losed.\n");
+      addMessage("Total dice: ");
+      for (int i = 0; i != gs.diceTable.length; i++)
+        addMessage(gs.diceTable + " ");
+      addMessage("\n");
       Frame question = JOptionPane.getRootFrame();
       if (question != null)
         question.dispose();
