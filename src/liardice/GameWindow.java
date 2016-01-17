@@ -26,18 +26,15 @@ public class GameWindow extends JFrame {
   private Board board;
   private Chatroom chatroom;
 
-  // private Image diceImages;
+  private Image diceImages;
   
   private GameClient connection;
 
   public GameWindow(final String hubHostName, final int hubPort, final String myName) {
     super("Liar's Dice");
 
-    /*
-    ClassLoader cl = getClass().getClassLoader();
-    URL imageURL = cl.getResource("liardice/dice.png");
-    diceImages = Toolkit.getDefaultTookit().createImage(imageURL);
-    */
+    
+    
 
     this.myName = myName;
 
@@ -50,6 +47,10 @@ public class GameWindow extends JFrame {
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     setVisible(true);
 
+    ClassLoader cl = getClass().getClassLoader();
+    URL imageURL = cl.getResource("src/liardice/dice.png");
+    diceImages = Toolkit.getDefaultToolkit().createImage(imageURL);
+    
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent evt) {
         doQuit();
@@ -136,6 +137,19 @@ public class GameWindow extends JFrame {
       button.addActionListener(listener);
       add(button);
       return button;
+    }
+    protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      //if (state == null)
+      //{
+        //Wait for connecting
+        //return;
+      //}
+      //if (state.hand == null) //Before deal
+      //{
+      console.append("before painting\n");
+      g.drawImage(diceImages, 0, 0, this); 
+      console.append("after painting\n");
     }
   }
 
