@@ -49,7 +49,7 @@ public class GameWindow extends JFrame {
 
     // Test Area
     ClassLoader cl = getClass().getClassLoader();
-    URL imageURL = cl.getResource("src/liardice/dice.png");
+    URL imageURL = cl.getResource("liardice/dice.png");
     diceImages = Toolkit.getDefaultToolkit().createImage(imageURL);
 
     // End of Test
@@ -131,6 +131,26 @@ public class GameWindow extends JFrame {
       setPreferredSize(new Dimension(675, 150));
       setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
     }
+    
+    protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      if(dice != null) {
+        for (int i = 0; i < 5; i ++) {
+          drawDice(g, dice[i].value, 45 + 120 * i, 30);
+        }
+      }
+    }
+    
+    public void drawDice(Graphics g, int diceValue, int x,int y) {
+      int column = (diceValue+2) % 3;
+      int row = (diceValue+2) / 3 - 1;
+      int cx = 229 * column + 5;
+      int cy = 229 * row + 5;
+      if (diceValue == 2) cx --;
+      if (diceValue == 3) cx -=5;
+      if (diceValue == 6) cx -=5;
+      g.drawImage(diceImages, x, y, x+75, y+75, cx, cy, cx+225, cy+225, this);
+    }
   }
 
   private class Chatroom extends JPanel {
@@ -204,6 +224,7 @@ public class GameWindow extends JFrame {
               addMessage(name + " has connected.\n");
             } else if (fm.message instanceof Dice[]) {
               dice = (Dice[])fm.message;
+              diceSet.repaint();
               addMessage("I got ");
               for (Dice d: dice) {
                 addMessage(d.value + " ");
