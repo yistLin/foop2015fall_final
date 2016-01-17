@@ -52,4 +52,4 @@ clean:
 	rm -rf $(BIN)*
 
 run:
-	java -cp "$(BIN):$(LIB)" liardice/Main 
+	java -cp "./:$(BIN):$(LIB)" liardice/Main 
