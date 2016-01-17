@@ -35,9 +35,6 @@ public class GameWindow extends JFrame {
   public GameWindow(final String hubHostName, final int hubPort, final String myName) {
     super("Liar's Dice");
 
-    
-    
-
     this.myName = myName;
 
     display = new Display();
@@ -45,19 +42,22 @@ public class GameWindow extends JFrame {
     pack();
 
     setResizable(false);
-    setLocation(200, 100);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     setVisible(true);
 
+    // Test Area
     ClassLoader cl = getClass().getClassLoader();
     URL imageURL = cl.getResource("src/liardice/dice.png");
     diceImages = Toolkit.getDefaultToolkit().createImage(imageURL);
-    
+
+    // End of Test
+
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent evt) {
         doQuit();
       }
     });
+
     /*
     display.addMouseListener(new MouseAdapter() {
       public ovid mousePressed(MouseEvent evt) {
@@ -149,9 +149,7 @@ public class GameWindow extends JFrame {
       //}
       //if (state.hand == null) //Before deal
       //{
-      console.append("before painting\n");
       g.drawImage(diceImages, 0, 0, this); 
-      console.append("after painting\n");
     }
   }
 
@@ -270,20 +268,135 @@ public class GameWindow extends JFrame {
       addMessage("Round " + gs.round + " start.\n");
       connection.send(new ReadyMessage());
     } else if (gs.status == GameStatus.DO_CATCH) {
+      addMessage(playerList[gs.currentPlayer - 1] + " number: " + gs.numberOfDice + " value: " + gs.valueOfDice + "\n");
+      if (gs.currentPlayer != connection.getID())
+        askCatch(playerList[gs.currentPlayer - 1], gs.numberOfDice, gs.valueOfDice);
     } else if (gs.status == GameStatus.DO_BID) {
+      addMessage(playerList[gs.currentPlayer - 1] + " is bidding...\n");
+      if (gs.currentPlayer == connection.getID())
+        askBid();
     } else if (gs.status == GameStatus.DO_CONTINUE) {
     }
   }
 
   private void askBid() {
+    JPanel askPanel = new JPanel();
+    askPanel.setLayout(new GridLayout(0, 1));
 
+    JLabel question = new JLabel("What's your bid?", JLabel.CENTER);
+    question.setFont(new Font("Phosphate", Font.BOLD, 48));
+
+    JLabel message = new JLabel("Enter number and value", JLabel.CENTER);
+    message.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
+
+    JTextField numberInput = new JTextField(2);
+    JTextField valueInput = new JTextField(1);
+
+    askPanel.add(question);
+    askPanel.add(message);
+
+    JPanel row, column;
+
+    row = new JPanel();
+    row.setLayout(new GridLayout(0, 1));
+
+    column = new JPanel();
+    column.setLayout(new FlowLayout(FlowLayout.LEFT));
+    column.add(Box.createHorizontalStrut(40)); // reserved space
+    column.add(new JLabel("Number of dice:"));
+    column.add(numberInput);
+    row.add(column);
+
+    column = new JPanel();
+    column.setLayout(new FlowLayout(FlowLayout.LEFT));
+    column.add(Box.createHorizontalStrut(40));
+    column.add(new JLabel("Value of dice:"));
+    column.add(valueInput);
+    row.add(column);
+    
+    askPanel.add(row);
+
+    String[] options = {"OK"};
+
+    while (true) {
+      int action = JOptionPane.showOptionDialog(null, askPanel, "title", JOptionPane.NO_OPTION,
+          JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
+      if (action != 0)
+        continue;
+
+      int number, value;
+      try {
+        number = Integer.parseInt(numberInput.getText().trim());
+        if (number < 0)
+            throw new IllegalNumberException("Illegal number of dice");
+      } catch (NumberFormatException e) {
+        message.setText("You must enter number of dice!");
+        message.setForeground(Color.red);
+        numberInput.selectAll();
+        numberInput.requestFocus();
+        continue;
+      } catch (IllegalNumberException e) {
+        message.setText(e.getMessage());
+        message.setForeground(Color.red);
+        numberInput.selectAll();
+        numberInput.requestFocus();
+        continue;
+      }
+      try {
+        value = Integer.parseInt(valueInput.getText().trim());
+        if (value < 0 || value > 6)
+          throw new IllegalNumberException("Illegal value of dice");
+      } catch (NumberFormatException e) {
+        message.setText("You must enter value of dice!");
+        message.setForeground(Color.red);
+        valueInput.selectAll();
+        valueInput.requestFocus();
+        continue;
+      } catch (IllegalNumberException e) {
+        message.setText(e.getMessage());
+        message.setForeground(Color.red);
+        valueInput.selectAll();
+        valueInput.requestFocus();
+        continue;
+      }
+
+      connection.send(new BidMessage(number, value));
+      break;
+    }
   }
 
-  /*
-  private void askCatch() {
-    int action = JOptionPane.showConfirmDialog(null, inputPanel, "Liar's Dice",
-        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+  private void askCatch(String player, int number, int value) {
+    JPanel askPanel = new JPanel();
+    askPanel.setLayout(new GridLayout(0, 1));
+
+    JLabel question = new JLabel("To catch or not to catch?", JLabel.CENTER);
+    question.setFont(new Font("Phosphate", Font.BOLD, 48));
+    askPanel.add(question);
+
+    JLabel discription = new JLabel(player + " bid number: " + number + " value: " + value + "\n", JLabel.CENTER);
+    discription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
+    askPanel.add(discription);
+
+    int action = JOptionPane.showConfirmDialog(null, askPanel, "To catch or not to catch?",
+        JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+    if (action == 0) { // yes
+      connection.send(new CatchMessage(true));
+    } else { // no
+      connection.send(new CatchMessage(false));
+    }
   }
-  */
+
+  private static class IllegalNumberException extends Exception {
+    
+	  public IllegalNumberException() {
+      super("Illegal number!");
+    }
+    
+    public IllegalNumberException(String message) {
+	    super(message);
+	  }
+  }
 }
 
