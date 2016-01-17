@@ -10,9 +10,9 @@ public class GameHub extends Hub{
 
     private static int PORT = 42857;
     private static int NUM_OF_PLAYERS = 2;
-    private static int NUM_OF_DICE = 5;
-    private final int BID_STATUS = 1;
-    private final int CATCH_STATUS = 2;
+    private final static int NUM_OF_DICE = 5;
+    private final static int BID_STATUS = 1;
+    private final static int CATCH_STATUS = 2;
 
     public static void main(String[] args) {
 
@@ -35,6 +35,7 @@ public class GameHub extends Hub{
 
     private int topOfNicknames = 0;
     private int topOfReadyPlayers = 0;
+    private int topOfCatchPlyaers = 0;
     private String[] nicknames;
     private int[] diceTable;
     private int rounds = 1;
@@ -137,8 +138,20 @@ public class GameHub extends Hub{
 
         // receive CatchMessage from some players
         else if (message instanceof CatchMessage && currentStatus == CATCH_STATUS) {
-            currentStatus = BID_STATUS;
-
+            CatchMessage cm = (CatchMessage)message;
+            if (cm.doCatch) {
+                currentStatus = BID_STATUS;
+                //judge
+            }
+            else {
+                topOfCatchPlyaers++;
+                if(topOfCatchPlyaers == NUM_OF_PLAYERS) {
+                    currentStatus = BID_STATUS;
+                    sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_BID, currentPlayer)));
+                }
+            }
+            
+            
             // TODO: 
         }
 

@@ -4,10 +4,8 @@ import java.io.Serializable;
 
 public class ContinueMessage implements Serializable {
     public final boolean doContinue;
-    public final String id;
     
-    public ContinueMessage(String id, boolean doContinue) {
-        this.id = id;
+    public ContinueMessage(boolean doContinue) {
         this.doContinue = doContinue;
     }
 }
