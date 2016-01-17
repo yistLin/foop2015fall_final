@@ -68,8 +68,9 @@ public class GameHub extends Hub{
     private void dealDice() {
         Dice[] playerDice;
         Dice tmpDice;
-        for (int element : diceTable)
-            element = 0;
+        for (int i = 0; i < diceTable.length; i++)
+        	diceTable[i] = 0;
+
         for (int playerID = 1; playerID <= NUM_OF_PLAYERS; playerID++) {
             playerDice = new Dice[NUM_OF_DICE];
             for (int i = 0; i < NUM_OF_DICE; i++) {
@@ -124,6 +125,7 @@ public class GameHub extends Hub{
                 currentPlayer = lastPlayerID;
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_BID, currentPlayer)));
                 currentStatus = BID_STATUS;
+                topOfReadyPlayers = 0;
             }
         }
 
@@ -154,6 +156,8 @@ public class GameHub extends Hub{
             CatchMessage cm = (CatchMessage)message;
             if (cm.doCatch) {
                 currentStatus = BID_STATUS;
+                sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.YES_CATCH, playerID)));
+                doSleep(0.3);
                 if (diceTable[lastValueOfDice] < lastNumberOfDice)
                     sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, lastPlayerID, diceTable.clone())));
                 else
@@ -162,9 +166,6 @@ public class GameHub extends Hub{
                 doSleep(1.5);
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CONTINUE)));
                 rounds++;
-                doSleep(0.5);
-
-                
             }
             else {
                 topOfCatchPlyaers++;
@@ -176,22 +177,22 @@ public class GameHub extends Hub{
                 }
             }
         }
-        
+
         else if (message instanceof ContinueMessage) {
-            if(!((ContinueMessage)message).doContinue) {
-                shutDownHub();
-            }
-            topOfContinuePlayers++;
-            if (topOfContinuePlayers == NUM_OF_PLAYERS) {
+        	if (!((ContinueMessage)message).doContinue) {
+        		shutDownHub();
+        	}
+
+        	topOfContinuePlayers++;
+        	if (topOfContinuePlayers == NUM_OF_PLAYERS) {
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_START, rounds)));
                 System.out.println("[Status] Send GameStatus.ROUND_START, round = " + Integer.toString(rounds) + ", to all players");
                 doSleep(0.5);
-
                 dealDice();
                 System.out.println("[Status] Deal dices to all players");
                 doSleep(0.5);
                 topOfContinuePlayers = 0;
-            }
+        	}
         }
 
         // redirect ChatMessage to all players
