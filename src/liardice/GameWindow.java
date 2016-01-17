@@ -166,6 +166,8 @@ public class GameWindow extends JFrame {
 
       bidNumberInput = new JTextField(2);
       bidValueInput = new JTextField(1);
+      bidNumberInput.setEnabled(false);
+      bidValueInput.setEnabled(false);
 
       bidLastNumber = new JLabel("", JLabel.CENTER);
       bidLastValue = new JLabel("", JLabel.CENTER);
@@ -522,6 +524,8 @@ public class GameWindow extends JFrame {
   private void askBid() {
     statusMessage.setText("What's your bid?");
 
+    bidNumberInput.setEnabled(true);
+    bidValueInput.setEnabled(true);
     bidButton.setEnabled(true);
 
     if (lastNumber != 0) {
