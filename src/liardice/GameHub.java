@@ -39,6 +39,7 @@ public class GameHub extends Hub{
     private int rounds = 1;
     private int currentPlayer, currentStatus;
     private int lastValueOfDice, lastNumberOfDice, lastPlayerID = 1;
+    private boolean hasBidOne;
 
     public GameHub(int port, int numberOfPlayers) throws IOException {
         super(port);
@@ -113,7 +114,7 @@ public class GameHub extends Hub{
 
                 dealDice();
                 System.out.println("[Status] Deal dices to all players");
-                doSleep(0.5);
+                hasBidOne = false;
             }
         }
 
@@ -134,7 +135,8 @@ public class GameHub extends Hub{
             int n = ((BidMessage)message).numberOfDice;
             int v = ((BidMessage)message).valueOfDice;
 
-            // TODO: check the correctness of valueOfDice and numberOfDice
+            if (v == 1)
+            	hasBidOne = true;
 
             sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CATCH, n, v, currentPlayer)));
             currentPlayer++;
@@ -154,17 +156,21 @@ public class GameHub extends Hub{
         // receive CatchMessage from some players
         else if (message instanceof CatchMessage && currentStatus == CATCH_STATUS) {
             CatchMessage cm = (CatchMessage)message;
+            
             if (cm.doCatch) {
                 currentStatus = BID_STATUS;
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.YES_CATCH, playerID)));
                 doSleep(0.3);
-                if (diceTable[lastValueOfDice] < lastNumberOfDice)
+
+                int trueNumberOfDice = diceTable[lastValueOfDice];
+                if (!hasBidOne)
+                	trueNumberOfDice += diceTable[1];
+
+                if (trueNumberOfDice < lastNumberOfDice)
                     sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, lastPlayerID, diceTable.clone())));
                 else
                     sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, playerID, diceTable.clone())));
 
-                doSleep(1.5);
-                sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CONTINUE)));
                 rounds++;
             }
             else {
