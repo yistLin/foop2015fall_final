@@ -1,6 +1,7 @@
 package liardice;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import netgame.common.ForwardedMessage;
 import netgame.common.Hub;
 import sun.misc.Signal;
@@ -8,11 +9,13 @@ import sun.misc.SignalHandler;
 
 public class GameHub extends Hub{
 
+	private PrintWriter writer;
     private static int PORT = 42857;
     private static int NUM_OF_PLAYERS = 2;
     private final static int NUM_OF_DICE = 5;
     private final static int BID_STATUS = 1;
     private final static int CATCH_STATUS = 2;
+    private final static int[] nextPlayer = new int[]{0,2,3,4,1};
 
     public static void main(String[] args) {
 
@@ -21,7 +24,7 @@ public class GameHub extends Hub{
             NUM_OF_PLAYERS = Integer.parseInt(args[1]);
         }
         else {
-            System.out.println("usage: java ... liardice.GameHub [port] [numberOfPlayers]");
+            System.out.println("[Error] usage: java ... liardice.GameHub [port] [numberOfPlayers]");
             return;
         }
 
@@ -29,7 +32,7 @@ public class GameHub extends Hub{
             new GameHub(PORT, NUM_OF_PLAYERS);
         }
         catch (IOException e) {
-            System.out.println("Can't create listening socket.  Shutting down.");
+            System.out.println("[Error] Can't create listening socket.  Shutting down.");
         }
     }
 
@@ -43,26 +46,39 @@ public class GameHub extends Hub{
 
     public GameHub(int port, int numberOfPlayers) throws IOException {
         super(port);
+        writer = new PrintWriter("liardice_gamehub.log", "UTF-8");
         this.NUM_OF_PLAYERS = numberOfPlayers;
         nicknames = new String[numberOfPlayers];
         diceTable = new int[7];
 
+        write2log("[Status] GameHub start");
+
         Signal.handle(new Signal("INT"), new SignalHandler() {
             public void handle(Signal signo) {
-                System.out.println("GameHub is shutting down.");
+                write2log("[Status] GameHub is shutting down.");
                 shutDownHub();
             }
         });
     }
 
+    private void write2log(String str) {
+    	writer.println(str);
+    }
+
     protected void playerConnected(int playerID) {
-        System.out.println("Player " + Integer.toString(playerID) + " connected.");
+        write2log("Player #" + Integer.toString(playerID) + " connected.");
     }
 
     protected void playerDisconnected(int playerID) {
-        System.out.println("Player " + Integer.toString(playerID) + " disconnected.");
-        System.out.println("GameHub is shutting down.");
+        write2log("Player #" + Integer.toString(playerID) + " disconnected.");
+        write2log("[Status] GameHub is shutting down.");
         shutDownHub();
+    }
+
+    public void shutDownHub() {
+        super.shutDownHub();
+        writer.println("[Status] shutdown");
+        writer.close();
     }
 
     //deal dices to all players
@@ -81,6 +97,7 @@ public class GameHub extends Hub{
             }
             sendToOne(playerID, new ForwardedMessage(0, playerDice));
         }
+        write2log("[Status] deal dice to all players");
     }
 
     private void doSleep(double sec) {
@@ -88,6 +105,7 @@ public class GameHub extends Hub{
         try {
             Thread.sleep(msec);
         } catch (InterruptedException e) {}
+        write2log("[Status] sleep " + Double.toString(sec) + " sec");
     }
 
     protected void messageReceived(int playerID, Object message) {
@@ -97,7 +115,7 @@ public class GameHub extends Hub{
             String nickname = (String)message;
             nicknames[ playerID - 1 ] = nickname;
             topOfNicknames++;
-            System.out.println("Player #" + Integer.toString(playerID) + " says his nickname is " + nickname);
+            write2log("Player #" + Integer.toString(playerID) + " says his nickname is " + nickname);
             sendToAll(new ForwardedMessage(0, nickname));
 
             // It's time to send nickname and deal dices to all players
@@ -105,15 +123,14 @@ public class GameHub extends Hub{
                 doSleep(0.5);
 
                 sendToAll(new ForwardedMessage(0, nicknames));
-                System.out.println("[Status] Send nicknames to all players");
+                write2log("[Status] Send nicknames to all players");
                 doSleep(0.5);
 
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_START, rounds)));
-                System.out.println("[Status] Send GameStatus.ROUND_START, round = " + Integer.toString(rounds) + ", to all players");
+                write2log("[Status] Round Start, round = " + Integer.toString(rounds));
                 doSleep(0.5);
 
                 dealDice();
-                System.out.println("[Status] Deal dices to all players");
                 hasBidOne = false;
             }
         }
@@ -145,7 +162,7 @@ public class GameHub extends Hub{
             lastNumberOfDice = n;
             lastValueOfDice = v;
             lastPlayerID = playerID;
-            System.out.println("[Status] Player #" + Integer.toString(playerID) +
+            write2log("Player #" + Integer.toString(playerID) +
                 " bid valueOfDice = " + Integer.toString(lastValueOfDice) +
                 ", numberOfDice = " + Integer.toString(lastNumberOfDice));
 
@@ -160,23 +177,29 @@ public class GameHub extends Hub{
             if (cm.doCatch) {
                 currentStatus = BID_STATUS;
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.YES_CATCH, playerID)));
+                write2log("Player #" + Integer.toString(playerID) + " catch");
                 doSleep(0.3);
 
                 int trueNumberOfDice = diceTable[lastValueOfDice];
                 if (!hasBidOne)
                 	trueNumberOfDice += diceTable[1];
 
-                if (trueNumberOfDice < lastNumberOfDice)
+                if (trueNumberOfDice < lastNumberOfDice) {
                     sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, lastPlayerID, diceTable.clone())));
-                else
+                	write2log("Player #" + Integer.toString(lastPlayerID) + " lose");
+                }
+                else {
                     sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, playerID, diceTable.clone())));
+                	write2log("Player #" + Integer.toString(playerID) + " lose");
+                }
 
+                lastPlayerID = nextPlayer[lastPlayerID];
                 rounds++;
             }
             else {
                 topOfCatchPlyaers++;
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.NO_CATCH, playerID)));
-                System.out.println("[Status] Player #" + Integer.toString(playerID) + " don't catch");
+                write2log("Player #" + Integer.toString(playerID) + " didn't catch");
                 if (topOfCatchPlyaers == (NUM_OF_PLAYERS-1)) {
                     currentStatus = BID_STATUS;
                     sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_BID, currentPlayer)));
@@ -186,16 +209,16 @@ public class GameHub extends Hub{
 
         else if (message instanceof ContinueMessage) {
         	if (!((ContinueMessage)message).doContinue) {
+        		write2log("Player #" + Integer.toString(playerID) + " didn't want to continue");
         		shutDownHub();
         	}
 
         	topOfContinuePlayers++;
         	if (topOfContinuePlayers == NUM_OF_PLAYERS) {
                 sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_START, rounds)));
-                System.out.println("[Status] Send GameStatus.ROUND_START, round = " + Integer.toString(rounds) + ", to all players");
+                write2log("[Status] Round Start, round = " + Integer.toString(rounds));
                 doSleep(0.5);
                 dealDice();
-                System.out.println("[Status] Deal dices to all players");
                 doSleep(0.5);
                 topOfContinuePlayers = 0;
         	}
