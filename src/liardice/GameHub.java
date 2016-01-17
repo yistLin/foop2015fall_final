@@ -41,6 +41,7 @@ public class GameHub extends Hub{
     private int rounds = 1;
     private int currentPlayer;
     private int currentStatus;
+    private int lastValueOfDice, lastNumberOfDice, lastPlayerID;
 
     public GameHub(int port, int numberOfPlayers) throws IOException {
         super(port);
@@ -57,7 +58,13 @@ public class GameHub extends Hub{
     }
 
     protected void playerConnected(int playerID) {
-        System.out.println("Player " + Integer.toString(playerID) + " connected!");
+        System.out.println("Player " + Integer.toString(playerID) + " connected.");
+    }
+
+    protected void playerDisconnected(int playerID) {
+        System.out.println("Player " + Integer.toString(playerID) + " disconnected.");
+        System.out.println("GameHub is shutting down.");
+        shutDownHub();
     }
 
     //deal dices to all players
@@ -95,7 +102,8 @@ public class GameHub extends Hub{
 
             // It's time to send nickname and deal dices to all players
             if (topOfNicknames == NUM_OF_PLAYERS) {
-                
+                doSleep(0.5);
+
                 sendToAll(new ForwardedMessage(0, nicknames));
                 System.out.println("[Status] Send nicknames to all players");
                 doSleep(0.5);
@@ -131,6 +139,13 @@ public class GameHub extends Hub{
             sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CATCH, n, v, currentPlayer)));
             currentPlayer++;
             currentStatus = CATCH_STATUS;
+            topOfCatchPlyaers = 0;
+            lastNumberOfDice = n;
+            lastValueOfDice = v;
+            lastPlayerID = playerID;
+            System.out.println("[Status] Player #" + Integer.toString(playerID) +
+                " bid valueOfDice = " + Integer.toString(lastValueOfDice) +
+                ", numberOfDice = " + Integer.toString(lastNumberOfDice));
 
             if (currentPlayer == (NUM_OF_PLAYERS+1) )
                 currentPlayer = 1;
@@ -141,11 +156,29 @@ public class GameHub extends Hub{
             CatchMessage cm = (CatchMessage)message;
             if (cm.doCatch) {
                 currentStatus = BID_STATUS;
-                //judge
+                if (diceTable[lastValueOfDice] < lastNumberOfDice)
+                    sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, lastPlayerID)));
+                else
+                    sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, playerID)));
+
+                doSleep(1.5);
+                sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_CONTINUE)));
+                rounds++;
+                doSleep(0.5);
+
+                sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_START, rounds)));
+                System.out.println("[Status] Send GameStatus.ROUND_START, round = " + Integer.toString(rounds) + ", to all players");
+                doSleep(0.5);
+
+                dealDice();
+                System.out.println("[Status] Deal dices to all players");
+                doSleep(0.5);
             }
             else {
                 topOfCatchPlyaers++;
-                if (topOfCatchPlyaers == NUM_OF_PLAYERS-1) {
+                sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.NO_CATCH, playerID)));
+                System.out.println("[Status] Player #" + Integer.toString(playerID) + " don't catch");
+                if (topOfCatchPlyaers == (NUM_OF_PLAYERS-1)) {
                     currentStatus = BID_STATUS;
                     sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_BID, currentPlayer)));
                 }

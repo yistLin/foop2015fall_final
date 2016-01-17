@@ -7,6 +7,8 @@ public class GameStatus implements Serializable {
     static final int DO_BID = 1;
     static final int DO_CATCH = 2;
     static final int DO_CONTINUE = 3;
+    static final int NO_CATCH = 4;
+    static final int ROUND_END = 5;
     int status;
     int round;
     int numberOfDice;
@@ -22,7 +24,11 @@ public class GameStatus implements Serializable {
             this.round = msg;
         else if(status == DO_BID)
             this.currentPlayer = msg;
-    };
+        else if (status == NO_CATCH)
+        	this.currentPlayer = msg;
+        else if (status == ROUND_END)
+        	this.currentPlayer = msg;
+    }
     //GameStatus for DO_CATCH
     GameStatus(int status, int numberOfDice, int valueOfDice, int currentPlayer) {
         this.status = status;
