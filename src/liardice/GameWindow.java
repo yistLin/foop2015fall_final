@@ -174,6 +174,14 @@ public class GameWindow extends JFrame {
       JPanel panelInput = new JPanel(new BorderLayout());
 
       fieldInput = new JTextField();
+      fieldInput.addKeyListener(new KeyAdapter() {
+        public void keyPressed(KeyEvent e) {
+          if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            sendChatMessage(fieldInput.getText().trim());
+            fieldInput.setText("");
+          }
+        }
+      });
       panelInput.add(fieldInput, BorderLayout.CENTER);
       buttonSend = new JButton("Send");
       buttonSend.addActionListener(new ActionListener() {
@@ -283,8 +291,6 @@ public class GameWindow extends JFrame {
       addMessage(playerList[gs.currentPlayer - 1] + " is bidding...\n");
       if (gs.currentPlayer == connection.getID())
         askBid();
-    } else if (gs.status == GameStatus.DO_CONTINUE) {
-      askContinue();
     } else if (gs.status == GameStatus.NO_CATCH) {
       addMessage(playerList[gs.currentPlayer - 1] + " didn't catch.\n");
     } else if (gs.status == GameStatus.YES_CATCH) {
@@ -298,6 +304,8 @@ public class GameWindow extends JFrame {
       Frame question = JOptionPane.getRootFrame();
       if (question != null)
         question.dispose();
+
+      askContinue();
     }
   }
 
@@ -327,12 +335,16 @@ public class GameWindow extends JFrame {
     column.add(Box.createHorizontalStrut(40)); // reserved space
     column.add(new JLabel("Number of dice:"));
     column.add(numberInput);
+    if (lastNumber != 0)
+      column.add(new JLabel("last number: " + lastNumber));
     row.add(column);
 
     column = new JPanel();
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(Box.createHorizontalStrut(40)); // reserved space
     column.add(new JLabel("Value of dice:"));
+    if (lastValue != 0)
+      column.add(new JLabel("last value: " + lastValue));
     column.add(valueInput);
     row.add(column);
     
