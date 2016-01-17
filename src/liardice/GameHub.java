@@ -220,8 +220,8 @@ public class GameHub extends Hub{
                 write2log("[Status] Round Start, round = " + Integer.toString(rounds));
                 doSleep(0.5);
                 dealDice();
-                doSleep(0.5);
                 topOfContinuePlayers = 0;
+                hasBidOne = false;
         	}
         }
 
