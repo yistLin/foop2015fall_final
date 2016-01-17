@@ -15,7 +15,6 @@ public class GameHub extends Hub{
     private final static int NUM_OF_DICE = 5;
     private final static int BID_STATUS = 1;
     private final static int CATCH_STATUS = 2;
-    private final static int[] nextPlayer = new int[]{0,2,3,4,1};
 
     public static void main(String[] args) {
 
@@ -193,7 +192,9 @@ public class GameHub extends Hub{
                 	write2log("Player #" + Integer.toString(playerID) + " lose");
                 }
 
-                lastPlayerID = nextPlayer[lastPlayerID];
+                lastPlayerID++;
+                if (lastPlayerID > NUM_OF_PLAYERS)
+                	lastPlayerID = 1;
                 rounds++;
             }
             else {
