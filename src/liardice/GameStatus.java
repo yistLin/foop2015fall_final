@@ -8,7 +8,8 @@ public class GameStatus implements Serializable {
     static final int DO_CATCH = 2;
     static final int DO_CONTINUE = 3;
     static final int NO_CATCH = 4;
-    static final int ROUND_END = 5;
+    static final int YES_CATCH = 5;
+    static final int ROUND_END = 6;
     int status;
     int round;
     int numberOfDice;

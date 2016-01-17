@@ -71,8 +71,9 @@ public class GameHub extends Hub{
     private void dealDice() {
         Dice[] playerDice;
         Dice tmpDice;
-        for (int element : diceTable)
-            element = 0;
+        for (int i = 0; i < diceTable.length; i++)
+        	diceTable[i] = 0;
+
         for (int playerID = 1; playerID <= NUM_OF_PLAYERS; playerID++) {
             playerDice = new Dice[NUM_OF_DICE];
             for (int i = 0; i < NUM_OF_DICE; i++) {
@@ -158,6 +159,7 @@ public class GameHub extends Hub{
             CatchMessage cm = (CatchMessage)message;
             if (cm.doCatch) {
                 currentStatus = BID_STATUS;
+                sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.YES_CATCH, playerID)));
                 if (diceTable[lastValueOfDice] < lastNumberOfDice)
                     sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.ROUND_END, lastPlayerID, diceTable.clone())));
                 else
