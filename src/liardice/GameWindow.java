@@ -252,8 +252,18 @@ public class GameWindow extends JFrame {
               success = false;
             }
 
-            if (success)
+            if (success) {
               connection.send(new BidMessage(number, value));
+
+              bidNumberInput.setText("");
+              bidValueInput.setText("");
+              bidLastNumber.setText("");
+              bidLastValue.setText("");
+
+              bidNumberInput.setEnabled(false);
+              bidValueInput.setEnabled(false);
+              bidButton.setEnabled(false);
+            }
           }
         }
       };
@@ -527,6 +537,9 @@ public class GameWindow extends JFrame {
     bidNumberInput.setEnabled(true);
     bidValueInput.setEnabled(true);
     bidButton.setEnabled(true);
+
+    bidNumberInput.selectAll();
+    bidNumberInput.requestFocus();
 
     if (lastNumber != 0) {
       bidLastNumber.setText("last number:" + lastNumber);
