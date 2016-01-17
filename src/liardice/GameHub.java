@@ -145,14 +145,11 @@ public class GameHub extends Hub{
             }
             else {
                 topOfCatchPlyaers++;
-                if(topOfCatchPlyaers == NUM_OF_PLAYERS) {
+                if (topOfCatchPlyaers == NUM_OF_PLAYERS-1) {
                     currentStatus = BID_STATUS;
                     sendToAll(new ForwardedMessage(0, new GameStatus(GameStatus.DO_BID, currentPlayer)));
                 }
             }
-            
-            
-            // TODO: 
         }
 
         // redirect ChatMessage to all players
