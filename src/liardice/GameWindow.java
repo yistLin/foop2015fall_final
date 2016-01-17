@@ -49,7 +49,7 @@ public class GameWindow extends JFrame {
 
     // Test Area
     ClassLoader cl = getClass().getClassLoader();
-    URL imageURL = cl.getResource("liardice/dice.png");
+    URL imageURL = cl.getResource("./src/liardice/dice.png");
     diceImages = Toolkit.getDefaultToolkit().createImage(imageURL);
 
     // End of Test
