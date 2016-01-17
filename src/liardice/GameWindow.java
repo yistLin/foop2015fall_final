@@ -270,7 +270,7 @@ public class GameWindow extends JFrame {
 
   private void handleGameStatus(GameStatus gs) {
     if (gs.status == GameStatus.ROUND_START) {
-      addMessage("Round " + gs.round + " start.\n");
+      addMessage("\nRound " + gs.round + " start.\n");
       lastNumber = 0;
       lastValue = 0;
     } else if (gs.status == GameStatus.DO_CATCH) {
@@ -286,8 +286,9 @@ public class GameWindow extends JFrame {
     } else if (gs.status == GameStatus.DO_CONTINUE) {
     } else if (gs.status == GameStatus.NO_CATCH) {
       addMessage(playerList[gs.currentPlayer - 1] + " didn't catch.\n");
+    } else if (gs.status == GameStatus.YES_CATCH) {
+      addMessage(playerList[gs.currentPlayer - 1] + " catched.\n");
     } else if (gs.status == GameStatus.ROUND_END) {
-      addMessage(playerList[gs.currentPlayer - 1] + " losed.\n");
       addMessage("Total dice: ");
       for (int i = 1; i != 7; i++)
         addMessage(gs.diceTable[i] + " ");
