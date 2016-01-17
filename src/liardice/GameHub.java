@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import netgame.common.ForwardedMessage;
 import netgame.common.Hub;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
 
@@ -15,6 +17,7 @@ public class GameHub extends Hub{
     private final static int NUM_OF_DICE = 5;
     private final static int BID_STATUS = 1;
     private final static int CATCH_STATUS = 2;
+    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     public static void main(String[] args) {
 
@@ -61,7 +64,7 @@ public class GameHub extends Hub{
     }
 
     private void write2log(String str) {
-    	writer.println(str);
+    	writer.println(DATE_FORMAT.format(new Date()) + " " + str);
     }
 
     protected void playerConnected(int playerID) {
