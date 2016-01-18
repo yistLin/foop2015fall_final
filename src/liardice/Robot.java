@@ -88,7 +88,7 @@ public class Robot extends Client {
                         maxDice = i;
                     }
                 }
-                robotTalk = chatRobot.talk(ChatRobot.GET_DICE, dice);
+                robotTalk = chatRobot.talk(ChatRobot.GET_DICE);
                 if(robotTalk!= null)
                     send(new ChatMessage(myName, robotTalk));
                 send(new ReadyMessage());
