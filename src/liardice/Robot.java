@@ -27,11 +27,11 @@ public class Robot extends Client {
         new Thread() {
             public void run() {
                 while (true) {
-                    doSleep(Math.random()*20 + 10);
+                    doSleep(Math.random() * 20.0 + (double)numOfPlayers * 3.5);
                     String randomTalk = chatRobot.talk(ChatRobot.RANDOM_TALK);
                     if(randomTalk != null) {
                         send(new ChatMessage(myName, randomTalk));
-                        doSleep(5);
+                        doSleep((double)numOfPlayers * 2.5);
                     }
                 }
             }
@@ -85,43 +85,62 @@ public class Robot extends Client {
             if(robotTalk != null)
                 send(new ChatMessage(myName, robotTalk));
         } else if (gs.status == GameStatus.DO_CATCH) {
-            doSleep(Math.random() * 6 + 4);
+            doSleep(Math.random() * 1.0 + 0.5);
             lastNumber = gs.numberOfDice;
             lastValue = gs.valueOfDice;
             if (lastValue == 1)
                 hasBidOne = true;
             if (gs.currentPlayer != getID()) {
-                int random = (int)(Math.floor(Math.random() * 4) - 1);
+                int random = (int)(Math.floor(Math.random() * 3) - 1);
                 int myNum = diceTable[lastValue] + numOfPlayers - 1 +
                             ((hasBidOne) ? 0 : diceTable[1] + numOfPlayers - 1);
-                if (myNum + random < lastNumber) {
+                if (myNum + 2 < lastNumber) {
+                	doSleep(Math.random() * 0.3 + 0.3);
+                	robotTalk = chatRobot.talk(ChatRobot.DO_CATCH, "yes");
+                    if(robotTalk != null)
+                        send(new ChatMessage(myName, robotTalk));
+                    send(new CatchMessage(true));
+                }
+                else if (myNum + random < lastNumber) {
+                	doSleep(Math.random() * 2.5 + 1.5);
                     robotTalk = chatRobot.talk(ChatRobot.DO_CATCH, "yes");
                     if(robotTalk != null)
                         send(new ChatMessage(myName, robotTalk));
                     send(new CatchMessage(true));
                 }
-                else {
+                else if (lastNumber < myNum - 2) {
+                	doSleep(Math.random() * 1.0 + 0.5);
                     robotTalk = chatRobot.talk(ChatRobot.DO_CATCH, "no");
+                    if(robotTalk != null)
+                        send(new ChatMessage(myName, robotTalk));
+                    send(new CatchMessage(false));
+                }
+                else {
+                	doSleep(Math.random() * 2.0 + 1.0);
+                	robotTalk = chatRobot.talk(ChatRobot.DO_CATCH, "no");
                     if(robotTalk != null)
                         send(new ChatMessage(myName, robotTalk));
                     send(new CatchMessage(false));
                 }
             }
         } else if (gs.status == GameStatus.DO_BID) {
-            doSleep(Math.random());
+            doSleep(Math.random() * 1.5 + 1.5);
             if (gs.currentPlayer == getID()) {
                 robotTalk = chatRobot.talk(ChatRobot.DO_BID, "me");
                 if(robotTalk != null)
                     send(new ChatMessage(myName, robotTalk));
-                int random = (int)(Math.floor(Math.random() * 3) - 1);
+                
                 int myNum = diceTable[maxDice] + numOfPlayers - 1 +
-                            ((hasBidOne || maxDice == 1) ? 0 : diceTable[1]);
+                            ((hasBidOne || maxDice == 1) ? 0 : (diceTable[1] + numOfPlayers - 1));
+                int limit = (lastNumber < (myNum-1)) ? 3 : 0;
+                int range = (int)(Math.random() * limit);
+
                 if (lastValue == 0)
-                    send(new BidMessage(myNum+random, maxDice));
+                    send(new BidMessage(1 + range, maxDice));
                 else if (maxDice > lastValue)
-                    send(new BidMessage(lastNumber, maxDice));
+                    send(new BidMessage(lastNumber + range, maxDice));
                 else
-                    send(new BidMessage(lastNumber+1, maxDice));
+                    send(new BidMessage(lastNumber + range + 1, maxDice));
             } else {
                 robotTalk = chatRobot.talk(ChatRobot.DO_BID, "other");
                 if(robotTalk != null)
