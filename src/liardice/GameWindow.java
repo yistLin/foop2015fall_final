@@ -24,22 +24,25 @@ public class GameWindow extends JFrame {
   private Dice[] dice;
   private int lastNumber = 0, lastValue = 0;
   private boolean shutdown = false;
+  private boolean bidLose = false;
 
-  // main panel
-  private Display display;
-  private Board board;
-  private Chatroom chatroom;
+  // status color
   private final Color normalPanelColor = new Color(230, 230, 230);
-
-  // status panel
-  private JLabel statusMessage;
-  private JPanel playerPanel;
-  private JButton[] playerListButton;
   private final Color normalColor = new Color(209, 209, 224);
   private final Color bidColor = new Color(255, 128, 128);
   private final Color catchColor = new Color(255, 194, 102);
   private final Color yesCatchColor = new Color(0, 230, 172);
   private final Color losedColor = new Color(72, 72, 107);
+
+  // main panel
+  private Display display;
+  private Board board;
+  private Chatroom chatroom;
+
+  // status panel
+  private JLabel statusMessage;
+  private JPanel playerPanel;
+  private JButton[] playerListButton;
 
   // bid panel
   private JPanel bidPanel;
@@ -594,10 +597,12 @@ public class GameWindow extends JFrame {
   private void handleGameStatus(GameStatus gs) {
     if (gs.status == GameStatus.ROUND_START) {
       setPlayerListButton(normalColor);
-      addMessage("\nRound " + gs.round + " start\n\n");
+      bidPanel.setBackground(normalPanelColor);
+      catchPanel.setBackground(normalPanelColor);
       statusMessage.setText("Round " + gs.round);
       lastNumber = 0;
       lastValue = 0;
+      addMessage("\nRound " + gs.round + " start\n\n");
     } else if (gs.status == GameStatus.DO_CATCH) {
       setPlayerListButton(catchColor);
       playerListButton[gs.currentPlayer - 1].setBackground(normalColor);
@@ -609,6 +614,7 @@ public class GameWindow extends JFrame {
         catchMessage.setText("Wait for other's catching");
     } else if (gs.status == GameStatus.DO_BID) {
       playerListButton[gs.currentPlayer - 1].setBackground(bidColor);
+      bidLose = false;
       if (gs.currentPlayer == connection.getID())
         askBid();
       else {
@@ -619,10 +625,14 @@ public class GameWindow extends JFrame {
     } else if (gs.status == GameStatus.YES_CATCH) {
       playerListButton[gs.currentPlayer - 1].setBackground(yesCatchColor);
       disableCatch();
-      addMessage(playerList[gs.currentPlayer - 1] + " catched.\n");
     } else if (gs.status == GameStatus.ROUND_END) {
       playerListButton[gs.currentPlayer - 1].setBackground(losedColor);
-      addMessage(playerList[gs.currentPlayer - 1] + " losed.\n");
+      if (gs.currentPlayer == connection.getID()) {
+        if (bidLose)
+          bidPanel.setBackground(losedColor);
+        else
+          catchPanel.setBackground(losedColor);
+      }
       addMessage("Total dice: ");
       for (int i = 1; i != 7; i++)
         addMessage(gs.diceTable[i] + " ");
@@ -657,6 +667,8 @@ public class GameWindow extends JFrame {
       bidLastNumber.setText("last number:" + lastNumber);
       bidLastValue.setText("last value:" + lastValue);
     }
+
+    bidLose = true;
   }
 
   private void disBid() {
