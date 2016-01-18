@@ -1,0 +1,64 @@
+{
+  "name": "Robot#rikiu",
+  "get_dice": [
+    {
+      "message": "好多一啊～",
+      "probability": "0.2"
+    },
+    {
+      "message": "這次我一定不會輸",
+      "probability": "0.2"
+    }
+  ],
+  "round_start": [
+  ],
+  "do_bid": [
+  ],
+  "do_catch": [
+  ],
+  "no_catch": [
+  ],
+  "yes_catch": [
+  ],
+  "round_end": [
+  ],
+  "random_talk": [
+    {
+      "message": "連我阿嬤都比你強",
+      "probability": "1.0"
+    },
+    {
+      "message": "我有五個一喔～",
+      "probability": "0.1"
+    },
+    {
+      "message": "智慧！",
+      "probability": "0.3"
+    },
+    {
+      "message": "齁勝！",
+      "probability": "0.5"
+    },
+    {
+      "message": "當年我可號稱是吹牛大王",
+      "probability": "0.4"
+    },
+    {
+      "message": "我媽媽說不可以說謊",
+      "probalility": "0.4"
+    }
+  ],
+  "other_talk": [
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    },
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    }
+  ]
+}
+
