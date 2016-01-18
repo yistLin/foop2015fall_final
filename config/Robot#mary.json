@@ -1,47 +1,43 @@
 {
-   "name":"Jonbot",
+   "name":"Marbot",
    "get_dice":[
       {
-         "message":"骰子畫的好漂亮啊",
+         "message":"喔喔喔！是骰子欸",
          "probability":"0.2"
       },
       {
-         "message":"這個好！",
+         "message":"超酷",
          "probability":"0.2"
       }
    ],
    "round_start":[
       {
-         "message":"Yeah~ 大家好",
+         "message":"新的一輪，新的開始",
          "probability":"0.2"
       },
       {
-         "message":"我是 John，你們好～",
+         "message":"我是 Mary，Mary has a little sheep...",
          "probability":"0.1"
       },
       {
-         "message":"一起玩好開心～",
+         "message":"來，都來",
          "probability":"0.2"
       }
    ],
    "do_bid":{
       "me":[
          {
-            "message":"吹牛吹這麼大，牛皮都快破啦！",
-            "probability":"0.2"
-         },
-         {
-            "message":"喊多少好呢？",
+            "message":"這輪要喊多少呢？",
             "probability":"0.2"
          }
       ],
       "other":[
          {
-            "message":"快～",
+            "message":"再不快一點我就要離開囉",
             "probability":"0.2"
          },
          {
-            "message":"等到屁股都快爛掉了～～",
+            "message":"等到天都快塌下來了，你還在等什麼？",
             "probability":"0.1"
          }
       ]
@@ -49,21 +45,21 @@
    "do_catch":{
       "yes":[
          {
-            "message":"看我抓爆你！",
+            "message":"抓！不准告我性侵喔",
             "probability":"0.2"
          },
          {
-            "message":"抓、不抓、抓、...？",
+            "message":"你輸定啦",
             "probability":"0.2"
          }
       ],
       "no":[
          {
-            "message":"抓不抓呢？",
+            "message":"嗯，好難決定啊！",
             "probability":"0.2"
          },
          {
-            "message":"抓、不抓、抓、...？",
+            "message":"這是個痛苦的抉擇！",
             "probability":"0.2"
          }
       ]
@@ -71,23 +67,27 @@
    "no_catch":[
       {
          "message":"不抓嗎？",
-         "probability":"0.2"
+         "probability":"0.1"
       }
    ],
    "yes_catch":[
       {
-         "message":"被抓了嗎？",
-         "probability":"0.2"
+        "message":"哪個蠢蛋輸了？",
+        "probability":"0.2"
+      },
+      {
+        "message":"誰那麼愛亂喊啊",
+        "probability":"0.2"
       }
    ],
    "round_end":{
       "win":[
          {
-            "message":"Yo~ Ho~",
+            "message":"快點進入下一輪吧",
             "probability":"0.2"
          },
          {
-            "message":"YES!!",
+            "message":"還有誰要玩呢？",
             "probability":"0.3"
          }
       ],
@@ -97,26 +97,26 @@
             "probability":"1.0"
          },
          {
-            "message":"Fxxxxxxxxxxxxxxxxxk!!!",
+            "message":"ㄎㄅ",
             "probability":"1.0"
          }
       ]
    },
    "random_talk":[
       {
-         "message":"顆顆",
+         "message":"瑪莉有隻小綿羊",
          "probability":"0.3"
       },
       {
-         "message":"我最愛玩吹牛了",
+         "message":"我最愛玩瑪莉歐了",
          "probability":"0.1"
       },
       {
-         "message":"大家好吵",
+         "message":"瑪麗蓮夢露超性感～",
          "probability":"0.1"
       },
       {
-         "message":"yeeeeeee~~",
+         "message":"法拉力賽車的馬力好大",
          "probability":"0.1"
       }
    ],
