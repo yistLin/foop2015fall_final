@@ -1,35 +1,75 @@
 {
-  "name": "Robot#rikiu",
+  "name": "RikiBot",
   "get_dice": [
     {
       "message": "好多一啊～",
       "probability": "0.2"
     },
     {
-      "message": "這次我一定不會輸",
-      "probability": "0.2"
+      "message": "我有五個一喔～",
+      "probability": "0.1"
     }
   ],
   "round_start": [
+    {
+      "message": "來看看誰是真強者",
+      "probability": "0.2"
+    }
   ],
   "do_bid": [
+    "me": [
+      {
+        "message": "抓我啊～",
+        "probability": "0.5"
+      }
+    ],
+    "other": [
+      {
+        "message": "會不會想太久啊",
+        "probability": "0.5"
+      }
+    ]
   ],
   "do_catch": [
+    {
+      "message": "我抓！",
+      "probability": "0.9"
+    }
   ],
   "no_catch": [
+    {
+      "message": "這明顯是吹牛吧？不抓？",
+      "probability": "0.1"
+    }
   ],
   "yes_catch": [
+    {
+      "message": "這你也敢抓",
+      "probability": "0.3"
+    }
   ],
-  "round_end": [
-  ],
+  "round_end": {
+    "win": [
+      {
+        "message": "真弱",
+        "probability": "0.3"
+      }
+    ],
+    "lose": [
+      {
+        "message": "哭哭",
+        "probability": "0.5"
+      },
+      {
+        "message": "下次我一定不會輸",
+        "probability": "0.8"
+      }
+    ]
+  },
   "random_talk": [
     {
       "message": "連我阿嬤都比你強",
       "probability": "1.0"
-    },
-    {
-      "message": "我有五個一喔～",
-      "probability": "0.1"
     },
     {
       "message": "智慧！",
@@ -46,6 +86,10 @@
     {
       "message": "我媽媽說不可以說謊",
       "probability": "0.4"
+    },
+    {
+      "message": "さすが、高校最強！",
+      "probability": "0.3"
     }
   ],
   "other_talk": [
