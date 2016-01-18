@@ -10,7 +10,7 @@ import sun.misc.Signal;
 import sun.misc.SignalHandler;
 import liardice.message.*;
 
-public class GameHub extends Hub{
+public class GameHub extends Hub {
 
 	private PrintWriter writer;
     private static int PORT = 42857;
@@ -70,7 +70,7 @@ public class GameHub extends Hub{
 
     protected void playerConnected(int playerID) {
     	if (playerID > NUM_OF_PLAYERS) {
-    		sendToOne(playerID, new RejectedMessage());
+    		sendToOne(playerID, new ForwardedMessage(0, new RejectedMessage()));
     	}
         write2log("Player #" + Integer.toString(playerID) + " connected.");
     }
