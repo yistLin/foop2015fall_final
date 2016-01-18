@@ -1,6 +1,5 @@
 package liardice;
 
-import liardice.message.ChatMessage;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.json.*;
@@ -23,25 +22,15 @@ public class ChatRobot {
     private Random rand;
    	private JSONObject jsonObj;
 
-   	public static void main(String args[]) {
-   		int index = Integer.parseInt(args[0]);
-   		new ChatRobot(index);
-   	}
-
-    public ChatRobot(int index) {
+    public ChatRobot(String filename) {
     	long epoch = System.currentTimeMillis();
-    	long seed = epoch * (long)index;
+    	long seed = epoch * (long)(filename.length());
     	rand = new Random(seed);
-    	String dir_path = "./config";
-   		File dir_node = new File(dir_path);
-   		String[] filenames = dir_node.list();
-    	int nameIndex = rand.nextInt(filenames.length);
-    	String filename = filenames[nameIndex];
 
     	StringBuilder sb = new StringBuilder();
     	FileReader in = null;
     	try {
-    		in = new FileReader(dir_path + "/" + filename);
+    		in = new FileReader(filename);
     	} catch (FileNotFoundException e) {}
     	BufferedReader br = new BufferedReader(in);
     	String line;
