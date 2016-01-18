@@ -36,12 +36,14 @@ public class GameWindow extends JFrame {
   // bid panel
   private JTextField bidNumberInput;
   private JTextField bidValueInput;
+  private JLabel bidMessage;
   private JLabel bidDiscription;
   private JLabel bidLastNumber;
   private JLabel bidLastValue;
   private JButton bidButton;
 
   // catch panel
+  private JLabel catchMessage;
   private JLabel catchDiscription;
   private JButton catchNoButton;
   private JButton catchYesButton;
@@ -157,9 +159,18 @@ public class GameWindow extends JFrame {
       setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       setLayout(new GridLayout(0, 1));
 
+      // some black magic
+      JPanel row, column;
+
+      row = new JPanel();
+      row.setLayout(new GridLayout(1, 1));
       JLabel panelName = new JLabel("Bid Panel", JLabel.CENTER);
       panelName.setFont(new Font("Phosphate", Font.BOLD, 48));
-      add(panelName);
+      row.add(panelName);
+      bidMessage = new JLabel("", JLabel.CENTER);
+      bidMessage.setFont(new Font("Nanum Pen Script", Font.BOLD, 28));
+      row.add(bidMessage);
+      add(row);
 
       bidDiscription = new JLabel("", JLabel.CENTER);
       bidDiscription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
@@ -189,8 +200,6 @@ public class GameWindow extends JFrame {
       bidLastNumber = new JLabel("", JLabel.CENTER);
       bidLastValue = new JLabel("", JLabel.CENTER);
 
-      // some black magic
-      JPanel row, column;
 
       row = new JPanel();
       row.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -282,6 +291,7 @@ public class GameWindow extends JFrame {
       if (success) {
         connection.send(new BidMessage(number, value));
 
+        bidMessage.setText("");
         bidNumberInput.setText("");
         bidValueInput.setText("");
         bidLastNumber.setText("");
@@ -302,15 +312,21 @@ public class GameWindow extends JFrame {
       setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       setLayout(new GridLayout(0, 1));
 
+      JPanel row = new JPanel();
+      row.setLayout(new GridLayout(1, 1));
       JLabel panelName = new JLabel("Catch Panel", JLabel.CENTER);
       panelName.setFont(new Font("Phosphate", Font.BOLD, 48));
-      add(panelName);
+      row.add(panelName);
+      catchMessage = new JLabel("", JLabel.CENTER);
+      catchMessage.setFont(new Font("Nanum Pen Script", Font.BOLD, 28));
+      row.add(catchMessage);
+      add(row);
 
       catchDiscription = new JLabel("", JLabel.CENTER);
       catchDiscription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
       add(catchDiscription);
 
-      JPanel row = new JPanel();
+      row = new JPanel();
       row.setLayout(new GridLayout(1, 2));
 
       catchNoButton = new JButton("No");
@@ -332,6 +348,7 @@ public class GameWindow extends JFrame {
           }
           catchNoButton.setEnabled(false);
           catchYesButton.setEnabled(false);
+          catchMessage.setText("");
           catchDiscription.setText("");
         }
       };
@@ -530,6 +547,7 @@ public class GameWindow extends JFrame {
   private void handleGameStatus(GameStatus gs) {
     if (gs.status == GameStatus.ROUND_START) {
       addMessage("\nRound " + gs.round + " start.\n");
+      statusMessage.setText("Round " + gs.round);
       lastNumber = 0;
       lastValue = 0;
     } else if (gs.status == GameStatus.DO_CATCH) {
@@ -539,18 +557,19 @@ public class GameWindow extends JFrame {
       if (gs.currentPlayer != connection.getID())
         askCatch(playerList[gs.currentPlayer - 1], gs.numberOfDice, gs.valueOfDice);
       else
-        statusMessage.setText("Wait for other's catching");
+        catchMessage.setText("Wait for other's catching");
     } else if (gs.status == GameStatus.DO_BID) {
       addMessage(playerList[gs.currentPlayer - 1] + " is bidding...\n");
       if (gs.currentPlayer == connection.getID())
         askBid();
       else
-        statusMessage.setText("Wait for other's bidding");
+        bidMessage.setText("Wait for other's bidding");
     } else if (gs.status == GameStatus.NO_CATCH) {
       addMessage(playerList[gs.currentPlayer - 1] + " didn't catch.\n");
     } else if (gs.status == GameStatus.YES_CATCH) {
       catchNoButton.setEnabled(false);
       catchYesButton.setEnabled(false);
+      catchMessage.setText("");
       catchDiscription.setText("");
       addMessage(playerList[gs.currentPlayer - 1] + " catched.\n");
     } else if (gs.status == GameStatus.ROUND_END) {
@@ -571,13 +590,14 @@ public class GameWindow extends JFrame {
   }
 
   private void askBid() {
-    statusMessage.setText("What's your bid?");
+    bidMessage.setText("What's your bid?");
 
     bidNumberInput.setEnabled(true);
     bidValueInput.setEnabled(true);
     bidButton.setEnabled(true);
 
     bidDiscription.setText("Enter number and value");
+    bidDiscription.setForeground(Color.black);
 
     bidNumberInput.selectAll();
     bidNumberInput.requestFocus();
@@ -589,7 +609,8 @@ public class GameWindow extends JFrame {
   }
 
   private void askCatch(String player, int number, int value) {
-    statusMessage.setText("Do you want to catch?");
+    bidMessage.setText("");
+    catchMessage.setText("Do you want to catch?");
 
     catchNoButton.setEnabled(true);
     catchYesButton.setEnabled(true);
