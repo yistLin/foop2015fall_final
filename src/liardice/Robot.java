@@ -52,8 +52,9 @@ public class Robot extends Client {
         if (forwardedMessage instanceof ForwardedMessage) {
             ForwardedMessage fm = (ForwardedMessage)forwardedMessage;
             if (fm.message instanceof ChatMessage) {
-                if (fm.id != getID() && Math.random() > 0.85)
-                    send(new ChatMessage(myName, cm.message));
+                if (fm.senderID != getID()) {
+                    //TODO with chatrobot
+                }
             } else if (fm.message instanceof String[]) {
                 playerList = (String[])fm.message;
                 numOfPlayers = ((String[])(fm.message)).length;
@@ -117,16 +118,19 @@ public class Robot extends Client {
                     send(new BidMessage(lastNumber+1, maxDice));
             }
         } else if (gs.status == GameStatus.NO_CATCH) {
-            if(gs.currentPlayer != getID())
+            if(gs.currentPlayer != getID()) {
                 //TODO with chatrobot
+            }
         } else if (gs.status == GameStatus.YES_CATCH) {
-            if(gs.currentPlayer != getID())
+            if(gs.currentPlayer != getID()) {
                 //TODO with chatrobot
+            }
         } else if (gs.status == GameStatus.ROUND_END) {
-            if (gs.currentPlayer == getID())
+            if (gs.currentPlayer == getID()) {
                 //TODO with chatrobot
-            else
+            } else {
                 //TODO with chatrobot
+            }
             send(new ContinueMessage(true));
         }
     }
