@@ -615,6 +615,7 @@ public class GameWindow extends JFrame {
       connection.send(new ContinueMessage(true));
     } else { // no
       connection.send(new ContinueMessage(false));
+      System.exit(0);
     }
   }
 
