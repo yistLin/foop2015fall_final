@@ -480,11 +480,6 @@ public class GameWindow extends JFrame {
             } else if (fm.message instanceof Dice[]) {
               dice = (Dice[])fm.message;
               diceSet.reDraw();
-              addMessage("I got ");
-              for (Dice d: dice) {
-                addMessage(d.value + " ");
-              }
-              addMessage("\n");
               connection.send(new ReadyMessage());
             } else if (fm.message instanceof GameStatus) {
               GameStatus gs = (GameStatus)fm.message;
@@ -546,12 +541,11 @@ public class GameWindow extends JFrame {
 
   private void handleGameStatus(GameStatus gs) {
     if (gs.status == GameStatus.ROUND_START) {
-      addMessage("\nRound " + gs.round + " start.\n");
+      addMessage("\nRound " + gs.round + " start\n\n");
       statusMessage.setText("Round " + gs.round);
       lastNumber = 0;
       lastValue = 0;
     } else if (gs.status == GameStatus.DO_CATCH) {
-      addMessage(playerList[gs.currentPlayer - 1] + " number: " + gs.numberOfDice + " value: " + gs.valueOfDice + "\n");
       lastNumber = gs.numberOfDice;
       lastValue = gs.valueOfDice;
       if (gs.currentPlayer != connection.getID())
@@ -559,11 +553,10 @@ public class GameWindow extends JFrame {
       else
         catchMessage.setText("Wait for other's catching");
     } else if (gs.status == GameStatus.DO_BID) {
-      addMessage(playerList[gs.currentPlayer - 1] + " is bidding...\n");
       if (gs.currentPlayer == connection.getID())
         askBid();
       else
-        bidMessage.setText("Wait for other's bidding");
+        bidMessage.setText(playerList[gs.currentPlayer - 1] + " is bidding...\n");
     } else if (gs.status == GameStatus.NO_CATCH) {
       addMessage(playerList[gs.currentPlayer - 1] + " didn't catch.\n");
     } else if (gs.status == GameStatus.YES_CATCH) {
