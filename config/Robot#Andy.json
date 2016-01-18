@@ -91,7 +91,7 @@
           "probability": "0.5"
         }
     ],
-    "lose" :　[
+    "lose" : [
         {
           "message": "大師，請收我為徒！",
           "probability": "0.5"
@@ -104,11 +104,11 @@
   },
   "random_talk": [
     {
-      "message": "(@~@)",
+      "message": "( ￣ c￣)y▂ξ",
       "probability": "0.6"
     },
     {
-      "message": "\("▔□▔)/",
+      "message": "\\('▔□▔)/",
       "probability": "0.6"
     },
     {
