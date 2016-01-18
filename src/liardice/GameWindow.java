@@ -15,19 +15,24 @@ import java.util.Date;
 
 public class GameWindow extends JFrame {
 
+  // console date format
   private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm");
   
+  // game data
   private String myName;
   private String[] playerList;
   private Dice[] dice;
   private int lastNumber = 0, lastValue = 0;
 
+  // main panel
   private Display display;
   private Board board;
   private Chatroom chatroom;
 
+  // status panel
   private JLabel statusMessage;
 
+  // bid panel
   private JTextField bidNumberInput;
   private JTextField bidValueInput;
   private JLabel bidDiscription;
@@ -35,17 +40,21 @@ public class GameWindow extends JFrame {
   private JLabel bidLastValue;
   private JButton bidButton;
 
+  // catch panel
   private JLabel catchDiscription;
   private JButton catchNoButton;
   private JButton catchYesButton;
 
+  // chatroom panel
   private JTextArea console;
   private JTextField fieldInput;
   private JButton buttonSend;
 
+  // dice set panel
   private DiceSet diceSet;
   private Image diceImages;
   
+  // client for connection
   private GameClient connection;
 
   public GameWindow(final String hubHostName, final int hubPort, final String myName) {
@@ -61,12 +70,9 @@ public class GameWindow extends JFrame {
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     setVisible(true);
 
-    // Test Area
     ClassLoader cl = getClass().getClassLoader();
     URL imageURL = cl.getResource("./src/liardice/dice.png");
     diceImages = Toolkit.getDefaultToolkit().createImage(imageURL);
-
-    // End of Test
 
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent evt) {
@@ -74,19 +80,13 @@ public class GameWindow extends JFrame {
       }
     });
 
-    /*
-    display.addMouseListener(new MouseAdapter() {
-      public ovid mousePressed(MouseEvent evt) {
-        doClick(evt.getX(), evt.getY());
-      }
-    });
-    */
-  
+    // show IP
     try {
       addMessage("Your IP is " + InetAddress.getLocalHost().getHostAddress() + "\n");
     } catch (UnknownHostException e) {
     }
 
+    // set connection to server
     new Thread() {
       public void run() {
         try {
@@ -124,12 +124,10 @@ public class GameWindow extends JFrame {
 
   private class Board extends JPanel {
 
-    final Color brown = new Color(130, 70, 0);
-
     Board() {
       setLayout(new BorderLayout());
       setPreferredSize(new Dimension(675, 585));
-      setBorder(BorderFactory.createLineBorder(brown, 8));
+      setBorder(BorderFactory.createLineBorder(new Color(130, 70, 0), 8));
 
       JPanel statusPanel = new JPanel();
       statusPanel.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
@@ -179,7 +177,6 @@ public class GameWindow extends JFrame {
           }
         }
       });
-
       bidValueInput.addKeyListener(new KeyAdapter() {
         public void keyPressed(KeyEvent e) {
           if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -191,6 +188,7 @@ public class GameWindow extends JFrame {
       bidLastNumber = new JLabel("", JLabel.CENTER);
       bidLastValue = new JLabel("", JLabel.CENTER);
 
+      // some black magic
       JPanel row, column;
 
       row = new JPanel();
@@ -243,7 +241,7 @@ public class GameWindow extends JFrame {
       int number = 0, value = 0;
       try {
         number = Integer.parseInt(bidNumberInput.getText().trim());
-        if (number < 0)
+        if (number <= 0)
           throw new IllegalNumberException("Illegal number of dice");
         if (number < lastNumber)
           throw new IllegalNumberException("Number can't less than last");
@@ -262,7 +260,7 @@ public class GameWindow extends JFrame {
       }
       try {
         value = Integer.parseInt(bidValueInput.getText().trim());
-        if (value < 1 || value > 6)
+        if (value <= 0 || value > 6)
           throw new IllegalNumberException("Illegal value of dice");
         if (number == lastNumber && value <= lastValue)
           throw new IllegalNumberException("Value must greater than last");
@@ -520,8 +518,7 @@ public class GameWindow extends JFrame {
       connection.disconnect();
       try {
         Thread.sleep(500);
-      } catch (InterruptedException e) {
-      }
+      } catch (InterruptedException e) {}
     }
     System.exit(0);
   }
@@ -563,8 +560,7 @@ public class GameWindow extends JFrame {
 
       try {
         Thread.sleep(500);
-      } catch (InterruptedException e) {
-      }
+      } catch (InterruptedException e) {}
       askContinue(playerList[gs.currentPlayer - 1], gs.diceTable);
     }
   }
@@ -615,6 +611,7 @@ public class GameWindow extends JFrame {
       connection.send(new ContinueMessage(true));
     } else { // no
       connection.send(new ContinueMessage(false));
+      System.exit(0);
     }
   }
 

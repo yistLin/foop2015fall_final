@@ -1,7 +1,6 @@
 package liardice;
 
 import java.awt.*;
-import java.awt.Robot;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.IOException;
@@ -219,6 +218,7 @@ public class Main {
           nameInput.requestFocus();
           continue;
         }
+        // new GameHub
         try {
           new GameHub(port, playerNumber);
         } catch (IOException e) {
@@ -228,12 +228,13 @@ public class Main {
           listeningPortInput.requestFocus();
           continue;
         }
+        // new GameWindow
         new GameWindow("localhost", port, nickname);
+        // new Robot
         for (int i = 1; i <= aiNumber; i++) {
           try {
-            new liardice.Robot( "localhost", port, "Robot#"+i );
+            new Robot("localhost", port);
           } catch (IOException e) {}
-          System.out.println("after new Robot#" + (i+1));
         }
         break;
       } else {
@@ -276,6 +277,7 @@ public class Main {
           nameInput.requestFocus();
           continue;
         }
+        // new GameWindow
         new GameWindow(host, port, nickname);
         break;
       }
