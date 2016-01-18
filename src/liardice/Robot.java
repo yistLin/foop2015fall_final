@@ -9,6 +9,7 @@ import liardice.message.*;
 
 public class Robot extends Client {
     private String myName;
+    private String[] playerList;
     private int numOfPlayers;
     private Dice[] dice;
     private int maxDice;
@@ -20,24 +21,22 @@ public class Robot extends Client {
     public static void main(String[] args) {
         String hubHostName, nickName;
         int hubPort;
-    	if (args.length > 2) {
+    	if (args.length > 1) {
     		hubHostName = args[0];
             hubPort = Integer.parseInt(args[1]);
-    		nickName = args[2];
-    	}
-        else {
-        	return;
-        }
+    	} else
+            return;
         try {
-            new Robot(hubHostName, hubPort, nickName);
+            new Robot(hubHostName, hubPort);
         } catch (IOException e) {
             System.out.println("Cannot new GameHub");
         }   
     }
 
-    public Robot(String hubHostName, int hubPort, String nickName) throws IOException {
+    public Robot(String hubHostName, int hubPort) throws IOException {
         super(hubHostName, hubPort);
-        this.myName = nickName;
+        ChatRobot chatrobot = new ChatRobot(getID());
+        this.myName = chatrobot.NICKNAME;
         send(myName);
         diceTable = new int[7];
         Signal.handle(new Signal("INT"), new SignalHandler() {
@@ -51,12 +50,12 @@ public class Robot extends Client {
 
     protected void messageReceived(final Object forwardedMessage) {
         if (forwardedMessage instanceof ForwardedMessage) {
-        ForwardedMessage fm = (ForwardedMessage)forwardedMessage;
+            ForwardedMessage fm = (ForwardedMessage)forwardedMessage;
             if (fm.message instanceof ChatMessage) {
-                ChatMessage cm = (ChatMessage)fm.message;
-                if (cm.id.compareTo(myName) != 0 && Math.random() > 0.8)
+                if (fm.id != getID() && Math.random() > 0.85)
                     send(new ChatMessage(myName, cm.message));
             } else if (fm.message instanceof String[]) {
+                playerList = (String[])fm.message;
                 numOfPlayers = ((String[])(fm.message)).length;
             } else if (fm.message instanceof String) {
                 //do nothing
@@ -85,8 +84,11 @@ public class Robot extends Client {
         if (gs.status == GameStatus.ROUND_START) {
             lastNumber = 0;
             lastValue = 0;
+            hasBidOne = false;
+            //TODO with chatrobot
         } else if (gs.status == GameStatus.DO_CATCH) {
-            doSleep(Math.random() * 2 + 1);
+            //TODO with chatrobot
+            doSleep(Math.random() * 2);
             lastNumber = gs.numberOfDice;
             lastValue = gs.valueOfDice;
             if (lastValue == 1)
@@ -101,38 +103,36 @@ public class Robot extends Client {
                     send(new CatchMessage(false));
             }
         } else if (gs.status == GameStatus.DO_BID) {
-            doSleep(Math.random() * 2 + 3);
+            //TODO with chatrobot
+            doSleep(Math.random() * 2 + 1);
             if (gs.currentPlayer == getID()) {
-                int random = (int)(Math.floor(Math.random() * 3) - 2);
+                int random = (int)(Math.floor(Math.random() * 3) - 1);
                 int myNum = diceTable[maxDice] + numOfPlayers - 1 +
                             ((hasBidOne || maxDice == 1) ? 0:diceTable[1]);
                 if (lastValue == 0)
-                    send(new BidMessage(myNum + random, maxDice));
+                    send(new BidMessage(myNum+random, maxDice));
                 else if (maxDice > lastValue)
                     send(new BidMessage(lastNumber, maxDice));
                 else
                     send(new BidMessage(lastNumber+1, maxDice));
             }
         } else if (gs.status == GameStatus.NO_CATCH) {
-            if (Math.random() > 0.8)
-                send(new ChatMessage(myName, "Why not catch~ ?"));
+            if(gs.currentPlayer != getID())
+                //TODO with chatrobot
         } else if (gs.status == GameStatus.YES_CATCH) {
-            if (Math.random() > 0.7)
-                send(new ChatMessage(myName, "Let's laugh at"+ gs.currentPlayer));
+            if(gs.currentPlayer != getID())
+                //TODO with chatrobot
         } else if (gs.status == GameStatus.ROUND_END) {
-            if (gs.currentPlayer == getID() && Math.random() > 0.5)
-                send(new ChatMessage(myName, "NOOOOOOOO~~~~~"));
-            else if (gs.currentPlayer != getID() && Math.random() > 0.5)
-                send(new ChatMessage(myName, "My grandma is smarter than you!!!"));
-            lastNumber = 0;
-            lastValue = 0;
-            hasBidOne = false;
+            if (gs.currentPlayer == getID())
+                //TODO with chatrobot
+            else
+                //TODO with chatrobot
             send(new ContinueMessage(true));
         }
     }
     
 	protected void serverShutDown(String message) {
-        doSleep(1.5);
+        doSleep(1);
         System.exit(0);
 	}
     
