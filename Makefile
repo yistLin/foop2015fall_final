@@ -21,8 +21,11 @@ LIB = ./lib/
 # - trailing slash is important!
 SRC = ./src/
 
+# File of JAR library
+JAR = ./lib/json-20151123.jar
+
 # Java compiler flags
-JAVAFLAGS = -g -d $(BIN) -cp "$(BIN):$(LIB):$(SRC)"
+JAVAFLAGS = -g -d $(BIN) -cp "$(BIN):$(LIB):$(SRC):$(JAR)"
 
 # Creating a .class file
 COMPILE = $(JAVAC) $(JAVAFLAGS)
@@ -52,4 +55,4 @@ clean:
 	rm -rf $(BIN)*
 
 run:
-	java -cp "./:$(BIN):$(LIB)" liardice/Main 
+	java -cp "./:$(BIN):$(LIB):$(JAR)" liardice/Main 

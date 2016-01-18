@@ -1,10 +1,10 @@
 package liardice;
 
 import liardice.message.ChatMessage;
-import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.Random;
-import java.util.Date;
+import java.util.*;
+import org.json.*;
+import java.io.*;
 
 public class ChatRobot {
 
@@ -16,12 +16,12 @@ public class ChatRobot {
     public static final int YES_CATCH = 5;
     public static final int ROUND_END = 6;
     public static final int OTHER_TALK = 7;
+    public static final int RANDOM_TALK = 8;
 
     public final String NICKNAME;
 
-   	private final String dir_path = "./config";
-   	private File dir_node = new File(dir_path);
-   	private String[] filenames = dir_node.list();
+    private Random rand;
+   	private JSONObject jsonObj;
 
    	public static void main(String args[]) {
    		int index = Integer.parseInt(args[0]);
@@ -31,9 +31,29 @@ public class ChatRobot {
     public ChatRobot(int index) {
     	long epoch = System.currentTimeMillis();
     	long seed = epoch * (long)index;
-    	Random rnd = new Random(seed);
-    	int nameIndex = rnd.nextInt(filenames.length);
-    	NICKNAME = filenames[nameIndex];
+    	rand = new Random(seed);
+    	String dir_path = "./config";
+   		File dir_node = new File(dir_path);
+   		String[] filenames = dir_node.list();
+    	int nameIndex = rand.nextInt(filenames.length);
+    	String filename = filenames[nameIndex];
+
+    	StringBuilder sb = new StringBuilder();
+    	FileReader in = null;
+    	try {
+    		in = new FileReader(dir_path + "/" + filename);
+    	} catch (FileNotFoundException e) {}
+    	BufferedReader br = new BufferedReader(in);
+    	String line;
+
+    	try {
+	    	while ((line = br.readLine()) != null) {
+	    		sb.append(line);
+	    	}
+	    } catch (IOException e) {}
+
+   		jsonObj = new JSONObject(sb.toString());
+   		NICKNAME = jsonObj.getString("name");
     }
 
     // GET_DICE
@@ -41,8 +61,17 @@ public class ChatRobot {
     	return null;
     }
 
-    // ROUND_START, DO_BID, DO_CATCH, NO_CATCH, YES_CATCH
+    // ROUND_START, DO_BID, DO_CATCH, NO_CATCH, YES_CATCH, RANDOM_TALK
     public String talk(int status) {
+    	switch (status) {
+    		case RANDOM_TALK:
+    			JSONArray talkArray = jsonObj.getJSONArray("random_talk");
+    			int randIndex = rand.nextInt(talkArray.length());
+    			JSONObject talkObj = talkArray.getJSONObject(randIndex);
+    			return talkObj.getString("message");
+    		default:
+    			break;
+    	}
     	return null;
     }
 
