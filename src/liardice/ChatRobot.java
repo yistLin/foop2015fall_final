@@ -60,6 +60,7 @@ public class ChatRobot {
     public String talk(int status) {
     	String objName = "";
     	switch (status) {
+    		case ROUND_START:	objName = "round_start"; break;
     		case RANDOM_TALK:	objName = "random_talk"; break;
     		case DO_BID:		objName = "do_bid"; break;
     		case DO_CATCH:		objName = "do_catch"; break;
