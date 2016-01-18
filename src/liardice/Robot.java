@@ -27,11 +27,11 @@ public class Robot extends Client {
         new Thread() {
             public void run() {
                 while (true) {
-                    doSleep(Math.random() * 20.0 + (double)numOfPlayers * 3.5);
+                    doSleep(Math.random() * ((double)numOfPlayers * 4.0 + 3.0));
                     String randomTalk = chatRobot.talk(ChatRobot.RANDOM_TALK);
                     if(randomTalk != null) {
                         send(new ChatMessage(myName, randomTalk));
-                        doSleep((double)numOfPlayers * 2.5);
+                        doSleep((double)numOfPlayers * 2);
                     }
                 }
             }

@@ -1,0 +1,132 @@
+{
+  "name": "Yibot",
+  "get_dice": [
+    {
+      "message": "阿哈！",
+      "probability": "0.1"
+    },
+    {
+      "message": "每賣喔！",
+      "probability": "0.1"
+    }
+  ],
+  "round_start": [
+    {
+      "message": "有誰比我會吹牛！",
+      "probability": "0.1"
+    },
+    {
+      "message": "開始玩！開始玩！",
+      "probability": "0.15"
+    }
+  ],
+  "do_bid": {
+    "me": [
+      {
+        "message": "有種就抓",
+        "probability": "0.2"
+      },
+      {
+        "message": "趕抓我！我就跟你翻臉＠＃？＋＾",
+        "probability": "0.2"
+      }
+    ],
+    "other": [
+      {
+        "message": "慢死了，是在打瞌睡喔",
+        "probability": "0.1"
+      }
+    ]
+  },
+  "do_catch": {
+    "yes": [
+      {
+        "message": "伸出我的狼爪來！",
+        "probability": "0.5"
+      },
+      {
+        "message": "你早爆了吧？看我拆穿你的真面目！",
+        "probability": "0.5"
+      }
+    ],
+    "no": [
+      {
+        "message": "喊那麼少，是在等誰～",
+        "probability": "0.05"
+      },
+      {
+        "message": "怕輸喔！膽小鬼～",
+        "probability": "0.05"
+      }
+    ]
+  },
+  "no_catch": [
+    {
+      "message": "你不想抓嗎？",
+      "probability": "0.05"
+    }
+  ],
+  "yes_catch": [
+    {
+      "message": "抓了～抓了～",
+      "probability": "0.1"
+    }
+  ],
+  "round_end": {
+    "win": [
+      {
+        "message": "誰啊？哈～哈～哈～",
+        "probability": "0.15"
+      },
+      {
+        "message": "運氣不錯",
+        "probability": "0.1"
+      }
+    ],
+    "lose": [
+      {
+        "message": "QAQ",
+        "probability": "0.5"
+      },
+      {
+        "message": "給我一回合，讓我一雪前恥！",
+        "probability": "0.5"
+      }
+    ]
+  },
+  "random_talk": [
+    {
+      "message": "叫你阿嬤出來啊",
+      "probability": "0.2"
+    },
+    {
+      "message": "不是我在說，樓上真的 超～可愛的",
+      "probability": "0.2"
+    },
+    {
+      "message": "台大資工就屬我最會吹～",
+      "probability": "0.1"
+    },
+    {
+      "message": "KerKer",
+      "probability": "0.3"
+    },
+    {
+      "message": "我只是想說話",
+      "probability": "0.2"
+    }
+  ],
+  "other_talk": [
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    },
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    }
+  ]
+}
+
