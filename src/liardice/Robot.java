@@ -27,10 +27,12 @@ public class Robot extends Client {
         new Thread() {
             public void run() {
                 while (true) {
-                    doSleep(Math.random()*10 + 10);
+                    doSleep(Math.random()*20 + 10);
                     String randomTalk = chatRobot.talk(ChatRobot.RANDOM_TALK);
-                    if(randomTalk != null)
+                    if(randomTalk != null) {
                         send(new ChatMessage(myName, randomTalk));
+                        doSleep(5);
+                    }
                 }
             }
         }.start();
@@ -83,7 +85,7 @@ public class Robot extends Client {
             if(robotTalk != null)
                 send(new ChatMessage(myName, robotTalk));
         } else if (gs.status == GameStatus.DO_CATCH) {
-            doSleep(Math.random() * 7 + 3);
+            doSleep(Math.random() * 6 + 4);
             lastNumber = gs.numberOfDice;
             lastValue = gs.valueOfDice;
             if (lastValue == 1)
@@ -91,7 +93,7 @@ public class Robot extends Client {
             if (gs.currentPlayer != getID()) {
                 int random = (int)(Math.floor(Math.random() * 4) - 1);
                 int myNum = diceTable[lastValue] + numOfPlayers - 1 +
-                            ((hasBidOne) ? 0:diceTable[1]);
+                            ((hasBidOne) ? 0 : diceTable[1] + numOfPlayers - 1);
                 if (myNum + random < lastNumber) {
                     robotTalk = chatRobot.talk(ChatRobot.DO_CATCH, "yes");
                     if(robotTalk != null)
@@ -113,7 +115,7 @@ public class Robot extends Client {
                     send(new ChatMessage(myName, robotTalk));
                 int random = (int)(Math.floor(Math.random() * 3) - 1);
                 int myNum = diceTable[maxDice] + numOfPlayers - 1 +
-                            ((hasBidOne || maxDice == 1) ? 0:diceTable[1]);
+                            ((hasBidOne || maxDice == 1) ? 0 : diceTable[1]);
                 if (lastValue == 0)
                     send(new BidMessage(myNum+random, maxDice));
                 else if (maxDice > lastValue)
