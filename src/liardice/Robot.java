@@ -44,8 +44,10 @@ public class Robot extends Client {
         new Thread() {
             public void run() {
                 while (true) {
-                    doSleep(Math.random()*10);
-                    send(new ChatMessage(myName, chatRobot.talk(ChatRobot.RANDOM_TALK)));
+                    doSleep(Math.random()*10 + 3);
+                    String randomTalk = chatRobot.talk(ChatRobot.RANDOM_TALK);
+                    if(randomTalk != null)
+                        send(new ChatMessage(myName, randomTalk));
                 }
             }
         }.start();
