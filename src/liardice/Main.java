@@ -24,7 +24,7 @@ public class Main {
     final JTextField listeningPortInput = new JTextField("" + DEFAULT_PORT, 5);
     final JTextField hostInput = new JTextField(30);
     final JTextField connectPortInput = new JTextField("" + DEFAULT_PORT, 5);
-    final JTextField aiNumberInput = new JTextField("" + 0, 1);
+    final JTextField aiNumberInput = new JTextField(1);
     
     // Buttons for setting mode
     final JRadioButton selectServerMode = new JRadioButton("Start a new game.");
@@ -173,10 +173,12 @@ public class Main {
             throw new IllegalAINumberException("Illegal number of AI");
           playerNumber += aiNumber;
         } catch (NumberFormatException e) {
-          message.setText("You must enter number of AI!");
-          message.setForeground(Color.red);
-          aiNumberInput.selectAll();
-          aiNumberInput.requestFocus();
+          // message.setText("You must enter number of AI!");
+          // message.setForeground(Color.red);
+          // aiNumberInput.selectAll();
+          // aiNumberInput.requestFocus();
+          aiNumberInput.setText("0");
+          aiNumber = 0;
           continue;
         } catch (IllegalAINumberException e) {
           message.setText(e.getMessage());
@@ -221,15 +223,11 @@ public class Main {
           listeningPortInput.requestFocus();
           continue;
         }
-        System.out.println("before new GameWindow()");
-        new Thread() {
-          public void run() {
-            new GameWindow("localhost", port, nickname);
-          }
-        }.start();
-        System.out.println("after new GameWindow()");
-        for (int i = 0; i < aiNumber; i++) {
-          new Robot("localhost", port, "Robot#"+(i+1));
+        new GameWindow("localhost", port, nickname);
+        for (int i = 1; i <= aiNumber; i++) {
+          try {
+            new liardice.Robot( "localhost", port, "Robot#"+i );
+          } catch (IOException e) {}
           System.out.println("after new Robot#" + (i+1));
         }
         break;
