@@ -117,7 +117,7 @@ public class Main {
     column = new JPanel(); // number of AI
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(Box.createHorizontalStrut(40)); // reserved space
-    column.add(new JLabel("Number of AI (0~5):"));
+    column.add(new JLabel("Number of AI (0~6):"));
     column.add(aiNumberInput);
     column.add(Box.createHorizontalStrut(5)); // reserved space
     column.add(new JLabel("(Total players <= 10)"));
@@ -179,7 +179,7 @@ public class Main {
         }
         try {
           aiNumber = Integer.parseInt(aiNumberInput.getText().trim());
-          if (aiNumber < 0 || aiNumber > 5)
+          if (aiNumber < 0 || aiNumber > 6)
             throw new IllegalAINumberException("Illegal number of AI");
         } catch (NumberFormatException e) {
           aiNumberInput.setText("0");
