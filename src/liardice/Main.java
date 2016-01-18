@@ -170,6 +170,7 @@ public class Main {
           aiNumber = Integer.parseInt(aiNumberInput.getText().trim());
           if (aiNumber < 0 || aiNumber + playerNumber > 6 || aiNumber + playerNumber < 2)
             throw new IllegalAINumberException("Illegal number of AI");
+          playerNumber += aiNumber;
         } catch (NumberFormatException e) {
           message.setText("You must enter number of AI!");
           message.setForeground(Color.red);
