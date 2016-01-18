@@ -2,9 +2,10 @@ package liardice;
 
 import java.io.IOException;
 import java.util.*;
-import netgame.common.*;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
+import netgame.common.*;
+import liardice.message.*;
 
 public class Robot extends Client {
     private String myName;
@@ -52,8 +53,8 @@ public class Robot extends Client {
         if (forwardedMessage instanceof ForwardedMessage) {
         ForwardedMessage fm = (ForwardedMessage)forwardedMessage;
             if (fm.message instanceof ChatMessage) {
-                //do nothing
-                //ChatMessage cm = (ChatMessage)fm.message;
+                if (Math.random() > 0.8)
+                    send(new ChatMessage(myName, ((ChatMessage)(fm.message)).message));
             } else if (fm.message instanceof String[]) {
                 numOfPlayers = ((String[])(fm.message)).length;
             } else if (fm.message instanceof String) {
@@ -66,7 +67,7 @@ public class Robot extends Client {
                 for (Dice d : dice)
                     diceTable[d.value]++;
                 for (int i = 1; i < diceTable.length; i++) {
-                    if(diceTable[i] > diceTable[0]) {
+                    if (diceTable[i] > diceTable[0]) {
                         diceTable[0] = diceTable[i];
                         maxDice = i;
                     }
@@ -87,11 +88,11 @@ public class Robot extends Client {
             doSleep(Math.random() * 2 + 1);
             lastNumber = gs.numberOfDice;
             lastValue = gs.valueOfDice;
-            if(lastValue == 1)
+            if (lastValue == 1)
                 hasBidOne = true;
             if (gs.currentPlayer != getID()) {
                 int random = (int)(Math.floor(Math.random() * 4) - 1);
-                int myNum = diceTable[lastValue] + numOfPlayers +
+                int myNum = diceTable[lastValue] + numOfPlayers - 1 +
                             ((hasBidOne) ? 0:diceTable[1]);
                 if (myNum + random < lastNumber)
                     send(new CatchMessage(true));
@@ -101,21 +102,27 @@ public class Robot extends Client {
         } else if (gs.status == GameStatus.DO_BID) {
             doSleep(Math.random() * 2 + 3);
             if (gs.currentPlayer == getID()) {
-                int random = (int)(Math.floor(Math.random() * 3) - 1);
-                int myNum = diceTable[maxDice] + numOfPlayers +
+                int random = (int)(Math.floor(Math.random() * 3) - 2);
+                int myNum = diceTable[maxDice] + numOfPlayers - 1 +
                             ((hasBidOne || maxDice == 1) ? 0:diceTable[1]);
-                if(lastValue == 0)
+                if (lastValue == 0)
                     send(new BidMessage(myNum + random, maxDice));
-                else if(maxDice > lastValue)
+                else if (maxDice > lastValue)
                     send(new BidMessage(lastNumber, maxDice));
                 else
                     send(new BidMessage(lastNumber+1, maxDice));
             }
         } else if (gs.status == GameStatus.NO_CATCH) {
-            //do nothing
+            if (Math.random() > 0.8)
+                send(new ChatMessage(myName, "Why not catch~ ?"));
         } else if (gs.status == GameStatus.YES_CATCH) {
-            //do nothing
+            if (Math.random() > 0.7)
+                send(new ChatMessage(myName, "Let's laugh at"+ gs.currentPlayer));
         } else if (gs.status == GameStatus.ROUND_END) {
+            if (gs.currentPlayer == getID() && Math.random() > 0.5)
+                send(new ChatMessage(myName, "NOOOOOOOO~~~~~"));
+            else if (gs.currentPlayer != getID() && Math.random() > 0.5)
+                send(new ChatMessage(myName, "My grandma is smarter than you!!!"));
             lastNumber = 0;
             lastValue = 0;
             hasBidOne = false;
@@ -124,6 +131,7 @@ public class Robot extends Client {
     }
     
 	protected void serverShutDown(String message) {
+        
         System.exit(0);
 	}
     
