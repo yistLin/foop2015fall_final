@@ -520,12 +520,11 @@ public class GameWindow extends JFrame {
   private void doQuit() {
     dispose();
     if (connection != null) {
-      connection.disconnect();
-      try {
-        Thread.sleep(500);
-      } catch (InterruptedException e) {}
+      shutdown = true;
+      connection.send(new ContinueMessage(false));
+    } else {
+      System.exit(0);
     }
-    System.exit(0);
   }
 
   private void handleGameStatus(GameStatus gs) {
