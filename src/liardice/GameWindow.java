@@ -29,6 +29,7 @@ public class GameWindow extends JFrame {
 
   private JTextField bidNumberInput;
   private JTextField bidValueInput;
+  private JLabel bidDiscription;
   private JLabel bidLastNumber;
   private JLabel bidLastValue;
   private JButton bidButton;
@@ -152,8 +153,6 @@ public class GameWindow extends JFrame {
 
   private class BidPanel extends JPanel {
 
-    private JLabel message;
-
     BidPanel() {
       setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       setLayout(new GridLayout(0, 1));
@@ -162,9 +161,9 @@ public class GameWindow extends JFrame {
       panelName.setFont(new Font("Phosphate", Font.BOLD, 48));
       add(panelName);
 
-      message = new JLabel("Enter number and value", JLabel.CENTER);
-      message.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
-      add(message);
+      bidDiscription = new JLabel("", JLabel.CENTER);
+      bidDiscription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
+      add(bidDiscription);
 
       bidNumberInput = new JTextField(2);
       bidValueInput = new JTextField(1);
@@ -248,14 +247,14 @@ public class GameWindow extends JFrame {
         if (number < lastNumber)
           throw new IllegalNumberException("Number can't less than last");
       } catch (NumberFormatException e) {
-        message.setText("You must enter number of dice!");
-        message.setForeground(Color.red);
+        bidDiscription.setText("You must enter number of dice!");
+        bidDiscription.setForeground(Color.red);
         bidNumberInput.selectAll();
         bidNumberInput.requestFocus();
         success = false;
       } catch (IllegalNumberException e) {
-        message.setText(e.getMessage());
-        message.setForeground(Color.red);
+        bidDiscription.setText(e.getMessage());
+        bidDiscription.setForeground(Color.red);
         bidNumberInput.selectAll();
         bidNumberInput.requestFocus();
         success = false;
@@ -267,14 +266,14 @@ public class GameWindow extends JFrame {
         if (number == lastNumber && value <= lastValue)
           throw new IllegalNumberException("Value must greater than last");
       } catch (NumberFormatException e) {
-        message.setText("You must enter value of dice!");
-        message.setForeground(Color.red);
+        bidDiscription.setText("You must enter value of dice!");
+        bidDiscription.setForeground(Color.red);
         bidValueInput.selectAll();
         bidValueInput.requestFocus();
         success = false;
       } catch (IllegalNumberException e) {
-        message.setText(e.getMessage());
-        message.setForeground(Color.red);
+        bidDiscription.setText(e.getMessage());
+        bidDiscription.setForeground(Color.red);
         bidValueInput.selectAll();
         bidValueInput.requestFocus();
         success = false;
@@ -287,6 +286,7 @@ public class GameWindow extends JFrame {
         bidValueInput.setText("");
         bidLastNumber.setText("");
         bidLastValue.setText("");
+        bidDiscription.setText("");
 
         bidNumberInput.setEnabled(false);
         bidValueInput.setEnabled(false);
@@ -332,6 +332,7 @@ public class GameWindow extends JFrame {
           }
           catchNoButton.setEnabled(false);
           catchYesButton.setEnabled(false);
+          catchDiscription.setText("");
         }
       };
 
@@ -562,6 +563,8 @@ public class GameWindow extends JFrame {
     bidNumberInput.setEnabled(true);
     bidValueInput.setEnabled(true);
     bidButton.setEnabled(true);
+
+    bidDiscription.setText("Enter number and value");
 
     bidNumberInput.selectAll();
     bidNumberInput.requestFocus();
