@@ -244,9 +244,10 @@ public class Main {
         // new GameWindow
         new GameWindow("localhost", port, nickname);
         // new Robot
+        ConfigShuffler cs = new ConfigShuffler();
         for (int i = 1; i <= aiNumber; i++) {
           try {
-            new Robot("localhost", port);
+            new Robot("localhost", port, cs.getNext());
           } catch (IOException e) {}
         }
         break;

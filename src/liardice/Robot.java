@@ -2,8 +2,6 @@ package liardice;
 
 import java.io.IOException;
 import java.util.*;
-import sun.misc.Signal;
-import sun.misc.SignalHandler;
 import netgame.common.*;
 import liardice.message.*;
 
@@ -19,25 +17,10 @@ public class Robot extends Client {
     private int lastNumber;
     private int lastValue;
     private boolean hasBidOne;
-    
-    public static void main(String[] args) {
-        String hubHostName, nickName;
-        int hubPort;
-    	if (args.length > 1) {
-    		hubHostName = args[0];
-            hubPort = Integer.parseInt(args[1]);
-    	} else
-            return;
-        try {
-            new Robot(hubHostName, hubPort);
-        } catch (IOException e) {
-            System.out.println("Cannot new GameHub");
-        }   
-    }
 
-    public Robot(String hubHostName, int hubPort) throws IOException {
+    public Robot(String hubHostName, int hubPort, String filename) throws IOException {
         super(hubHostName, hubPort);
-        chatRobot = new ChatRobot(getID());
+        chatRobot = new ChatRobot(filename);
         this.myName = chatRobot.NICKNAME;
         send(myName);
         diceTable = new int[7];
@@ -51,14 +34,6 @@ public class Robot extends Client {
                 }
             }
         }.start();
-        
-        Signal.handle(new Signal("INT"), new SignalHandler() {
-            public void handle(Signal signo) {
-                disconnect();
-                doSleep(1);
-                System.exit(0);
-            }
-        });
     }
 
     protected void messageReceived(final Object forwardedMessage) {
