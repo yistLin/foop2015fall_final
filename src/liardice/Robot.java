@@ -8,6 +8,8 @@ import netgame.common.*;
 import liardice.message.*;
 
 public class Robot extends Client {
+    private ChatRobot chatRobot;
+    private String robotTalk;
     private String myName;
     private String[] playerList;
     private int numOfPlayers;
@@ -35,8 +37,8 @@ public class Robot extends Client {
 
     public Robot(String hubHostName, int hubPort) throws IOException {
         super(hubHostName, hubPort);
-        ChatRobot chatrobot = new ChatRobot(getID());
-        this.myName = chatrobot.NICKNAME;
+        chatRobot = new ChatRobot(getID());
+        this.myName = chatRobot.NICKNAME;
         send(myName);
         diceTable = new int[7];
         Signal.handle(new Signal("INT"), new SignalHandler() {
@@ -53,7 +55,9 @@ public class Robot extends Client {
             ForwardedMessage fm = (ForwardedMessage)forwardedMessage;
             if (fm.message instanceof ChatMessage) {
                 if (fm.senderID != getID()) {
-                    //TODO with chatrobot
+                    robotTalk = chatRobot.talk(ChatRobot.OTHER_TALK, ((ChatMessage)fm.message).message);
+                    if(robotTalk != null)
+                        send(new ChatMessage(myName, robotTalk));
                 }
             } else if (fm.message instanceof String[]) {
                 playerList = (String[])fm.message;
@@ -73,6 +77,9 @@ public class Robot extends Client {
                         maxDice = i;
                     }
                 }
+                robotTalk = chatRobot.talk(ChatRobot.GET_DICE, dice);
+                if(robotTalk!= null)
+                    send(new ChatMessage(myName, robotTalk));
                 send(new ReadyMessage());
             } else if (fm.message instanceof GameStatus) {
                 GameStatus gs = (GameStatus)fm.message;
@@ -86,10 +93,14 @@ public class Robot extends Client {
             lastNumber = 0;
             lastValue = 0;
             hasBidOne = false;
-            //TODO with chatrobot
+            robotTalk = chatRobot.talk(ChatRobot.ROUND_START);
+            if(robotTalk != null)
+                send(new ChatMessage(myName, robotTalk));
         } else if (gs.status == GameStatus.DO_CATCH) {
-            //TODO with chatrobot
-            doSleep(Math.random() * 2);
+            robotTalk = chatRobot.talk(ChatRobot.DO_CATCH);
+            if(robotTalk != null)
+                send(new ChatMessage(myName, robotTalk));
+            doSleep(Math.random() * 4 + 1);
             lastNumber = gs.numberOfDice;
             lastValue = gs.valueOfDice;
             if (lastValue == 1)
@@ -104,8 +115,10 @@ public class Robot extends Client {
                     send(new CatchMessage(false));
             }
         } else if (gs.status == GameStatus.DO_BID) {
-            //TODO with chatrobot
-            doSleep(Math.random() * 2 + 1);
+            robotTalk = chatRobot.talk(ChatRobot.DO_BID);
+            if(robotTalk != null)
+                send(new ChatMessage(myName, robotTalk));
+            doSleep(Math.random());
             if (gs.currentPlayer == getID()) {
                 int random = (int)(Math.floor(Math.random() * 3) - 1);
                 int myNum = diceTable[maxDice] + numOfPlayers - 1 +
@@ -119,17 +132,25 @@ public class Robot extends Client {
             }
         } else if (gs.status == GameStatus.NO_CATCH) {
             if(gs.currentPlayer != getID()) {
-                //TODO with chatrobot
+                robotTalk = chatRobot.talk(ChatRobot.NO_CATCH);
+                if(robotTalk != null)
+                    send(new ChatMessage(myName, robotTalk));
             }
         } else if (gs.status == GameStatus.YES_CATCH) {
             if(gs.currentPlayer != getID()) {
-                //TODO with chatrobot
+                robotTalk = chatRobot.talk(ChatRobot.YES_CATCH);
+                if(robotTalk != null)
+                    send(new ChatMessage(myName, robotTalk));
             }
         } else if (gs.status == GameStatus.ROUND_END) {
             if (gs.currentPlayer == getID()) {
-                //TODO with chatrobot
+                robotTalk = chatRobot.talk(ChatRobot.ROUND_END, true);
+                if(robotTalk != null)
+                    send(new ChatMessage(myName, robotTalk));
             } else {
-                //TODO with chatrobot
+                robotTalk = chatRobot.talk(ChatRobot.ROUND_END, false);
+                if(robotTalk != null)
+                    send(new ChatMessage(myName, robotTalk));
             }
             send(new ContinueMessage(true));
         }
