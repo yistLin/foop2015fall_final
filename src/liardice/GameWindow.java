@@ -25,6 +25,7 @@ public class GameWindow extends JFrame {
   private int lastNumber = 0, lastValue = 0;
   private boolean shutdown = false;
   private boolean bidLose = false;
+  private boolean catchWin = false;
 
   // status color
   private final Color normalPanelColor = new Color(230, 230, 230);
@@ -624,6 +625,10 @@ public class GameWindow extends JFrame {
       playerListButton[gs.currentPlayer - 1].setBackground(normalColor);
     } else if (gs.status == GameStatus.YES_CATCH) {
       playerListButton[gs.currentPlayer - 1].setBackground(yesCatchColor);
+      if (gs.currentPlayer == connection.getID())
+        catchWin = true;
+      else
+        catchWin = false;
       disableCatch();
     } else if (gs.status == GameStatus.ROUND_END) {
       playerListButton[gs.currentPlayer - 1].setBackground(losedColor);
@@ -632,6 +637,9 @@ public class GameWindow extends JFrame {
           bidPanel.setBackground(losedColor);
         else
           catchPanel.setBackground(losedColor);
+      } else {
+        if (catchWin)
+          catchPanel.setBackground(yesCatchColor);
       }
       addMessage("Total dice: ");
       for (int i = 1; i != 7; i++)
