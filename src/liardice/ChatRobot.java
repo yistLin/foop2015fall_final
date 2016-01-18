@@ -56,13 +56,12 @@ public class ChatRobot {
    		NICKNAME = jsonObj.getString("name");
     }
 
-    // ROUND_START, DO_BID, DO_CATCH, NO_CATCH, YES_CATCH, RANDOM_TALK, GET_DICE
+    // ROUND_START, DO_CATCH, NO_CATCH, YES_CATCH, RANDOM_TALK, GET_DICE
     public String talk(int status) {
     	String objName = "";
     	switch (status) {
     		case ROUND_START:	objName = "round_start"; break;
     		case RANDOM_TALK:	objName = "random_talk"; break;
-    		case DO_BID:		objName = "do_bid"; break;
     		case DO_CATCH:		objName = "do_catch"; break;
     		case NO_CATCH:		objName = "no_catch"; break;
     		case YES_CATCH:		objName = "yes_catch"; break;
@@ -87,8 +86,18 @@ public class ChatRobot {
 		return (Math.random() < probability) ? talkObj.getString("message") : null;
     }
 
-    // OTHER_TALK
-    public String talk(int status, String chat) {
-    	return null;
+    // DO_BID, OTHER_TALK
+    public String talk(int status, String message) {
+    	if (status == DO_BID) {
+	    	JSONObject obj = jsonObj.getJSONObject("do_bid");
+	    	JSONArray talkArray = jsonObj.getJSONArray(message);
+			int randIndex = rand.nextInt(talkArray.length());
+			JSONObject talkObj = talkArray.getJSONObject(randIndex);
+			double probability = Double.parseDouble(talkObj.getString("probability"));
+			return (Math.random() < probability) ? talkObj.getString("message") : null;
+		}
+		else {
+			return null;
+		}
     }
 }
