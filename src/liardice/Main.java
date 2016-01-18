@@ -179,18 +179,29 @@ public class Main {
         }
         try {
           aiNumber = Integer.parseInt(aiNumberInput.getText().trim());
-          if (aiNumber < 0 || aiNumber + playerNumber > 6 || aiNumber + playerNumber < 2)
+          if (aiNumber < 0 || aiNumber > 5)
             throw new IllegalAINumberException("Illegal number of AI");
-          playerNumber += aiNumber;
         } catch (NumberFormatException e) {
           aiNumberInput.setText("0");
           aiNumber = 0;
-          continue;
         } catch (IllegalAINumberException e) {
           message.setText(e.getMessage());
           message.setForeground(Color.red);
           aiNumberInput.selectAll();
           aiNumberInput.requestFocus();
+          continue;
+        }
+        playerNumber += aiNumber;
+        try {
+          if (playerNumber < 2)
+            throw new IllegalPlayerNumberException("Total number of players isn't enough");
+          if (playerNumber > 10)
+            throw new IllegalPlayerNumberException("Total number of players is too much");
+        } catch (IllegalPlayerNumberException e) {
+          message.setText(e.getMessage());
+          message.setForeground(Color.red);
+          playerNumberInput.selectAll();
+          playerNumberInput.requestFocus();
           continue;
         }
         try {
