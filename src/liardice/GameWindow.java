@@ -29,13 +29,20 @@ public class GameWindow extends JFrame {
   private Display display;
   private Board board;
   private Chatroom chatroom;
+  private final Color normalPanelColor = new Color(230, 230, 230);
 
   // status panel
   private JLabel statusMessage;
   private JPanel playerPanel;
   private JButton[] playerListButton;
+  private final Color normalColor = new Color(209, 209, 224);
+  private final Color bidColor = new Color(255, 128, 128);
+  private final Color catchColor = new Color(255, 194, 102);
+  private final Color yesCatchColor = new Color(0, 230, 172);
+  private final Color losedColor = new Color(72, 72, 107);
 
   // bid panel
+  private JPanel bidPanel;
   private JTextField bidNumberInput;
   private JTextField bidValueInput;
   private JLabel bidMessage;
@@ -45,6 +52,7 @@ public class GameWindow extends JFrame {
   private JButton bidButton;
 
   // catch panel
+  private JPanel catchPanel;
   private JLabel catchMessage;
   private JLabel catchDiscription;
   private JButton catchNoButton;
@@ -163,13 +171,11 @@ public class GameWindow extends JFrame {
       setPreferredSize(new Dimension(675, 585));
       setBorder(BorderFactory.createLineBorder(new Color(130, 70, 0), 8));
 
-      add(new JPanel(), BorderLayout.NORTH);
-
       JPanel gamePanel = new JPanel();
       gamePanel.setLayout(new GridLayout(0, 1));
 
-      JPanel bidPanel = new BidPanel();
-      JPanel catchPanel = new CatchPanel();
+      bidPanel = new BidPanel();
+      catchPanel = new CatchPanel();
       gamePanel.add(bidPanel);
       gamePanel.add(catchPanel);
       add(gamePanel, BorderLayout.CENTER);
@@ -184,12 +190,14 @@ public class GameWindow extends JFrame {
     BidPanel() {
       setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       setLayout(new GridLayout(0, 1));
+      setBackground(normalPanelColor);
 
       // some black magic
       JPanel row, column;
 
       row = new JPanel();
       row.setLayout(new GridLayout(1, 1));
+      row.setOpaque(false);
       JLabel panelName = new JLabel("Bid Panel", JLabel.CENTER);
       panelName.setFont(new Font("Phosphate", Font.BOLD, 48));
       row.add(panelName);
@@ -229,9 +237,11 @@ public class GameWindow extends JFrame {
 
       row = new JPanel();
       row.setLayout(new FlowLayout(FlowLayout.LEFT));
+      row.setOpaque(false);
 
       column = new JPanel();
       column.setLayout(new FlowLayout(FlowLayout.LEFT));
+      column.setOpaque(false);
       //column.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       column.setPreferredSize(new Dimension(270, 50));
       column.add(Box.createHorizontalStrut(15)); // reserved space
@@ -242,6 +252,7 @@ public class GameWindow extends JFrame {
 
       column = new JPanel();
       column.setLayout(new FlowLayout(FlowLayout.LEFT));
+      column.setOpaque(false);
       //column.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       column.setPreferredSize(new Dimension(270, 50));
       column.add(Box.createHorizontalStrut(15)); // reserved space
@@ -252,6 +263,7 @@ public class GameWindow extends JFrame {
 
       column = new JPanel();
       column.setLayout(new BorderLayout());
+      column.setOpaque(false);
       //column.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       column.setPreferredSize(new Dimension(90, 50));
       bidButton = new JButton("Bid!");
@@ -316,17 +328,7 @@ public class GameWindow extends JFrame {
 
       if (success) {
         connection.send(new BidMessage(number, value));
-
-        bidMessage.setText("");
-        bidNumberInput.setText("");
-        bidValueInput.setText("");
-        bidLastNumber.setText("");
-        bidLastValue.setText("");
-        bidDiscription.setText("");
-
-        bidNumberInput.setEnabled(false);
-        bidValueInput.setEnabled(false);
-        bidButton.setEnabled(false);
+        disBid();
       }
 
     }
@@ -337,9 +339,11 @@ public class GameWindow extends JFrame {
     CatchPanel() {
       setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       setLayout(new GridLayout(0, 1));
+      setBackground(normalPanelColor);
 
       JPanel row = new JPanel();
       row.setLayout(new GridLayout(1, 1));
+      row.setOpaque(false);
       JLabel panelName = new JLabel("Catch Panel", JLabel.CENTER);
       panelName.setFont(new Font("Phosphate", Font.BOLD, 48));
       row.add(panelName);
@@ -354,6 +358,7 @@ public class GameWindow extends JFrame {
 
       row = new JPanel();
       row.setLayout(new GridLayout(1, 2));
+      row.setOpaque(false);
 
       catchNoButton = new JButton("No");
       catchNoButton.setEnabled(false);
@@ -372,10 +377,7 @@ public class GameWindow extends JFrame {
           } else {
             connection.send(new CatchMessage(true));
           }
-          catchNoButton.setEnabled(false);
-          catchYesButton.setEnabled(false);
-          catchMessage.setText("");
-          catchDiscription.setText("");
+          disableCatch();
         }
       };
 
@@ -544,10 +546,13 @@ public class GameWindow extends JFrame {
 
   private void createPlayerListButton() {
     playerListButton = new JButton[playerList.length];
-
     for (int i = 0; i != playerList.length; i++) {
       playerListButton[i] = new JButton(playerList[i]);
       playerListButton[i].setFont(new Font("Nanum Pen Script", Font.PLAIN, 20));
+      playerListButton[i].setContentAreaFilled(true);
+      playerListButton[i].setOpaque(true);
+      playerListButton[i].setBorderPainted(false);
+      playerListButton[i].setBackground(new Color(209, 209, 224));
 
       JPanel buf = new JPanel();
       buf.setLayout(new GridLayout(0, 1));
@@ -555,6 +560,11 @@ public class GameWindow extends JFrame {
       buf.add(playerListButton[i]);
       playerPanel.add(buf);
     }
+  }
+
+  private void setPlayerListButton(Color now) {
+    for (int i = 0; i != playerList.length; i++)
+      playerListButton[i].setBackground(now);
   }
 
   private void addMessage(String message) {
@@ -583,11 +593,14 @@ public class GameWindow extends JFrame {
 
   private void handleGameStatus(GameStatus gs) {
     if (gs.status == GameStatus.ROUND_START) {
+      setPlayerListButton(normalColor);
       addMessage("\nRound " + gs.round + " start\n\n");
       statusMessage.setText("Round " + gs.round);
       lastNumber = 0;
       lastValue = 0;
     } else if (gs.status == GameStatus.DO_CATCH) {
+      setPlayerListButton(catchColor);
+      playerListButton[gs.currentPlayer - 1].setBackground(normalColor);
       lastNumber = gs.numberOfDice;
       lastValue = gs.valueOfDice;
       if (gs.currentPlayer != connection.getID())
@@ -595,19 +608,21 @@ public class GameWindow extends JFrame {
       else
         catchMessage.setText("Wait for other's catching");
     } else if (gs.status == GameStatus.DO_BID) {
+      playerListButton[gs.currentPlayer - 1].setBackground(bidColor);
       if (gs.currentPlayer == connection.getID())
         askBid();
-      else
+      else {
         bidMessage.setText(playerList[gs.currentPlayer - 1] + " is bidding...\n");
+      }
     } else if (gs.status == GameStatus.NO_CATCH) {
+      playerListButton[gs.currentPlayer - 1].setBackground(normalColor);
       addMessage(playerList[gs.currentPlayer - 1] + " didn't catch.\n");
     } else if (gs.status == GameStatus.YES_CATCH) {
-      catchNoButton.setEnabled(false);
-      catchYesButton.setEnabled(false);
-      catchMessage.setText("");
-      catchDiscription.setText("");
+      playerListButton[gs.currentPlayer - 1].setBackground(yesCatchColor);
+      disableCatch();
       addMessage(playerList[gs.currentPlayer - 1] + " catched.\n");
     } else if (gs.status == GameStatus.ROUND_END) {
+      playerListButton[gs.currentPlayer - 1].setBackground(losedColor);
       addMessage(playerList[gs.currentPlayer - 1] + " losed.\n");
       addMessage("Total dice: ");
       for (int i = 1; i != 7; i++)
@@ -620,11 +635,13 @@ public class GameWindow extends JFrame {
       try {
         Thread.sleep(500);
       } catch (InterruptedException e) {}
-      askContinue(playerList[gs.currentPlayer - 1], gs.diceTable);
+        askContinue(playerList[gs.currentPlayer - 1], gs.diceTable);
     }
   }
 
   private void askBid() {
+    bidPanel.setBackground(bidColor);
+
     bidMessage.setText("What's your bid?");
 
     bidNumberInput.setEnabled(true);
@@ -643,7 +660,24 @@ public class GameWindow extends JFrame {
     }
   }
 
+  private void disBid() {
+    bidPanel.setBackground(normalPanelColor);
+
+    bidMessage.setText("");
+    bidNumberInput.setText("");
+    bidValueInput.setText("");
+    bidLastNumber.setText("");
+    bidLastValue.setText("");
+    bidDiscription.setText("");
+
+    bidNumberInput.setEnabled(false);
+    bidValueInput.setEnabled(false);
+    bidButton.setEnabled(false);
+  }
+
   private void askCatch(String player, int number, int value) {
+    catchPanel.setBackground(catchColor);
+
     bidMessage.setText("");
     catchMessage.setText("Do you want to catch?");
 
@@ -651,6 +685,16 @@ public class GameWindow extends JFrame {
     catchYesButton.setEnabled(true);
 
     catchDiscription.setText(player + " bid number: " + number + " value: " + value);
+  }
+
+  private void disableCatch() {
+    catchPanel.setBackground(normalPanelColor);
+
+    catchMessage.setText("");
+    catchDiscription.setText("");
+
+    catchNoButton.setEnabled(false);
+    catchYesButton.setEnabled(false);
   }
 
   private void askContinue(String losedPlayer, int[] diceTable) {
