@@ -10,9 +10,9 @@
       "probability": "0.3"
     },
     {
-      "message": "我有十個 1 !!!",
+      "message": "我有十個 1 呢!!!",
       "probability": "0.5"
-    },
+    }
   ],
   "round_start": [
     {
@@ -22,7 +22,7 @@
     {
       "message": "YOYOYO~",
       "probability": "0.4"
-    },
+    }
   ],
   "do_bid": {
     "me" : [
@@ -34,39 +34,91 @@
           "message": "我從不說謊",
           "probability": "0.5"
         },
+        {
+          "message": "人稱誠實小郎君",
+          "probability": "0.5"
+        }
     ],
     "other" : [
+        {
+          "message": "Hurry~~~~",
+          "probability": "0.4"
+        },
+        {
+          "message": "zzzzzzzzzz......",
+          "probability": "0.4"
+        }
     ]
   },
   "do_catch": [
     {
-      "message": "抓我嘛~",
-      "probability": "0.5"
+      "message": "抓或不抓？It's a 問題",
+      "probability": "0.4"
     },
+    {
+      "message": "恩......讓我想想",
+      "probability": "0.4"
+    }
   ],
   "no_catch": [
+    {
+      "message": "怎麼不抓呢?",
+      "probability": "0.4"
+    },
+    {
+      "message": "這不抓不行了",
+      "probability": "0.4"
+    }
   ],
   "yes_catch": [
+    {
+      "message": "你有什麼毛病？",
+      "probability": "0.4"
+    },
+    {
+      "message": "( ￣□￣)/喔~~喔喔~~喔喔~~喔喔~抓抓",
+      "probability": "0.8"
+    }
   ],
-  "round_end": [
-  ],
+  "round_end": {
+    "win" : [
+        {
+          "message": "你不是笨，只是智商低了點",
+          "probability": "0.5"
+        },
+        {
+          "message": "我不想笑你，但這次我真的忍不住了",
+          "probability": "0.5"
+        }
+    ],
+    "lose" :　[
+        {
+          "message": "大師，請收我為徒！",
+          "probability": "0.5"
+        },
+        {
+          "message": "◢▆▅▄▃ 崩╰(〒皿〒)╯潰 ▃▄▅▆◣",
+          "probability": "0.5"
+        }
+    ]
+  },
   "random_talk": [
     {
-      "message": "Hungry!!!!!!!!!!!!!!",
+      "message": "(@~@)",
       "probability": "0.6"
     },
     {
-      "message": "(@~@)",
-      "probability": "0.3"
-    },
-    {
       "message": "\("▔□▔)/",
-      "probability": "0.3"
+      "probability": "0.6"
     },
     {
       "message": "(⊙ˍ⊙)",
-      "probability": "0.3"
+      "probability": "0.6"
     },
+    {
+      "message": "我對你的景仰，有如滔滔江水，連綿不絕，更有如黃河氾濫，一發不可收拾",
+      "probability": "0.6"
+    }
   ],
   "other_talk": [
     {

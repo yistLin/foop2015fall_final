@@ -114,16 +114,21 @@ public class Robot extends Client {
             if (lastValue == 1)
                 hasBidOne = true;
             if (gs.currentPlayer != getID()) {
-                robotTalk = chatRobot.talk(ChatRobot.DO_CATCH);
-                if(robotTalk != null)
-                    send(new ChatMessage(myName, robotTalk));
                 int random = (int)(Math.floor(Math.random() * 4) - 1);
                 int myNum = diceTable[lastValue] + numOfPlayers - 1 +
                             ((hasBidOne) ? 0:diceTable[1]);
-                if (myNum + random < lastNumber)
+                if (myNum + random < lastNumber) {
+                    robotTalk = chatRobot.talk(ChatRobot.DO_CATCH, "yes");
+                    if(robotTalk != null)
+                        send(new ChatMessage(myName, robotTalk));
                     send(new CatchMessage(true));
-                else
+                }
+                else {
+                    robotTalk = chatRobot.talk(ChatRobot.DO_CATCH, "no");
+                    if(robotTalk != null)
+                        send(new ChatMessage(myName, robotTalk));
                     send(new CatchMessage(false));
+                }
             }
         } else if (gs.status == GameStatus.DO_BID) {
             doSleep(Math.random());
