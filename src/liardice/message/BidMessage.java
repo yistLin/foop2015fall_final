@@ -1,4 +1,4 @@
-package liardice;
+package liardice.message;
 
 import java.io.Serializable;
 
