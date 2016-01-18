@@ -3,50 +3,50 @@
   "get_dice": [
     {
       "message": "ლ(・ω・ლ)",
-      "probability": "0.4"
+      "probability": "0.2"
     },
     {
       "message": "HaHaHa~~~~~",
-      "probability": "0.3"
+      "probability": "0.1"
     },
     {
       "message": "我有十個 1 呢!!!",
-      "probability": "0.5"
+      "probability": "0.2"
     }
   ],
   "round_start": [
     {
       "message": "gogogo~~~~~",
-      "probability": "0.4"
+      "probability": "0.2"
     },
     {
       "message": "YOYOYO~",
-      "probability": "0.4"
+      "probability": "0.2"
     }
   ],
   "do_bid": {
     "me" : [
         {
           "message": "抓我嘛~",
-          "probability": "0.5"
+          "probability": "0.2"
         },
         {
           "message": "我從不說謊",
-          "probability": "0.5"
+          "probability": "0.3"
         },
         {
           "message": "ε٩(๑> ₃ <)۶з  (●’ω`●)",
-          "probability": "0.5"
+          "probability": "0.1"
         }
     ],
     "other" : [
         {
           "message": "Hurry~~~~",
-          "probability": "0.4"
+          "probability": "0.2"
         },
         {
           "message": "ZZZZZZZZZZZZZZZZZZZZZZ......",
-          "probability": "0.4"
+          "probability": "0.1"
         }
     ]
   },
@@ -64,43 +64,43 @@
     "no" : [
         {
           "message": "抓了抓了",
-          "probability": "0.4"
+          "probability": "0.3"
         },
         {
           "message": "你聽說了嘛？明天是FOOP Final的死線耶",
-          "probability": "0.4"
+          "probability": "0.2"
         }
     ]
   },
   "no_catch": [
     {
       "message": "怎麼不抓呢?",
-      "probability": "0.4"
+      "probability": "0.05"
     },
     {
       "message": "這不抓不行了",
-      "probability": "0.4"
+      "probability": "0.1"
     }
   ],
   "yes_catch": [
     {
       "message": "我覺得這行為很不明智",
-      "probability": "0.4"
+      "probability": "0.3"
     },
     {
       "message": "( ￣□￣)/喔~~喔喔~~喔喔~~喔喔~抓抓",
-      "probability": "0.8"
+      "probability": "0.4"
     }
   ],
   "round_end": {
     "win" : [
         {
           "message": "你不是笨，只是智商低了點",
-          "probability": "0.5"
+          "probability": "0.1"
         },
         {
           "message": "我不想笑你，但這次我真的忍不住了",
-          "probability": "0.5"
+          "probability": "0.1"
         }
     ],
     "lose" : [
@@ -117,19 +117,19 @@
   "random_talk": [
     {
       "message": "(╯-_-)╯ ~╩╩",
-      "probability": "0.6"
+      "probability": "0.3"
     },
     {
       "message": "\\('▔□▔)/",
-      "probability": "0.6"
+      "probability": "0.3"
     },
     {
       "message": "(⊙ˍ⊙)",
-      "probability": "0.6"
+      "probability": "0.3"
     },
     {
       "message": "我對你的景仰，有如滔滔江水，連綿不絕，更有如黃河氾濫，一發不可收拾",
-      "probability": "0.6"
+      "probability": "0.3"
     }
   ],
   "other_talk": [

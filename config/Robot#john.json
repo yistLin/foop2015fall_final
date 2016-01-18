@@ -71,7 +71,7 @@
    "no_catch":[
       {
          "message":"不抓嗎？",
-         "probability":"0.2"
+         "probability":"0.05"
       }
    ],
    "yes_catch":[
