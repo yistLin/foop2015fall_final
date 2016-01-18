@@ -16,7 +16,7 @@
       "probability": "0.2"
     }
   ],
-  "do_bid": [
+  "do_bid": {
     "me": [
       {
         "message": "抓我啊～",
@@ -29,7 +29,7 @@
         "probability": "0.5"
       }
     ]
-  ],
+  },
   "do_catch": [
     {
       "message": "我抓！",
