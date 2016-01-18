@@ -117,7 +117,7 @@ public class Main {
     column = new JPanel(); // number of AI
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(Box.createHorizontalStrut(40)); // reserved space
-    column.add(new JLabel("Number of AI (0~5):"));
+    column.add(new JLabel("Number of AI (1 < x < 7, x = player number + AI number):"));
     column.add(aiNumberInput);
     row.add(column);
     
