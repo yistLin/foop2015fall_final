@@ -1,6 +1,7 @@
 package liardice;
 
 import netgame.common.*;
+import liardice.message.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -472,6 +473,8 @@ public class GameWindow extends JFrame {
             } else if (fm.message instanceof GameStatus) {
               GameStatus gs = (GameStatus)fm.message;
               handleGameStatus(gs);
+            } else if (fm.message instanceof RejectedMessage) {
+              serverReject();
             }
           }
         });
@@ -482,6 +485,15 @@ public class GameWindow extends JFrame {
       SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           JOptionPane.showMessageDialog(GameWindow.this, "Your opponent has quit.\nThe game is over.");
+          System.exit(0);
+        }
+      });
+    }
+
+    private void serverReject() {
+      SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+          JOptionPane.showMessageDialog(GameWindow.this, "Server is busy.");
           System.exit(0);
         }
       });
