@@ -41,6 +41,15 @@ public class Robot extends Client {
         this.myName = chatRobot.NICKNAME;
         send(myName);
         diceTable = new int[7];
+        new Thread() {
+            public void run() {
+                while (true) {
+                    doSleep(Math.random()*10);
+                    send(new ChatMessage(myName, chatRobot.talk(ChatRobot.RANDOM_TALK)));
+                }
+            }
+        }.start();
+        
         Signal.handle(new Signal("INT"), new SignalHandler() {
             public void handle(Signal signo) {
                 disconnect();
