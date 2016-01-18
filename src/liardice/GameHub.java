@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import sun.misc.Signal;
 import sun.misc.SignalHandler;
+import liardice.message.*;
 
 public class GameHub extends Hub{
 
@@ -68,10 +69,15 @@ public class GameHub extends Hub{
     }
 
     protected void playerConnected(int playerID) {
+    	if (playerID > NUM_OF_PLAYERS) {
+    		sendToOne(playerID, new RejectedMessage());
+    	}
         write2log("Player #" + Integer.toString(playerID) + " connected.");
     }
 
     protected void playerDisconnected(int playerID) {
+    	if (playerID > NUM_OF_PLAYERS)
+    		return;
         write2log("Player #" + Integer.toString(playerID) + " disconnected.");
         write2log("[Status] GameHub is shutting down.");
         shutDownHub();
@@ -111,6 +117,9 @@ public class GameHub extends Hub{
     }
 
     protected void messageReceived(int playerID, Object message) {
+
+    	if (playerID > NUM_OF_PLAYERS)
+    		return;
 
         // players send their nicknames
         if (message instanceof String) {
