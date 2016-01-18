@@ -79,7 +79,7 @@ public class ChatRobot {
     public String talk(int status, boolean imLoser) {
     	JSONObject obj = jsonObj.getJSONObject("round_end");
     	String state = (imLoser) ? "lose" : "win";
-    	JSONArray talkArray = jsonObj.getJSONArray(state);
+    	JSONArray talkArray = obj.getJSONArray(state);
 		int randIndex = rand.nextInt(talkArray.length());
 		JSONObject talkObj = talkArray.getJSONObject(randIndex);
 		double probability = Double.parseDouble(talkObj.getString("probability"));
@@ -90,7 +90,7 @@ public class ChatRobot {
     public String talk(int status, String message) {
     	if (status == DO_BID) {
 	    	JSONObject obj = jsonObj.getJSONObject("do_bid");
-	    	JSONArray talkArray = jsonObj.getJSONArray(message);
+	    	JSONArray talkArray = obj.getJSONArray(message);
 			int randIndex = rand.nextInt(talkArray.length());
 			JSONObject talkObj = talkArray.getJSONObject(randIndex);
 			double probability = Double.parseDouble(talkObj.getString("probability"));
