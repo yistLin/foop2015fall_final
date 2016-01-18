@@ -616,7 +616,6 @@ public class GameWindow extends JFrame {
       }
     } else if (gs.status == GameStatus.NO_CATCH) {
       playerListButton[gs.currentPlayer - 1].setBackground(normalColor);
-      addMessage(playerList[gs.currentPlayer - 1] + " didn't catch.\n");
     } else if (gs.status == GameStatus.YES_CATCH) {
       playerListButton[gs.currentPlayer - 1].setBackground(yesCatchColor);
       disableCatch();
