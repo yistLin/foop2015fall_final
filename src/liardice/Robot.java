@@ -53,8 +53,9 @@ public class Robot extends Client {
         if (forwardedMessage instanceof ForwardedMessage) {
         ForwardedMessage fm = (ForwardedMessage)forwardedMessage;
             if (fm.message instanceof ChatMessage) {
-                if (Math.random() > 0.8)
-                    send(new ChatMessage(myName, ((ChatMessage)(fm.message)).message));
+                ChatMessage cm = (ChatMessage)fm.message;
+                if (cm.id.compareTo(myName) != 0 && Math.random() > 0.8)
+                    send(new ChatMessage(myName, cm.message));
             } else if (fm.message instanceof String[]) {
                 numOfPlayers = ((String[])(fm.message)).length;
             } else if (fm.message instanceof String) {
@@ -131,7 +132,7 @@ public class Robot extends Client {
     }
     
 	protected void serverShutDown(String message) {
-        
+        doSleep(1.5);
         System.exit(0);
 	}
     
