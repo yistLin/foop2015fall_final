@@ -30,12 +30,24 @@
       }
     ]
   },
-  "do_catch": [
-    {
-      "message": "我抓！",
-      "probability": "0.9"
-    }
-  ],
+  "do_catch": {
+    "yes": [
+      {
+        "message": "我抓！",
+        "probability": "0.9"
+      },
+      {
+        "message": "你的肺活量是多少啊，可以把牛乙吹的那麼大",
+        "probability": "0.8"
+      }
+    ],
+    "no": [
+      {
+        "message": "偏不抓",
+        "probability": "0.5"
+      }
+    ]
+  },
   "no_catch": [
     {
       "message": "這明顯是吹牛吧？不抓？",
@@ -90,6 +102,10 @@
     {
       "message": "さすが、高校最強！",
       "probability": "0.3"
+    },
+    {
+      "message": "大腦是個很棒的東西，真希望你也有一個",
+      "probability": "0.7"
     }
   ],
   "other_talk": [
