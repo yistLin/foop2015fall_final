@@ -32,6 +32,8 @@ public class GameWindow extends JFrame {
 
   // status panel
   private JLabel statusMessage;
+  private JPanel playerPanel;
+  private JButton[] playerListButton;
 
   // bid panel
   private JTextField bidNumberInput;
@@ -115,13 +117,42 @@ public class GameWindow extends JFrame {
   private class Display extends JPanel {
 
     Display() {
-      setLayout(new FlowLayout(FlowLayout.LEFT));
-      setBackground(new Color(173, 86, 31));
+      setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+      add(new Status());
+
+      JPanel row = new JPanel();
+      row.setLayout(new FlowLayout(FlowLayout.LEFT));
+      row.setBackground(new Color(173, 86, 31));
       board = new Board();
       chatroom = new Chatroom();
-      add(board);
-      add(chatroom);
+      row.add(board);
+      row.add(chatroom);
+      add(row);
+
+    }
+  }
+
+  private class Status extends JPanel {
+
+    Status() {
+      setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+      setBackground(new Color(173, 86, 31));
+      setPreferredSize(new Dimension(675, 150));
+
+      JPanel statusPanel = new JPanel();
+      statusPanel.setPreferredSize(new Dimension(675, 90));
+      statusPanel.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+      statusMessage = new JLabel("Waiting for other players.", JLabel.CENTER);
+      statusMessage.setFont(new Font("Phosphate", Font.BOLD, 48));
+      statusPanel.add(statusMessage);
+      add(statusPanel);
+
+      playerPanel = new JPanel();
+      playerPanel.setPreferredSize(new Dimension(675, 60));
+      playerPanel.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+      playerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+      add(playerPanel);
     }
   }
 
@@ -132,12 +163,7 @@ public class GameWindow extends JFrame {
       setPreferredSize(new Dimension(675, 585));
       setBorder(BorderFactory.createLineBorder(new Color(130, 70, 0), 8));
 
-      JPanel statusPanel = new JPanel();
-      statusPanel.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
-      statusMessage = new JLabel("Waiting for other players.", JLabel.CENTER);
-      statusMessage.setFont(new Font("Phosphate", Font.BOLD, 48));
-      statusPanel.add(statusMessage);
-      add(statusPanel, BorderLayout.NORTH);
+      add(new JPanel(), BorderLayout.NORTH);
 
       JPanel gamePanel = new JPanel();
       gamePanel.setLayout(new GridLayout(0, 1));
@@ -468,6 +494,7 @@ public class GameWindow extends JFrame {
               addMessage(cm.id, cm.message);
             } else if (fm.message instanceof String[]) {
               playerList = (String[])fm.message;
+              createPlayerListButton();
               addMessage("Every player is here.\n");
               for (int i = 0; i != playerList.length; i++) {
                 addMessage("Player" + (i + 1) + ": " + playerList[i] + "\n");
@@ -512,6 +539,21 @@ public class GameWindow extends JFrame {
           System.exit(0);
         }
       });
+    }
+  }
+
+  private void createPlayerListButton() {
+    playerListButton = new JButton[playerList.length];
+
+    for (int i = 0; i != playerList.length; i++) {
+      playerListButton[i] = new JButton(playerList[i]);
+      playerListButton[i].setFont(new Font("Nanum Pen Script", Font.PLAIN, 20));
+
+      JPanel buf = new JPanel();
+      buf.setLayout(new GridLayout(0, 1));
+      buf.setPreferredSize(new Dimension(100, 45));
+      buf.add(playerListButton[i]);
+      playerPanel.add(buf);
     }
   }
 
