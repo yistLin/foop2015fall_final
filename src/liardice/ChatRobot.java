@@ -56,28 +56,34 @@ public class ChatRobot {
    		NICKNAME = jsonObj.getString("name");
     }
 
-    // GET_DICE
-    public String talk(int status, Dice[] dice) {
-    	return null;
-    }
-
-    // ROUND_START, DO_BID, DO_CATCH, NO_CATCH, YES_CATCH, RANDOM_TALK
+    // ROUND_START, DO_BID, DO_CATCH, NO_CATCH, YES_CATCH, RANDOM_TALK, GET_DICE
     public String talk(int status) {
+    	String objName = "";
     	switch (status) {
-    		case RANDOM_TALK:
-    			JSONArray talkArray = jsonObj.getJSONArray("random_talk");
-    			int randIndex = rand.nextInt(talkArray.length());
-    			JSONObject talkObj = talkArray.getJSONObject(randIndex);
-    			return talkObj.getString("message");
-    		default:
-    			break;
+    		case RANDOM_TALK:	objName = "random_talk"; break;
+    		case DO_BID:		objName = "do_bid"; break;
+    		case DO_CATCH:		objName = "do_catch"; break;
+    		case NO_CATCH:		objName = "no_catch"; break;
+    		case YES_CATCH:		objName = "yes_catch"; break;
+    		case GET_DICE:		objName = "get_dice"; break;
+    		default: break;
     	}
-    	return null;
+    	JSONArray talkArray = jsonObj.getJSONArray(objName);
+		int randIndex = rand.nextInt(talkArray.length());
+		JSONObject talkObj = talkArray.getJSONObject(randIndex);
+		double probability = Double.parseDouble(talkObj.getString("probability"));
+		return (Math.random() < probability) ? talkObj.getString("message") : null;
     }
 
     // ROUND_END
     public String talk(int status, boolean imLoser) {
-    	return null;
+    	JSONObject obj = jsonObj.getJSONObject("round_end");
+    	String state = (imLoser) ? "lose" : "win";
+    	JSONArray talkArray = jsonObj.getJSONArray(state);
+		int randIndex = rand.nextInt(talkArray.length());
+		JSONObject talkObj = talkArray.getJSONObject(randIndex);
+		double probability = Double.parseDouble(talkObj.getString("probability"));
+		return (Math.random() < probability) ? talkObj.getString("message") : null;
     }
 
     // OTHER_TALK
