@@ -79,10 +79,19 @@ public class Main {
     
     // Add welcome and message to main panel
     row = new JPanel();
-    row.setLayout(new GridLayout(0, 1));
-    row.add(new JPanel()); // reserved space
-    row.add(welcome);
-    row.add(message);
+    row.setLayout(new GridBagLayout());
+    GridBagConstraints c = new GridBagConstraints();
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.ipady = 20;
+    c.gridx = 0;
+    c.gridy = 0;
+    row.add(welcome, c);
+    c.fill = GridBagConstraints.HORIZONTAL;
+    c.ipady = 10;
+    c.gridx = 0;
+    c.gridy = 1;
+    row.add(message, c);
+
     inputPanel.add(row);
 
     // Add server mode and client mode
