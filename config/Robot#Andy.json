@@ -1,5 +1,5 @@
 {
-  "name": "Robot#Andy",
+  "name": "AndyRob",
   "get_dice": [
     {
       "message": "ლ(・ω・ლ)",
@@ -35,7 +35,7 @@
           "probability": "0.5"
         },
         {
-          "message": "人稱誠實小郎君",
+          "message": "ε٩(๑> ₃ <)۶з  (●’ω`●)",
           "probability": "0.5"
         }
     ],
@@ -45,7 +45,7 @@
           "probability": "0.4"
         },
         {
-          "message": "zzzzzzzzzz......",
+          "message": "ZZZZZZZZZZZZZZZZZZZZZZ......",
           "probability": "0.4"
         }
     ]
@@ -53,7 +53,7 @@
   "do_catch": {
     "yes" : [
         {
-          "message": "抓或不抓？It's a 問題",
+          "message": "太難決定了吧，不抓了啦",
           "probability": "0.4"
         },
         {
@@ -64,6 +64,10 @@
     "no" : [
         {
           "message": "抓了抓了",
+          "probability": "0.4"
+        },
+        {
+          "message": "你聽說了嘛？明天是FOOP Final的死線耶",
           "probability": "0.4"
         }
     ]
@@ -80,7 +84,7 @@
   ],
   "yes_catch": [
     {
-      "message": "你有什麼毛病？",
+      "message": "我覺得這行為很不明智",
       "probability": "0.4"
     },
     {
@@ -101,22 +105,22 @@
     ],
     "lose" : [
         {
-          "message": "大師，請收我為徒！",
+          "message": "臣亮言：先帝創業未半，而中道崩殂。今天下三分，益州疲弊，此誠危急存亡之秋也。然侍衛之臣，不懈於內；忠志之士，忘身於外者，蓋追先帝之殊遇，欲報之於陛下也......",
           "probability": "0.5"
         },
         {
-          "message": "◢▆▅▄▃ 崩╰(〒皿〒)╯潰 ▃▄▅▆◣",
+          "message": "              ◢▆▅▄▃崩╰(〒皿〒)╯潰▃▄▅▆◣",
           "probability": "0.5"
         }
     ]
   },
   "random_talk": [
     {
-      "message": "( ￣ c￣)y▂ξ",
+      "message": "(╯-_-)╯ ~╩╩",
       "probability": "0.6"
     },
     {
-      "message": "\\('▔□▔)/",
+      "message": "\\\('▔□▔)/",
       "probability": "0.6"
     },
     {

@@ -44,7 +44,7 @@ public class Robot extends Client {
         new Thread() {
             public void run() {
                 while (true) {
-                    doSleep(Math.random()*10 + 3);
+                    doSleep(Math.random()*10 + 10);
                     String randomTalk = chatRobot.talk(ChatRobot.RANDOM_TALK);
                     if(randomTalk != null)
                         send(new ChatMessage(myName, randomTalk));
@@ -108,7 +108,7 @@ public class Robot extends Client {
             if(robotTalk != null)
                 send(new ChatMessage(myName, robotTalk));
         } else if (gs.status == GameStatus.DO_CATCH) {
-            doSleep(Math.random() * 4 + 1);
+            doSleep(Math.random() * 7 + 3);
             lastNumber = gs.numberOfDice;
             lastValue = gs.valueOfDice;
             if (lastValue == 1)
