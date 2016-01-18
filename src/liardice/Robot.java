@@ -3,6 +3,8 @@ package liardice;
 import java.io.IOException;
 import java.util.*;
 import netgame.common.*;
+import sun.misc.Signal;
+import sun.misc.SignalHandler;
 
 public class Robot extends Client {
     private String myName;
@@ -32,11 +34,18 @@ public class Robot extends Client {
         }   
     }
 
-    Robot(String hubHostName, int hubPort, String nickName) throws IOException {
+    public Robot(String hubHostName, int hubPort, String nickName) throws IOException {
         super(hubHostName, hubPort);
         this.myName = nickName;
         send(myName);
         diceTable = new int[7];
+        Signal.handle(new Signal("INT"), new SignalHandler() {
+            public void handle(Signal signo) {
+                disconnect();
+                doSleep(1);
+                System.exit(0);
+            }
+        });
     }
 
     protected void messageReceived(final Object forwardedMessage) {
@@ -94,7 +103,7 @@ public class Robot extends Client {
             if (gs.currentPlayer == getID()) {
                 int random = (int)(Math.floor(Math.random() * 3) - 1);
                 int myNum = diceTable[maxDice] + numOfPlayers +
-                            ((hasBidOne) ? 0:diceTable[1]);
+                            ((hasBidOne || maxDice == 1) ? 0:diceTable[1]);
                 if(lastValue == 0)
                     send(new BidMessage(myNum + random, maxDice));
                 else if(maxDice > lastValue)
