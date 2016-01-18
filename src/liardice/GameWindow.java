@@ -23,6 +23,7 @@ public class GameWindow extends JFrame {
   private String[] playerList;
   private Dice[] dice;
   private int lastNumber = 0, lastValue = 0;
+  private boolean shutdown = false;
 
   // main panel
   private Display display;
@@ -480,12 +481,16 @@ public class GameWindow extends JFrame {
     }
 
     protected void serverShutdown(String message) {
-      SwingUtilities.invokeLater(new Runnable() {
-        public void run() {
-          JOptionPane.showMessageDialog(GameWindow.this, "Your opponent has quit.\nThe game is over.");
-          System.exit(0);
-        }
-      });
+      if (shutdown) {
+        System.exit(0);
+      } else {
+        SwingUtilities.invokeLater(new Runnable() {
+          public void run() {
+            JOptionPane.showMessageDialog(GameWindow.this, "Your opponent has quit.\nThe game is over.");
+            System.exit(0);
+         }
+       });
+      }
     }
 
     private void serverReject() {
@@ -612,7 +617,7 @@ public class GameWindow extends JFrame {
       connection.send(new ContinueMessage(true));
     } else { // no
       connection.send(new ContinueMessage(false));
-      System.exit(0);
+      shutdown = true;
     }
   }
 
