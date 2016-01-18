@@ -23,6 +23,7 @@ public class Main {
     final JTextField listeningPortInput = new JTextField("" + DEFAULT_PORT, 5);
     final JTextField hostInput = new JTextField(30);
     final JTextField connectPortInput = new JTextField("" + DEFAULT_PORT, 5);
+    final JTextField aiNumberInput = new JTextField("" + 0, 1);
     
     // Buttons for setting mode
     final JRadioButton selectServerMode = new JRadioButton("Start a new game.");
@@ -37,10 +38,12 @@ public class Main {
         if (e.getSource() == selectServerMode) {
           listeningPortInput.setEnabled(true);
           playerNumberInput.setEnabled(true);
+          aiNumberInput.setEnabled(true);
           hostInput.setEnabled(false);
           connectPortInput.setEnabled(false);
           listeningPortInput.setEditable(true);
           playerNumberInput.setEditable(true);
+          aiNumberInput.setEditable(true);
           hostInput.setEditable(false);
           connectPortInput.setEditable(false);
         } else {
@@ -98,8 +101,15 @@ public class Main {
     column = new JPanel(); // number of player input
     column.setLayout(new FlowLayout(FlowLayout.LEFT));
     column.add(Box.createHorizontalStrut(40)); // reserved space
-    column.add(new JLabel("Number of player (2~6):"));
+    column.add(new JLabel("Number of player (1~6):"));
     column.add(playerNumberInput);
+    row.add(column);
+    
+    column = new JPanel(); // number of AI
+    column.setLayout(new FlowLayout(FlowLayout.LEFT));
+    column.add(Box.createHorizontalStrut(40)); // reserved space
+    column.add(new JLabel("Number of AI (0~5):"));
+    column.add(aiNumberInput);
     row.add(column);
     
     column = new JPanel(); // port input
@@ -138,10 +148,10 @@ public class Main {
 
       if (selectServerMode.isSelected()) {
         String nickname;
-        int playerNumber, port;
+        int playerNumber, port, aiNumber;
         try {
           playerNumber = Integer.parseInt(playerNumberInput.getText().trim());
-          if (playerNumber < 2 || playerNumber > 6)
+          if (playerNumber < 1 || playerNumber > 6)
             throw new IllegalPlayerNumberException("Illegal number of player");
         } catch (NumberFormatException e) {
           message.setText("You must enter number of player!");
@@ -154,6 +164,23 @@ public class Main {
           message.setForeground(Color.red);
           playerNumberInput.selectAll();
           playerNumberInput.requestFocus();
+          continue;
+        }
+        try {
+          aiNumber = Integer.parseInt(aiNumberInput.getText().trim());
+          if (aiNumber < 0 || aiNumber + playerNumber > 6 || aiNumber + playerNumber < 2)
+            throw new IllegalAINumberException("Illegal number of AI");
+        } catch (NumberFormatException e) {
+          message.setText("You must enter number of AI!");
+          message.setForeground(Color.red);
+          aiNumberInput.selectAll();
+          aiNumberInput.requestFocus();
+          continue;
+        } catch (IllegalAINumberException e) {
+          message.setText(e.getMessage());
+          message.setForeground(Color.red);
+          aiNumberInput.selectAll();
+          aiNumberInput.requestFocus();
           continue;
         }
         try {
@@ -282,6 +309,17 @@ public class Main {
     public IllegalPlayerNumberException(String message) {
 	    super(message);
 	  }
+  }
+  
+  private static class IllegalAINumberException extends Exception {
+    
+    public IllegalAINumberException() {
+      super("Illegal number of AI!");
+    }
+    
+    public IllegalAINumberException(String message) {
+      super(message);
+    }
   }
 }
 
