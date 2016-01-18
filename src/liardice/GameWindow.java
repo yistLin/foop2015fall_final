@@ -262,7 +262,7 @@ public class GameWindow extends JFrame {
       }
       try {
         value = Integer.parseInt(bidValueInput.getText().trim());
-        if (value < 0 || value > 6)
+        if (value < 1 || value > 6)
           throw new IllegalNumberException("Illegal value of dice");
         if (number == lastNumber && value <= lastValue)
           throw new IllegalNumberException("Value must greater than last");
