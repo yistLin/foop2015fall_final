@@ -50,16 +50,24 @@
         }
     ]
   },
-  "do_catch": [
-    {
-      "message": "抓或不抓？It's a 問題",
-      "probability": "0.4"
-    },
-    {
-      "message": "恩......讓我想想",
-      "probability": "0.4"
-    }
-  ],
+  "do_catch": {
+    "yes" : [
+        {
+          "message": "抓或不抓？It's a 問題",
+          "probability": "0.4"
+        },
+        {
+          "message": "恩......讓我想想",
+          "probability": "0.4"
+        }
+    ],
+    "no" : [
+        {
+          "message": "抓了抓了",
+          "probability": "0.4"
+        }
+    ]
+  },
   "no_catch": [
     {
       "message": "怎麼不抓呢?",
