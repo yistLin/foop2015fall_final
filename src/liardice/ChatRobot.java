@@ -96,6 +96,14 @@ public class ChatRobot {
 			double probability = Double.parseDouble(talkObj.getString("probability"));
 			return (Math.random() < probability) ? talkObj.getString("message") : null;
 		}
+		else if (status == DO_CATCH) {
+			JSONObject obj = jsonObj.getJSONObject("do_catch");
+	    	JSONArray talkArray = obj.getJSONArray(message);
+			int randIndex = rand.nextInt(talkArray.length());
+			JSONObject talkObj = talkArray.getJSONObject(randIndex);
+			double probability = Double.parseDouble(talkObj.getString("probability"));
+			return (Math.random() < probability) ? talkObj.getString("message") : null;
+		}
 		else {
 			return null;
 		}
