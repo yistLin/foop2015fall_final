@@ -1,7 +1,6 @@
 package liardice;
 
 import java.awt.*;
-import java.awt.Robot;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.IOException;
@@ -234,9 +233,8 @@ public class Main {
         // new Robot
         for (int i = 1; i <= aiNumber; i++) {
           try {
-            new liardice.Robot( "localhost", port, "Robot#"+i );
+            new Robot("localhost", port);
           } catch (IOException e) {}
-          System.out.println("after new Robot#" + (i+1));
         }
         break;
       } else {

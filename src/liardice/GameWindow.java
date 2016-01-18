@@ -518,8 +518,7 @@ public class GameWindow extends JFrame {
       connection.disconnect();
       try {
         Thread.sleep(500);
-      } catch (InterruptedException e) {
-      }
+      } catch (InterruptedException e) {}
     }
     System.exit(0);
   }
@@ -561,8 +560,7 @@ public class GameWindow extends JFrame {
 
       try {
         Thread.sleep(500);
-      } catch (InterruptedException e) {
-      }
+      } catch (InterruptedException e) {}
       askContinue(playerList[gs.currentPlayer - 1], gs.diceTable);
     }
   }
