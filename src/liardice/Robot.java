@@ -15,16 +15,23 @@ public class Robot extends Client {
     private boolean hasBidOne;
     
     public static void main(String[] args) {
+        String hubHostName, nickName;
+        int hubPort;
     	if (args.length > 2) {
-    		String hubHostName = args[0];
-            int hubPort = Integer.parseInt(args[1]);
-    		String nickName = args[2];
+    		hubHostName = args[0];
+            hubPort = Integer.parseInt(args[1]);
+    		nickName = args[2];
     	}
         else {
         	return;
         }
-        new Robot(hubHostName, hubPort, nickName);
+        try {
+            new Robot(hubHostName, hubPort, nickName);
+        } catch (IOException e) {
+            System.out.println("Cannot new GameHub");
+        }   
     }
+
     Robot(String hubHostName, int hubPort, String nickName) throws IOException {
         super(hubHostName, hubPort);
         this.myName = nickName;
@@ -68,7 +75,7 @@ public class Robot extends Client {
             lastNumber = 0;
             lastValue = 0;
         } else if (gs.status == GameStatus.DO_CATCH) {
-            sleep(0.5);
+            doSleep(Math.random() * 2 + 1);
             lastNumber = gs.numberOfDice;
             lastValue = gs.valueOfDice;
             if(lastValue == 1)
@@ -83,7 +90,7 @@ public class Robot extends Client {
                     send(new CatchMessage(false));
             }
         } else if (gs.status == GameStatus.DO_BID) {
-            sleep(0.5);
+            doSleep(Math.random() * 2 + 3);
             if (gs.currentPlayer == getID()) {
                 int random = (int)(Math.floor(Math.random() * 3) - 1);
                 int myNum = diceTable[maxDice] + numOfPlayers +
