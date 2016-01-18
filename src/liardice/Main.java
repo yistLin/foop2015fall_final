@@ -173,10 +173,6 @@ public class Main {
             throw new IllegalAINumberException("Illegal number of AI");
           playerNumber += aiNumber;
         } catch (NumberFormatException e) {
-          // message.setText("You must enter number of AI!");
-          // message.setForeground(Color.red);
-          // aiNumberInput.selectAll();
-          // aiNumberInput.requestFocus();
           aiNumberInput.setText("0");
           aiNumber = 0;
           continue;
@@ -271,7 +267,8 @@ public class Main {
           nameInput.requestFocus();
           continue;
         }
-        new GameWindow("localhost", port, nickname);
+        new GameWindow(host, port, nickname);
+        break;
       }
     }
   }
