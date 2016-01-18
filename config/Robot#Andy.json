@@ -1,0 +1,84 @@
+{
+  "name": "Robot#Andy",
+  "get_dice": [
+    {
+      "message": "ლ(・ω・ლ)",
+      "probability": "0.4"
+    },
+    {
+      "message": "HaHaHa~~~~~",
+      "probability": "0.3"
+    },
+    {
+      "message": "我有十個 1 !!!",
+      "probability": "0.5"
+    },
+  ],
+  "round_start": [
+    {
+      "message": "gogogo~~~~~",
+      "probability": "0.4"
+    },
+    {
+      "message": "YOYOYO~",
+      "probability": "0.4"
+    },
+  ],
+  "do_bid": {
+    "me" : [
+        {
+          "message": "抓我嘛~",
+          "probability": "0.5"
+        },
+        {
+          "message": "我從不說謊",
+          "probability": "0.5"
+        },
+    ],
+    "other" : [
+    ]
+  },
+  "do_catch": [
+    {
+      "message": "抓我嘛~",
+      "probability": "0.5"
+    },
+  ],
+  "no_catch": [
+  ],
+  "yes_catch": [
+  ],
+  "round_end": [
+  ],
+  "random_talk": [
+    {
+      "message": "Hungry!!!!!!!!!!!!!!",
+      "probability": "0.6"
+    },
+    {
+      "message": "(@~@)",
+      "probability": "0.3"
+    },
+    {
+      "message": "\("▔□▔)/",
+      "probability": "0.3"
+    },
+    {
+      "message": "(⊙ˍ⊙)",
+      "probability": "0.3"
+    },
+  ],
+  "other_talk": [
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    },
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    }
+  ]
+}
+

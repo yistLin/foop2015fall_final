@@ -108,15 +108,15 @@ public class Robot extends Client {
             if(robotTalk != null)
                 send(new ChatMessage(myName, robotTalk));
         } else if (gs.status == GameStatus.DO_CATCH) {
-            robotTalk = chatRobot.talk(ChatRobot.DO_CATCH);
-            if(robotTalk != null)
-                send(new ChatMessage(myName, robotTalk));
             doSleep(Math.random() * 4 + 1);
             lastNumber = gs.numberOfDice;
             lastValue = gs.valueOfDice;
             if (lastValue == 1)
                 hasBidOne = true;
             if (gs.currentPlayer != getID()) {
+                robotTalk = chatRobot.talk(ChatRobot.DO_CATCH);
+                if(robotTalk != null)
+                    send(new ChatMessage(myName, robotTalk));
                 int random = (int)(Math.floor(Math.random() * 4) - 1);
                 int myNum = diceTable[lastValue] + numOfPlayers - 1 +
                             ((hasBidOne) ? 0:diceTable[1]);
@@ -126,11 +126,11 @@ public class Robot extends Client {
                     send(new CatchMessage(false));
             }
         } else if (gs.status == GameStatus.DO_BID) {
-            robotTalk = chatRobot.talk(ChatRobot.DO_BID);
-            if(robotTalk != null)
-                send(new ChatMessage(myName, robotTalk));
             doSleep(Math.random());
             if (gs.currentPlayer == getID()) {
+                robotTalk = chatRobot.talk(ChatRobot.DO_BID, "me");
+                if(robotTalk != null)
+                    send(new ChatMessage(myName, robotTalk));
                 int random = (int)(Math.floor(Math.random() * 3) - 1);
                 int myNum = diceTable[maxDice] + numOfPlayers - 1 +
                             ((hasBidOne || maxDice == 1) ? 0:diceTable[1]);
@@ -140,6 +140,10 @@ public class Robot extends Client {
                     send(new BidMessage(lastNumber, maxDice));
                 else
                     send(new BidMessage(lastNumber+1, maxDice));
+            } else {
+                robotTalk = chatRobot.talk(ChatRobot.DO_BID, "other");
+                if(robotTalk != null)
+                    send(new ChatMessage(myName, robotTalk));
             }
         } else if (gs.status == GameStatus.NO_CATCH) {
             if(gs.currentPlayer != getID()) {
