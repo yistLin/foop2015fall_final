@@ -1,5 +1,6 @@
 {
   "name": "RikiBot",
+  "entropy": "0.5",
   "get_dice": [
     {
       "message": "好多一啊～",

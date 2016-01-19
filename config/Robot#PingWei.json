@@ -1,5 +1,6 @@
 {
   "name": "PingWei",
+  "entropy": "0.5",
   "get_dice": [
     {
       "message": "普利珠啦！",

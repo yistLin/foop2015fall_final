@@ -1,5 +1,6 @@
 {
   "name": "Mayor",
+  "entropy": "0.5",
   "get_dice": [
     {
       "message": "三環三線，我能實現",

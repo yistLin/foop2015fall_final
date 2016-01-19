@@ -1,5 +1,6 @@
 {
   "name": "Yibot",
+  "entropy": "0.5",
   "get_dice": [
     {
       "message": "阿哈！",

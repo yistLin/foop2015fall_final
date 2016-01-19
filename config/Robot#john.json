@@ -1,5 +1,6 @@
 {
    "name":"Jonbot",
+  "entropy": "0.5",
    "get_dice":[
       {
          "message":"骰子畫的好漂亮啊",
