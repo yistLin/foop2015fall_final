@@ -8,6 +8,10 @@
     {
       "message": "我有五個一喔～",
       "probability": "0.1"
+    },
+    {
+      "message": "排整齊，才好看",
+      "probability": "0.2"
     }
   ],
   "round_start": [
@@ -54,6 +58,10 @@
       },
       {
         "message": "你的肺活量是多少啊，可以把牛乙吹的那麼大",
+        "probability": "0.8"
+      },
+      {
+        "message": "淡水阿嬤叫我一定要抓",
         "probability": "0.8"
       }
     ],
@@ -134,6 +142,10 @@
     {
       "message": "大腦是個很棒的東西，真希望你也有一個",
       "probability": "0.7"
+    },
+    {
+      "message": "剛剛喝了點酒，骰子都在亂跑",
+      "probability": "0.4"
     }
   ],
   "other_talk": [

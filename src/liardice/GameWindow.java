@@ -28,6 +28,7 @@ public class GameWindow extends JFrame {
   private boolean bidLose = false;
   private boolean catchWin = false;
   private boolean[] playerListMuted;
+  private Object lock = new Object();
 
   // status color
   private final Color normalPanelColor = new Color(190, 198, 216);
@@ -92,11 +93,11 @@ public class GameWindow extends JFrame {
     setVisible(true);
 
     ClassLoader cl = getClass().getClassLoader();
-    URL imageURL = cl.getResource("./src/liardice/dice.png");
+    URL imageURL = cl.getResource("./image/dice.png");
     diceImages = Toolkit.getDefaultToolkit().createImage(imageURL);
-    imageURL = cl.getResource("./src/liardice/dice_logo.png");
+    imageURL = cl.getResource("./image/dice_logo.png");
     diceLogo = Toolkit.getDefaultToolkit().createImage(imageURL);
-    imageURL = cl.getResource("./src/liardice/beer.png");
+    imageURL = cl.getResource("./image/beer.png");
     beerImage = Toolkit.getDefaultToolkit().createImage(imageURL);
 
     addWindowListener(new WindowAdapter() {
@@ -179,10 +180,17 @@ public class GameWindow extends JFrame {
       setBackground(new Color(143, 206, 216));
       setPreferredSize(new Dimension(675, 90));
       setBorder(BorderFactory.createLineBorder(new Color(110, 58, 0), 5));
+
       statusMessage = new JLabel("Waiting for other players.", JLabel.CENTER);
       statusMessage.setForeground(new Color(100, 100, 100));
       statusMessage.setFont(new Font("Phosphate", Font.BOLD, 48));
       add(statusMessage, BorderLayout.CENTER);
+
+      addMouseListener(new MouseAdapter() {
+        public void mousePressed(MouseEvent e) {
+          doClick(e.getX(), e.getY());
+        }
+      });
     }
 
     protected void paintComponent(Graphics g) {
@@ -552,7 +560,7 @@ public class GameWindow extends JFrame {
             if (fm.message instanceof ChatMessage) {
               ChatMessage cm = (ChatMessage)fm.message;
               int id = (int)fm.senderID;
-              if (!playerListMuted[id - 1])
+              if (!(playerList != null && playerListMuted[id - 1]))
                 addMessage(cm.id, cm.message);
             } else if (fm.message instanceof String[]) {
               playerList = (String[])fm.message;
@@ -562,7 +570,9 @@ public class GameWindow extends JFrame {
               String name = (String)fm.message;
               addMessage(name + " has connected.\n");
             } else if (fm.message instanceof Dice[]) {
-              dice = (Dice[])fm.message;
+              synchronized(lock) {
+                dice = (Dice[])fm.message;
+              }
               randomDice();
             } else if (fm.message instanceof GameStatus) {
               GameStatus gs = (GameStatus)fm.message;
@@ -841,24 +851,33 @@ public class GameWindow extends JFrame {
 
     if (action == 0) { // yes
       connection.send(new ContinueMessage(true));
+      statusMessage.setText("Wait for other players continue");
     } else { // no
       connection.send(new ContinueMessage(false));
       shutdown = true;
     }
   }
 
+  private void doClick(int x, int y) {
+    if (x >= 15 && x <= 85 && y >= 10 && y <= 80)
+      sortDice();
+    if (x >= 902 && x <= 1004 && y >= 16 && y <= 86)
+      drunkDice();
+  }
+
   private void sortDice() {
-    for (int i = 0; i != 5; i++) {
-      for (int j = i + 1; j != 5; j++) {
-        if (dice[j].value < dice[i].value) {
-          Dice temp = dice[i];
-          dice[i] = dice[j];
-          dice[j] = temp;
+    synchronized(lock) {
+      for (int i = 0; i != 5; i++) {
+        for (int j = i + 1; j != 5; j++) {
+          if (dice[j].value < dice[i].value) {
+            Dice temp = dice[i];
+            dice[i] = dice[j];
+            dice[j] = temp;
+          }
         }
       }
+      diceSet.reDraw();
     }
-
-    diceSet.reDraw();
   }
 
   private void randomDice() {
@@ -867,21 +886,31 @@ public class GameWindow extends JFrame {
     new Thread() {
       public void run() {
         Dice[] savedDice = new Dice[5];
-        for (int i = 0; i != 5; i++)
-          savedDice[i] = new Dice(dice[i]);
+        synchronized(lock) {
+          for (int i = 0; i != 5; i++)
+            savedDice[i] = new Dice(dice[i]);
+        }
 
         for (int times = 0; times != 50; times++) {
-          for (int i = 4; i >= 0; i--) {
-            if (times > i * 10) {
-              dice[i] = new Dice(savedDice[i]);
-              break;
+          synchronized(lock) {
+            for (int i = 4; i >= 0; i--) {
+              if (times > i * 10) {
+                dice[i] = new Dice(savedDice[i]);
+                break;
+              }
+              dice[i] = new Dice();
             }
-            dice[i] = new Dice();
           }
           diceSet.reDraw();
           try {
             Thread.sleep(70);
           } catch (InterruptedException e) {}
+        }
+
+        synchronized(lock) {
+          for (int i = 0; i != 5; i++)
+            dice[i] = new Dice(savedDice[i]);
+          diceSet.reDraw();
         }
 
         connection.send(new ReadyMessage());
@@ -893,16 +922,18 @@ public class GameWindow extends JFrame {
     java.util.Random random = new java.util.Random();
     new Thread() {
       public void run() {
-        for (int times = 0; times != 20; times++) {
-          for (int i = 4; i >= 0; i--) {
-            int j = random.nextInt(i + 1);
-            Dice temp = dice[i];
-            dice[i] = dice[j];
-            dice[j] = temp;
+        for (int times = 0; times != 25; times++) {
+          synchronized(lock) {
+            for (int i = 4; i >= 0; i--) {
+              int j = random.nextInt(i + 1);
+              Dice temp = dice[i];
+              dice[i] = dice[j];
+              dice[j] = temp;
+            }
           }
           diceSet.reDraw();
           try {
-            Thread.sleep(300);
+            Thread.sleep(200);
           } catch (InterruptedException e) {}
         }
       }
