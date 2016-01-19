@@ -6,10 +6,6 @@
       "probability": "0.2"
     },
     {
-      "message": "HaHaHa~~~~~",
-      "probability": "0.1"
-    },
-    {
       "message": "我有十個 1 呢!!!",
       "probability": "0.2"
     }
@@ -17,11 +13,11 @@
   "round_start": [
     {
       "message": "gogogo~~~~~",
-      "probability": "0.2"
+      "probability": "0.3"
     },
     {
-      "message": "YOYOYO~",
-      "probability": "0.2"
+      "message": "來了來了，從山坡上輕輕地滾下來了",
+      "probability": "0.3"
     }
   ],
   "do_bid": {
@@ -36,7 +32,7 @@
         },
         {
           "message": "ε٩(๑> ₃ <)۶з  (●’ω`●)",
-          "probability": "0.1"
+          "probability": "0.2"
         }
     ],
     "other" : [
@@ -109,7 +105,7 @@
           "probability": "0.5"
         },
         {
-          "message": " ◢▆▅▄▃崩╰(〒皿〒)╯潰▃▄▅▆◣",
+          "message": "\n◢▆▅▄▃崩╰(〒皿〒)╯潰▃▄▅▆◣",
           "probability": "0.5"
         }
     ]

@@ -1,0 +1,156 @@
+{
+  "name": "華語金曲點唱機",
+  "get_dice": [
+    {
+      "message": "雨下整夜，我的愛溢出就像雨水\n院子落葉，跟我的思念厚厚一疊",
+      "probability": "0.3"
+    },
+    {
+      "message": "十年之前，我不認識你\n你不屬於我，我們還是一樣",
+      "probability": "0.3"
+    },
+    {
+      "message": "我們都需要勇氣，去相信會在一起",
+      "probability": "0.4"
+    }
+  ],
+  "round_start": [
+    {
+      "message": "聽～海哭的聲音～這片海未免也太多情，悲泣到天明 ",
+      "probability": "0.3"
+    },
+    {
+      "message": "我難過的是 放棄你 放棄愛 放棄的夢被打碎 忍住悲袞～",
+      "probability": "0.8"
+    },
+    {
+       "message": "你看過了許多美景　你看過了許多美女\n你迷失在地圖上每一道短暫的光陰",
+       "probability": "0.4"
+    }
+  ],
+  "do_bid": {
+    "me" : [
+        {
+          "message": "愛是一道光　如此美妙　指引我們　想要的未來",
+          "probability": "0.4"
+        },
+        {
+          "message": "穿越千年的傷痛，只為求一個結果～",
+          "probability": "0.4"
+        },
+        {
+          "message": "如果～全世界我也可以放棄\n至少還有你，值得我去珍惜 ",
+          "probability": "0.2"
+        }
+    ],
+    "other" : [
+        {
+          "message": "圈圈圓圓圈圈　天天年年天天的我　深深看你的臉",
+          "probability": "0.2"
+        },
+        {
+          "message": "早知道傷心總是難免的　你又何苦一往情深",
+          "probability": "0.1"
+        }
+    ]
+  },
+  "do_catch": {
+    "yes" : [
+        {
+          "message": "我有我的路，有我的夢～夢中的那個世界，甘講伊是一場空",
+          "probability": "0.4"
+        },
+        {
+          "message": "只怕我自己會愛上你～不敢讓自己靠得太近",
+          "probability": "0.4"
+        }
+    ],
+    "no" : [
+        {
+          "message": "終於看開～愛回不來　而你總是太晚明白",
+          "probability": "0.3"
+        },
+        {
+          "message": "你那麼愛她～為什麼不把她留下",
+          "probability": "0.2"
+        }
+    ]
+  },
+  "no_catch": [
+    {
+      "message": "我送你離開～千里之外",
+      "probability": "0.1"
+    },
+    {
+      "message": "啊！多麼痛的領悟，你曾是我的全部～",
+      "probability": "0.1"
+    }
+  ],
+  "yes_catch": [
+    {
+      "message": "當你孤單你會想起誰，你想不想找個人來陪",
+      "probability": "0.3"
+    },
+    {
+      "message": "少了你的手臂當枕頭，我還不習慣",
+      "probability": "0.3"
+    }
+  ],
+  "round_end": {
+    "win" : [
+        {
+          "message": "不同於任何意義，你就是綠光，如此的唯一",
+          "probability": "0.1"
+        },
+        {
+          "message": "愛我別走～如果妳說，妳不愛我～",
+          "probability": "0.1"
+        }
+    ],
+    "lose" : [
+        {
+          "message": "給我一杯忘情水，換我一生不傷悲",
+          "probability": "0.5"
+        },
+        {
+          "message": "今天我心情有一點怪怪的，可是說不出來到底為什麼？",
+          "probability": "0.5"
+        },
+        {
+           "message": "你知道 就算大雨讓整座城市顛倒，我會給你懷抱",
+           "probability": "0.5"
+        }
+    ]
+  },
+  "random_talk": [
+    {
+      "message": "Ho~Baby　情話多說一點，想我就多看一眼～\n表現多一點點，讓我能，真的看見～",
+      "probability": "0.3"
+    },
+    {
+      "message": "再靠近一點點　就讓你牽手　再勇敢一點點　我就跟你走！！！",
+      "probability": "0.3"
+    },
+    {
+      "message": "等下一個天亮，把偷拍我看海的照片送我好嗎？？？",
+      "probability": "0.3"
+    },
+    {
+      "message": "曖昧讓人受盡委屈，找不到相愛的證據",
+      "probability": "0.3"
+    }
+  ],
+  "other_talk": [
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    },
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    }
+  ]
+}
+
