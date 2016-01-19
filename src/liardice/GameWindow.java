@@ -45,6 +45,7 @@ public class GameWindow extends JFrame {
   private JLabel statusMessage;
   private JPanel playerPanel;
   private JButton[] playerListButton;
+  private Image diceLogo;
 
   // bid panel
   private JPanel bidPanel;
@@ -91,6 +92,8 @@ public class GameWindow extends JFrame {
     ClassLoader cl = getClass().getClassLoader();
     URL imageURL = cl.getResource("./src/liardice/dice.png");
     diceImages = Toolkit.getDefaultToolkit().createImage(imageURL);
+    imageURL = cl.getResource("./src/liardice/dice_logo.png");
+    diceLogo = Toolkit.getDefaultToolkit().createImage(imageURL);
 
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent evt) {
@@ -153,12 +156,7 @@ public class GameWindow extends JFrame {
       setBackground(new Color(173, 86, 31));
       setPreferredSize(new Dimension(675, 150));
 
-      JPanel statusPanel = new JPanel();
-      statusPanel.setPreferredSize(new Dimension(675, 90));
-      statusPanel.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
-      statusMessage = new JLabel("Waiting for other players.", JLabel.CENTER);
-      statusMessage.setFont(new Font("Phosphate", Font.BOLD, 48));
-      statusPanel.add(statusMessage);
+      JPanel statusPanel = new StatusPanel();
       add(statusPanel);
 
       playerPanel = new JPanel();
@@ -166,6 +164,22 @@ public class GameWindow extends JFrame {
       playerPanel.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       playerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
       add(playerPanel);
+    }
+  }
+
+  private class StatusPanel extends JPanel {
+
+    StatusPanel() {
+      setPreferredSize(new Dimension(675, 90));
+      setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+      statusMessage = new JLabel("Waiting for other players.", JLabel.CENTER);
+      statusMessage.setFont(new Font("Phosphate", Font.BOLD, 48));
+      add(statusMessage);
+    }
+
+    protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      g.drawImage(diceLogo, 10, 10, 70, 70, this);
     }
   }
 
