@@ -113,15 +113,15 @@
   "random_talk": [
     {
       "message": "「年四十而見惡焉，其終也已！」",
-      "probability": "0.3"
+      "probability": "0.25"
     },
     {
       "message": "「不知命，無以為君子也。不知禮，無以立也。不知言，無以知人也。」",
-      "probability": "0.3"
+      "probability": "0.25"
     },
     {
       "message": "「回也，其心三月不違仁，其餘則日月至焉而已矣。」",
-      "probability": "0.3"
+      "probability": "0.25"
     },
   ],
   "other_talk": [

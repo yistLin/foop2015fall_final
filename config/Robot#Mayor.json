@@ -1,22 +1,22 @@
 {
-  "name": "CityMayor",
+  "name": "Mayor",
   "get_dice": [
     {
       "message": "三環三線，我能實現",
-      "probability": "0.15"
+      "probability": "0.1"
     }
   ],
   "round_start": [
     {
       "message": "這屆市長，我一定會做好做滿",
-      "probability": "0.3"
+      "probability": "0.1"
     }
   ],
   "do_bid": {
     "me" : [
         {
           "message": "如果我不能當選，很多人的工作會做不好，做不滿",
-          "probability": "0.2"
+          "probability": "0.1"
         }
     ],
     "other" : [
@@ -30,33 +30,33 @@
     "yes" : [
         {
           "message": "我再請假選總統的期間，每天都有在處理市政",
-          "probability": "0.3"
+          "probability": "0.15"
         }
     ],
     "no" : [
         {
           "message": "有一天我到鄉下拜拜，遇到了一個阿嬤",
-          "probability": "0.2"
+          "probability": "0.15"
         }
     ]
   },
   "no_catch": [
     {
       "message": "阿嬤叫我不能只想到自己，要出來選總統",
-      "probability": "0.1"
+      "probability": "0.05"
     }
   ],
   "yes_catch": [
     {
       "message": "我跟阿嬤說我已經答應市民要做好做滿",
-      "probability": "0.25"
+      "probability": "0.2"
     }
   ],
   "round_end": {
     "win" : [
         {
           "message": "我會一直陪伴我的市民",
-          "probability": "0.4"
+          "probability": "0.15"
         }
     ],
     "lose" : [
@@ -69,11 +69,11 @@
   "random_talk": [
     {
       "message": "我會做好做滿，不會參選總統",
-      "probability": "0.2"
+      "probability": "0.1"
     },
     {
       "message": "你們希望市長忙著選總統嗎？",
-      "probability": "0.2"
+      "probability": "0.1"
     }
   ],
   "other_talk": [

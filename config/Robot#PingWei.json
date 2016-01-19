@@ -9,14 +9,14 @@
   "round_start": [
     {
       "message": "換煞車皮一定要拆坐墊",
-      "probability": "0.3"
+      "probability": "0.15"
     }
   ],
   "do_bid": {
     "me" : [
         {
           "message": "不要起爭議啦！",
-          "probability": "0.25"
+          "probability": "0.1"
         }
     ],
     "other" : [
@@ -30,13 +30,13 @@
     "yes" : [
         {
           "message": "你是在大聲什麼啦",
-          "probability": "0.4"
+          "probability": "0.2"
         }
     ],
     "no" : [
         {
           "message": "這次放過你",
-          "probability": "0.3"
+          "probability": "0.1"
         }
     ]
   },
@@ -49,7 +49,7 @@
   "yes_catch": [
     {
       "message": "不要起爭議啦！",
-      "probability": "0.3"
+      "probability": "0.25"
     },
     {
       "message": "你是在起什麼爭議？",
@@ -60,7 +60,7 @@
     "win" : [
         {
           "message": "我這是公道價 公道價啦！",
-          "probability": "0.6"
+          "probability": "0.1"
         }
     ],
     "lose" : [
