@@ -93,11 +93,11 @@ public class GameWindow extends JFrame {
     setVisible(true);
 
     ClassLoader cl = getClass().getClassLoader();
-    URL imageURL = cl.getResource("./src/liardice/dice.png");
+    URL imageURL = cl.getResource("./image/dice.png");
     diceImages = Toolkit.getDefaultToolkit().createImage(imageURL);
-    imageURL = cl.getResource("./src/liardice/dice_logo.png");
+    imageURL = cl.getResource("./image/dice_logo.png");
     diceLogo = Toolkit.getDefaultToolkit().createImage(imageURL);
-    imageURL = cl.getResource("./src/liardice/beer.png");
+    imageURL = cl.getResource("./image/beer.png");
     beerImage = Toolkit.getDefaultToolkit().createImage(imageURL);
 
     addWindowListener(new WindowAdapter() {
