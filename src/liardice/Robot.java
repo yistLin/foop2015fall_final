@@ -17,11 +17,13 @@ public class Robot extends Client {
     private int lastNumber;
     private int lastValue;
     private boolean hasBidOne;
+    private final double entropy;
 
     public Robot(String hubHostName, int hubPort, String filename) throws IOException {
         super(hubHostName, hubPort);
         chatRobot = new ChatRobot(filename);
         this.myName = chatRobot.NICKNAME;
+        this.entropy = chatRobot.ENTROPY;
         send(myName);
         diceTable = new int[7];
         new Thread() {
@@ -130,17 +132,24 @@ public class Robot extends Client {
                 if(robotTalk != null)
                     send(new ChatMessage(myName, robotTalk));
                 
-                int myNum = diceTable[maxDice] + numOfPlayers - 1 +
-                            ((hasBidOne || maxDice == 1) ? 0 : (diceTable[1] + numOfPlayers - 1));
-                int limit = (lastNumber < (myNum-1)) ? 3 : 0;
-                int range = (int)(Math.random() * limit - 1);
+                double myNum = evaluateMyNumber();
+                if (myNum < lastNumber)
+                    myNum = lastNumber;
+                double gap = (myNum - (double)lastNumber);
+                if (gap < 0)
+                    gap = 0;
+                double point = lastNumber + gap + (gap) * ((entropy - 0.5) * 2.0);
+                if ((int)point < lastNumber) {
+                    point = (double)lastNumber;
+                }
+                System.out.println("entropy = " + entropy + ", point = " + point + ", lastNumber = " + lastNumber);
 
                 if (lastValue == 0)
-                    send(new BidMessage((int)(Math.random()*myNum+1), maxDice));
+                    send(new BidMessage( (int)point + 1, maxDice));
                 else if (maxDice > lastValue)
-                    send(new BidMessage(((lastNumber>myNum) ? lastNumber:myNum) + range, maxDice));
+                    send(new BidMessage( (int)point, maxDice));
                 else
-                    send(new BidMessage(((lastNumber>myNum) ? lastNumber:myNum) + range + 2, maxDice));
+                    send(new BidMessage( (int)point + 1 , maxDice));
             } else {
                 robotTalk = chatRobot.talk(ChatRobot.DO_BID, "other");
                 if(robotTalk != null)
@@ -171,7 +180,13 @@ public class Robot extends Client {
             send(new ContinueMessage(true));
         }
     }
-    
+
+    private double evaluateMyNumber() {
+        double ret = (double)diceTable[maxDice] + ((double)(numOfPlayers - 1)) * (5.0/6.0);
+        ret += ((hasBidOne || maxDice == 1) ? 0.0 : (double)diceTable[1] + ((double)numOfPlayers - 1.0) * (5.0/6.0) );
+        return ret;
+    }
+
 	protected void serverShutDown(String message) {
         doSleep(1);
         System.exit(0);
