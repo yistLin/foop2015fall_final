@@ -564,8 +564,6 @@ public class GameWindow extends JFrame {
             } else if (fm.message instanceof Dice[]) {
               dice = (Dice[])fm.message;
               randomDice();
-              diceSet.reDraw();
-              connection.send(new ReadyMessage());
             } else if (fm.message instanceof GameStatus) {
               GameStatus gs = (GameStatus)fm.message;
               handleGameStatus(gs);
@@ -872,18 +870,21 @@ public class GameWindow extends JFrame {
         for (int i = 0; i != 5; i++)
           savedDice[i] = new Dice(dice[i]);
 
-        for (int times = 0; times != 10; times++) {
-          for (int i = 4; i >= 0; i--)
+        for (int times = 0; times != 50; times++) {
+          for (int i = 4; i >= 0; i--) {
+            if (times > i * 10) {
+              dice[i] = new Dice(savedDice[i]);
+              break;
+            }
             dice[i] = new Dice();
+          }
           diceSet.reDraw();
           try {
-            Thread.sleep(300);
+            Thread.sleep(70);
           } catch (InterruptedException e) {}
         }
 
-        for (int i = 0; i != 5; i++)
-          dice[i] = new Dice(savedDice[i]);
-        diceSet.reDraw();
+        connection.send(new ReadyMessage());
       }
     }.start();
   }
