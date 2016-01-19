@@ -4,6 +4,7 @@ import netgame.common.*;
 import liardice.message.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.io.IOException;
@@ -438,6 +439,33 @@ public class GameWindow extends JFrame {
       g.drawImage(diceImages, x, y, x+75, y+75, cx, cy, cx+225, cy+225, this);
     }
   }
+
+  private class DiceShowPanel extends JPanel {
+
+    private int num;
+
+    DiceShowPanel(final int num) {
+      setPreferredSize(new Dimension(50, 50));
+
+      this.num = num;
+    }
+
+    protected void paintComponent(Graphics g) {
+      super.paintComponent(g);
+      drawDice(g, num, 5, 5);
+    }
+
+    public void drawDice(Graphics g, int diceValue, int x,int y) {
+      int column = (diceValue+2) % 3;
+      int row = (diceValue+2) / 3 - 1;
+      int cx = 229 * column + 5;
+      int cy = 229 * row + 5;
+      if (diceValue == 2) cx --;
+      if (diceValue == 3) cx -=5;
+      if (diceValue == 6) cx -=5;
+      g.drawImage(diceImages, x, y, x+39, y+39, cx, cy, cx+225, cy+225, this);
+    }
+  }
   
   private class Chatroom extends JPanel {
 
@@ -720,13 +748,48 @@ public class GameWindow extends JFrame {
     JPanel askPanel = new JPanel();
     askPanel.setLayout(new GridLayout(0, 1));
 
+    JPanel row = new JPanel(new GridLayout(0, 1));
     JLabel question = new JLabel("Continue?", JLabel.CENTER);
     question.setFont(new Font("Phosphate", Font.BOLD, 48));
-    askPanel.add(question);
+    row.add(question);
 
     JLabel discription = new JLabel(losedPlayer + " losed. QAQ~", JLabel.CENTER);
     discription.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
-    askPanel.add(discription);
+    row.add(discription);
+
+    askPanel.add(row);
+
+    JPanel diceShow = new JPanel();
+    diceShow.setLayout(new GridLayout(2, 3));
+    diceShow.setPreferredSize(new Dimension(380, 100));
+
+    DiceShowPanel[] dicePanel = new DiceShowPanel[7];
+    for (int i = 1; i != 7; i++) {
+      row = new JPanel();
+      //row.setLayout(new GridLayout(1, 3));
+      row.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+      JPanel column = new JPanel();
+      column.setPreferredSize(new Dimension(30, 50));
+      JLabel num = new JLabel("" + diceTable[i], JLabel.CENTER);
+      num.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
+      column.add(num);
+      row.add(column);
+
+      column = new JPanel();
+      column.setPreferredSize(new Dimension(30, 50));
+      JLabel x = new JLabel("X", JLabel.CENTER);
+      x.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
+      column.add(x);
+      row.add(column);
+
+      dicePanel[i] = new DiceShowPanel(i);
+      row.add(dicePanel[i]);
+      
+      diceShow.add(row);
+    }
+
+    askPanel.add(diceShow);
 
     int action = JOptionPane.showConfirmDialog(null, askPanel, "Continue?",
         JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
