@@ -560,7 +560,7 @@ public class GameWindow extends JFrame {
             if (fm.message instanceof ChatMessage) {
               ChatMessage cm = (ChatMessage)fm.message;
               int id = (int)fm.senderID;
-              if (!playerListMuted[id - 1])
+              if (!(playerList != null && playerListMuted[id - 1]))
                 addMessage(cm.id, cm.message);
             } else if (fm.message instanceof String[]) {
               playerList = (String[])fm.message;
