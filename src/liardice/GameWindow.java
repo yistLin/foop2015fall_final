@@ -563,6 +563,7 @@ public class GameWindow extends JFrame {
               addMessage(name + " has connected.\n");
             } else if (fm.message instanceof Dice[]) {
               dice = (Dice[])fm.message;
+              randomDice();
               diceSet.reDraw();
               connection.send(new ReadyMessage());
             } else if (fm.message instanceof GameStatus) {
@@ -846,6 +847,65 @@ public class GameWindow extends JFrame {
       connection.send(new ContinueMessage(false));
       shutdown = true;
     }
+  }
+
+  private void sortDice() {
+    for (int i = 0; i != 5; i++) {
+      for (int j = i + 1; j != 5; j++) {
+        if (dice[j].value < dice[i].value) {
+          Dice temp = dice[i];
+          dice[i] = dice[j];
+          dice[j] = temp;
+        }
+      }
+    }
+
+    diceSet.reDraw();
+  }
+
+  private void randomDice() {
+    java.util.Random random = new java.util.Random();
+
+    Dice[] savedDice = new Dice[5];
+    for (int i = 0; i != 5; i++)
+      savedDice[i] = new Dice(dice[i]);
+
+    new Thread() {
+      public void run() {
+        for (int times = 0; times != 10; times++) {
+          for (int i = 4; i >= 0; i--)
+            dice[i] = new Dice();
+          diceSet.reDraw();
+          try {
+            Thread.sleep(300);
+          } catch (InterruptedException e) {}
+        }
+      }
+    }.start();
+
+    for (int i = 0; i != 5; i++)
+      dice[i] = new Dice(savedDice[i]);
+    diceSet.reDraw();
+  }
+
+  private void drunkDice() {
+    java.util.Random random = new java.util.Random();
+    new Thread() {
+      public void run() {
+        for (int times = 0; times != 20; times++) {
+          for (int i = 4; i >= 0; i--) {
+            int j = random.nextInt(i + 1);
+            Dice temp = dice[i];
+            dice[i] = dice[j];
+            dice[j] = temp;
+          }
+          diceSet.reDraw();
+          try {
+            Thread.sleep(300);
+          } catch (InterruptedException e) {}
+        }
+      }
+    }.start();
   }
 
   private static class IllegalNumberException extends Exception {
