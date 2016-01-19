@@ -14,19 +14,35 @@
     {
       "message": "來看看誰是真強者",
       "probability": "0.2"
+    },
+    {
+      "message": "我是RikiBot",
+      "probability": "0.2"
+    },
+    {
+      "message": "當年吹牛大賽，我還沒比就得到第一名了勒～",
+      "probability": "0.5"
     }
   ],
   "do_bid": {
     "me": [
       {
         "message": "抓我啊～",
-        "probability": "0.5"
+        "probability": "0.3"
+      },
+      {
+        "message": "我手上可是有五個一",
+        "probability": "0.3"
       }
     ],
     "other": [
       {
         "message": "會不會想太久啊",
-        "probability": "0.5"
+        "probability": "0.2"
+      },
+      {
+        "message": "有種你就喊多一點",
+        "probability": "0.2"
       }
     ]
   },
@@ -45,6 +61,10 @@
       {
         "message": "偏不抓",
         "probability": "0.5"
+      },
+      {
+        "message": "數量還太少啊",
+        "probability": "0.2"
       }
     ]
   },
@@ -52,12 +72,20 @@
     {
       "message": "這明顯是吹牛吧？不抓？",
       "probability": "0.1"
+    },
+    {
+      "message": "這都不抓？那哪時候抓？",
+      "probability": "0.1"
     }
   ],
   "yes_catch": [
     {
       "message": "這你也敢抓",
       "probability": "0.3"
+    },
+    {
+      "message": "有人要輸囉",
+      "probability": "0.2"
     }
   ],
   "round_end": {
@@ -109,16 +137,6 @@
     }
   ],
   "other_talk": [
-    {
-      "title": "",
-      "message": "",
-      "probability": ""
-    },
-    {
-      "title": "",
-      "message": "",
-      "probability": ""
-    }
   ]
 }
 
