@@ -95,7 +95,7 @@ public class Robot extends Client {
                 int myNum = diceTable[lastValue] + numOfPlayers - 1 +
                             ((hasBidOne) ? 0 : diceTable[1] + numOfPlayers - 1);
                 if (myNum + 2 < lastNumber) {
-                	doSleep(Math.random() * 0.3 + 0.3);
+                	doSleep(Math.random() * 1.0 + 0.5);
                 	robotTalk = chatRobot.talk(ChatRobot.DO_CATCH, "yes");
                     if(robotTalk != null)
                         send(new ChatMessage(myName, robotTalk));
@@ -133,14 +133,14 @@ public class Robot extends Client {
                 int myNum = diceTable[maxDice] + numOfPlayers - 1 +
                             ((hasBidOne || maxDice == 1) ? 0 : (diceTable[1] + numOfPlayers - 1));
                 int limit = (lastNumber < (myNum-1)) ? 3 : 0;
-                int range = (int)(Math.random() * limit);
+                int range = (int)(Math.random() * limit - 1);
 
                 if (lastValue == 0)
-                    send(new BidMessage(1 + range, maxDice));
+                    send(new BidMessage(myNum + range, maxDice));
                 else if (maxDice > lastValue)
-                    send(new BidMessage(lastNumber + range, maxDice));
+                    send(new BidMessage(((lastNumber>myNum) ? lastNumber:myNum) + range, maxDice));
                 else
-                    send(new BidMessage(lastNumber + range + 1, maxDice));
+                    send(new BidMessage(((lastNumber>myNum) ? lastNumber:myNum) + range + 2, maxDice));
             } else {
                 robotTalk = chatRobot.talk(ChatRobot.DO_BID, "other");
                 if(robotTalk != null)
