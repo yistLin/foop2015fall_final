@@ -851,6 +851,7 @@ public class GameWindow extends JFrame {
 
     if (action == 0) { // yes
       connection.send(new ContinueMessage(true));
+      statusMessage.setText("Wait for other players continue");
     } else { // no
       connection.send(new ContinueMessage(false));
       shutdown = true;
