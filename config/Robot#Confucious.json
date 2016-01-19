@@ -1,0 +1,140 @@
+{
+  "name": "子曰",
+  "get_dice": [
+    {
+      "message": "「學而時習之，不亦說乎？有朋自遠方來，不亦樂乎？人不知而不慍，不亦君子乎？」",
+      "probability": "0.2"
+    },
+    {
+      "message": "「巧言令色，鮮矣仁！」",
+      "probability": "0.2"
+    }
+  ],
+  "round_start": [
+    {
+      "message": "「為政以德，譬如北辰居其所而眾星共之。」",
+      "probability": "0.3"
+    },
+    {
+      "message": "「詩三百，一言以蔽之」",
+      "probability": "0.3"
+    }
+  ],
+  "do_bid": {
+    "me" : [
+        {
+          "message": "「父母唯其疾之憂。」",
+          "probability": "0.2"
+        },
+        {
+          "message": "「溫故而知新，可以為師矣。」",
+          "probability": "0.3"
+        },
+        {
+          "message": "「民可使由之，不可使知之。」",
+          "probability": "0.2"
+        }
+    ],
+    "other" : [
+        {
+          "message": "「三年學，不至於穀，不易得也。」",
+          "probability": "0.05"
+        },
+        {
+          "message": "「不在其位，不謀其政。」",
+          "probability": "0.1"
+        }
+    ]
+  },
+  "do_catch": {
+    "yes" : [
+        {
+          "message": "「巍巍乎，舜禹之有天下也，而不與焉。」",
+          "probability": "0.2"
+        },
+        {
+          "message": "「先進於禮樂，野人也；後進於禮樂，君子也。如用之，則吾從先進。」",
+          "probability": "0.2"
+        }
+    ],
+    "no" : [
+        {
+          "message": "「回也，非助我者也！於吾言，無所不說。」",
+          "probability": "0.1"
+        },
+        {
+          "message": "「噫！天喪予！天喪予！」",
+          "probability": "0.2"
+        }
+    ]
+  },
+  "no_catch": [
+    {
+      "message": "「回也奇庶乎！屢空；賜不受命，而貨殖焉；億則屢中。」",
+      "probability": "0.05"
+    },
+    {
+      "message": "「吾以女為死矣！」",
+      "probability": "0.1"
+    }
+  ],
+  "yes_catch": [
+    {
+      "message": "「性相近也，習相遠也。」",
+      "probability": "0.3"
+    },
+    {
+      "message": "「女為周南召南矣乎？人而不為周南，召南，其猶正牆面而立也與？」",
+      "probability": "0.4"
+    }
+  ],
+  "round_end": {
+    "win" : [
+        {
+          "message": "「鄉原，德之賊也！」",
+          "probability": "0.1"
+        },
+        {
+          "message": "「道聽而塗說，德之棄也！」",
+          "probability": "0.1"
+        }
+    ],
+    "lose" : [
+        {
+          "message": "「飽食終日，無所用心，難矣哉！不有博弈者乎？為之猶賢乎已！」",
+          "probability": "0.5"
+        },
+        {
+          "message": "「巧言令色，鮮矣仁。」",
+          "probability": "0.5"
+        }
+    ]
+  },
+  "random_talk": [
+    {
+      "message": "「年四十而見惡焉，其終也已！」",
+      "probability": "0.3"
+    },
+    {
+      "message": "「不知命，無以為君子也。不知禮，無以立也。不知言，無以知人也。」",
+      "probability": "0.3"
+    },
+    {
+      "message": "「回也，其心三月不違仁，其餘則日月至焉而已矣。」",
+      "probability": "0.3"
+    },
+  ],
+  "other_talk": [
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    },
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    }
+  ]
+}
+
