@@ -669,17 +669,14 @@ public class GameWindow extends JFrame {
         if (catchWin)
           catchPanel.setBackground(yesCatchColor);
       }
-      addMessage("Total dice: ");
-      for (int i = 1; i != 7; i++)
-        addMessage(gs.diceTable[i] + " ");
-      addMessage("\n");
-      Frame question = JOptionPane.getRootFrame();
-      if (question != null)
-        question.dispose();
 
       try {
         Thread.sleep(500);
       } catch (InterruptedException e) {}
+
+      if (gs.currentPlayer == connection.getID())
+        askContinue("You", gs.diceTable);
+      else
         askContinue(playerList[gs.currentPlayer - 1], gs.diceTable);
     }
   }
