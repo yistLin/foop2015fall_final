@@ -1,6 +1,6 @@
 {
    "name":"Marbot",
-  "entropy": "0.5",
+  "entropy": "0.1",
    "get_dice":[
       {
          "message":"喔喔喔！是骰子欸",

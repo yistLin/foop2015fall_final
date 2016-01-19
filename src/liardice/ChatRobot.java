@@ -18,6 +18,7 @@ public class ChatRobot {
     public static final int RANDOM_TALK = 8;
 
     public final String NICKNAME;
+    public final double ENTROPY;
 
     private Random rand;
    	private JSONObject jsonObj;
@@ -44,6 +45,7 @@ public class ChatRobot {
 
    		jsonObj = new JSONObject(sb.toString());
    		NICKNAME = jsonObj.getString("name");
+        ENTROPY = Double.parseDouble(jsonObj.getString("entropy"));
     }
 
     // ROUND_START, DO_CATCH, NO_CATCH, YES_CATCH, RANDOM_TALK, GET_DICE
