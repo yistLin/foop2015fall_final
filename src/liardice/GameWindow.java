@@ -27,6 +27,7 @@ public class GameWindow extends JFrame {
   private boolean shutdown = false;
   private boolean bidLose = false;
   private boolean catchWin = false;
+  private boolean[] playerListMuted;
 
   // status color
   private final Color normalPanelColor = new Color(190, 198, 216);
@@ -550,15 +551,12 @@ public class GameWindow extends JFrame {
           public void run() {
             if (fm.message instanceof ChatMessage) {
               ChatMessage cm = (ChatMessage)fm.message;
-              addMessage(cm.id, cm.message);
+              int id = (int)fm.senderID;
+              if (!playerListMuted[id - 1])
+                addMessage(cm.id, cm.message);
             } else if (fm.message instanceof String[]) {
               playerList = (String[])fm.message;
               createPlayerListButton();
-              addMessage("Every player is here.\n");
-              for (int i = 0; i != playerList.length; i++) {
-                addMessage("Player" + (i + 1) + ": " + playerList[i] + "\n");
-              }
-              addMessage("Game started!!!\n");
               statusMessage.setText("Game started!!!\n");
             } else if (fm.message instanceof String) {
               String name = (String)fm.message;
@@ -603,6 +601,7 @@ public class GameWindow extends JFrame {
 
   private void createPlayerListButton() {
     playerListButton = new JButton[playerList.length];
+    playerListMuted = new boolean[playerList.length];
     for (int i = 0; i != playerList.length; i++) {
       playerListButton[i] = new JButton(playerList[i]);
       playerListButton[i].setFont(new Font("Nanum Pen Script", Font.PLAIN, 20));
@@ -611,11 +610,32 @@ public class GameWindow extends JFrame {
       playerListButton[i].setBorderPainted(false);
       playerListButton[i].setBackground(new Color(209, 209, 224));
 
+      playerListMuted[i] = false;
+
       JPanel buf = new JPanel();
       buf.setLayout(new GridLayout(0, 1));
       buf.setPreferredSize(new Dimension(100, 45));
       buf.add(playerListButton[i]);
       playerPanel.add(buf);
+
+      final int id = i;
+      playerListButton[i].addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+          flipPlayerMuted(id);
+        }
+      });
+    }
+  }
+
+  private void flipPlayerMuted(int id) {
+    if (playerListMuted[id]) {
+      playerListMuted[id] = false;
+      playerListButton[id].setForeground(Color.black);
+      addMessage(playerList[id] + " is recovered.\n");
+    } else {
+      playerListMuted[id] = true;
+      playerListButton[id].setForeground(Color.white);
+      addMessage(playerList[id] + " is muted.\n");
     }
   }
 
