@@ -3,7 +3,7 @@
   "get_dice": [
     {
       "message": "普利珠啦！",
-      "probability": "0.2"
+      "probability": "0.15"
     }
   ],
   "round_start": [
@@ -22,7 +22,7 @@
     "other" : [
         {
           "message": "不用考慮了，公道價81000啦！",
-          "probability": "0.2"
+          "probability": "0.05"
         }
     ]
   },
@@ -73,11 +73,11 @@
   "random_talk": [
     {
       "message": "我做生意，我坦蕩蕩",
-      "probability": "0.3"
+      "probability": "0.2"
     },
     {
       "message": "曾經來我這裡消過費的客人，都知道我的作法 我的做人",
-      "probability": "0.3"
+      "probability": "0.2"
     }
   ],
   "other_talk": [
