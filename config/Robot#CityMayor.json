@@ -1,5 +1,5 @@
 {
-  "name": "朱立倫",
+  "name": "CityMayor",
   "get_dice": [
     {
       "message": "三環三線，我能實現",
@@ -15,13 +15,13 @@
   "do_bid": {
     "me" : [
         {
-          "message": "民進黨如果執政會讓很多人的工作，做不好，做不滿",
+          "message": "如果我不能當選，很多人的工作會做不好，做不滿",
           "probability": "0.2"
         }
     ],
     "other" : [
         {
-          "message": "我不想選總統，但是我無法拒絕全代會的決議",
+          "message": "大家記得要叫好叫滿",
           "probability": "0.05"
         }
     ]
@@ -35,7 +35,7 @@
     ],
     "no" : [
         {
-          "message": "有一天我到淡水拜拜，遇到了一個阿嬤",
+          "message": "有一天我到鄉下拜拜，遇到了一個阿嬤",
           "probability": "0.2"
         }
     ]
@@ -48,20 +48,20 @@
   ],
   "yes_catch": [
     {
-      "message": "我一定會做的比馬英九好",
+      "message": "我跟阿嬤說我已經答應市民要做好做滿",
       "probability": "0.25"
     }
   ],
   "round_end": {
     "win" : [
         {
-          "message": "我會一直陪伴新北市民",
+          "message": "我會一直陪伴我的市民",
           "probability": "0.4"
         }
     ],
     "lose" : [
         {
-          "message": "不能因為國民黨做錯就票投民進黨",
+          "message": "我做的這麼認真，為什麼選不上總統？",
           "probability": "0.3"
         }
     ]
@@ -72,7 +72,7 @@
       "probability": "0.2"
     },
     {
-      "message": "你們希望新北市長忙著選總統嗎？",
+      "message": "你們希望市長忙著選總統嗎？",
       "probability": "0.2"
     }
   ],
