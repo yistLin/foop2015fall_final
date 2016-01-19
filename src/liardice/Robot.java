@@ -10,7 +10,7 @@ public class Robot extends Client {
     private String robotTalk;
     private String myName;
     private String[] playerList;
-    private int numOfPlayers;
+    private int numOfPlayers = 9;
     private Dice[] dice;
     private int maxDice;
     private int[] diceTable;
