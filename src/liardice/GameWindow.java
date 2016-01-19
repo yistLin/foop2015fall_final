@@ -29,12 +29,12 @@ public class GameWindow extends JFrame {
   private boolean catchWin = false;
 
   // status color
-  private final Color normalPanelColor = new Color(230, 230, 230);
+  private final Color normalPanelColor = new Color(190, 198, 216);
   private final Color normalColor = new Color(209, 209, 224);
-  private final Color bidColor = new Color(255, 128, 128);
+  private final Color bidColor = new Color(234, 100, 100);
   private final Color catchColor = new Color(255, 194, 102);
-  private final Color yesCatchColor = new Color(0, 230, 172);
-  private final Color losedColor = new Color(72, 72, 107);
+  private final Color yesCatchColor = new Color(92, 174, 100);
+  private final Color losedColor = new Color(111, 117, 132);
 
   // main panel
   private Display display;
@@ -46,6 +46,7 @@ public class GameWindow extends JFrame {
   private JPanel playerPanel;
   private JButton[] playerListButton;
   private Image diceLogo;
+  private Image beerImage;
 
   // bid panel
   private JPanel bidPanel;
@@ -94,6 +95,8 @@ public class GameWindow extends JFrame {
     diceImages = Toolkit.getDefaultToolkit().createImage(imageURL);
     imageURL = cl.getResource("./src/liardice/dice_logo.png");
     diceLogo = Toolkit.getDefaultToolkit().createImage(imageURL);
+    imageURL = cl.getResource("./src/liardice/beer.png");
+    beerImage = Toolkit.getDefaultToolkit().createImage(imageURL);
 
     addWindowListener(new WindowAdapter() {
       public void windowClosing(WindowEvent evt) {
@@ -139,7 +142,7 @@ public class GameWindow extends JFrame {
 
       JPanel row = new JPanel();
       row.setLayout(new FlowLayout(FlowLayout.LEFT));
-      row.setBackground(new Color(173, 86, 31));
+      row.setBackground(new Color(110, 58, 0));
       board = new Board();
       chatroom = new Chatroom();
       row.add(board);
@@ -153,16 +156,17 @@ public class GameWindow extends JFrame {
 
     Status() {
       setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-      setBackground(new Color(173, 86, 31));
+      setBackground(new Color(110, 58, 0));
       setPreferredSize(new Dimension(675, 150));
 
       JPanel statusPanel = new StatusPanel();
       add(statusPanel);
 
       playerPanel = new JPanel();
-      playerPanel.setPreferredSize(new Dimension(675, 60));
-      playerPanel.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       playerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+      playerPanel.setPreferredSize(new Dimension(675, 70));
+      playerPanel.setBackground(new Color(191, 116, 105));
+      playerPanel.setBorder(BorderFactory.createLineBorder(new Color(110, 58, 0), 5));
       add(playerPanel);
     }
   }
@@ -170,16 +174,20 @@ public class GameWindow extends JFrame {
   private class StatusPanel extends JPanel {
 
     StatusPanel() {
+      setLayout(new BorderLayout());
+      setBackground(new Color(143, 206, 216));
       setPreferredSize(new Dimension(675, 90));
-      setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+      setBorder(BorderFactory.createLineBorder(new Color(110, 58, 0), 5));
       statusMessage = new JLabel("Waiting for other players.", JLabel.CENTER);
+      statusMessage.setForeground(new Color(100, 100, 100));
       statusMessage.setFont(new Font("Phosphate", Font.BOLD, 48));
-      add(statusMessage);
+      add(statusMessage, BorderLayout.CENTER);
     }
 
     protected void paintComponent(Graphics g) {
       super.paintComponent(g);
-      g.drawImage(diceLogo, 10, 10, 70, 70, this);
+      g.drawImage(diceLogo, 15, 10, 70, 70, this);
+      g.drawImage(beerImage, 920, 16, 84, 60, this);
     }
   }
 
@@ -207,7 +215,7 @@ public class GameWindow extends JFrame {
   private class BidPanel extends JPanel {
 
     BidPanel() {
-      setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+      setBorder(BorderFactory.createLineBorder(new Color(110, 58, 0), 3));
       setLayout(new GridLayout(0, 1));
       setBackground(normalPanelColor);
 
@@ -219,6 +227,7 @@ public class GameWindow extends JFrame {
       row.setOpaque(false);
       JLabel panelName = new JLabel("Bid Panel", JLabel.CENTER);
       panelName.setFont(new Font("Phosphate", Font.BOLD, 48));
+      panelName.setForeground(new Color(100, 100, 100));
       row.add(panelName);
       bidMessage = new JLabel("", JLabel.CENTER);
       bidMessage.setFont(new Font("Nanum Pen Script", Font.BOLD, 28));
@@ -261,7 +270,6 @@ public class GameWindow extends JFrame {
       column = new JPanel();
       column.setLayout(new FlowLayout(FlowLayout.LEFT));
       column.setOpaque(false);
-      //column.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       column.setPreferredSize(new Dimension(270, 50));
       column.add(Box.createHorizontalStrut(15)); // reserved space
       column.add(new JLabel("Number of dice:"));
@@ -272,7 +280,6 @@ public class GameWindow extends JFrame {
       column = new JPanel();
       column.setLayout(new FlowLayout(FlowLayout.LEFT));
       column.setOpaque(false);
-      //column.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       column.setPreferredSize(new Dimension(270, 50));
       column.add(Box.createHorizontalStrut(15)); // reserved space
       column.add(new JLabel("Value of dice:"));
@@ -283,7 +290,6 @@ public class GameWindow extends JFrame {
       column = new JPanel();
       column.setLayout(new BorderLayout());
       column.setOpaque(false);
-      //column.setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
       column.setPreferredSize(new Dimension(90, 50));
       bidButton = new JButton("Bid!");
       bidButton.setEnabled(false);
@@ -314,13 +320,13 @@ public class GameWindow extends JFrame {
           throw new IllegalNumberException("Number can't less than last");
       } catch (NumberFormatException e) {
         bidDiscription.setText("You must enter number of dice!");
-        bidDiscription.setForeground(Color.red);
+        bidDiscription.setForeground(Color.white);
         bidNumberInput.selectAll();
         bidNumberInput.requestFocus();
         success = false;
       } catch (IllegalNumberException e) {
         bidDiscription.setText(e.getMessage());
-        bidDiscription.setForeground(Color.red);
+        bidDiscription.setForeground(Color.white);
         bidNumberInput.selectAll();
         bidNumberInput.requestFocus();
         success = false;
@@ -333,13 +339,13 @@ public class GameWindow extends JFrame {
           throw new IllegalNumberException("Value must greater than last");
       } catch (NumberFormatException e) {
         bidDiscription.setText("You must enter value of dice!");
-        bidDiscription.setForeground(Color.red);
+        bidDiscription.setForeground(Color.white);
         bidValueInput.selectAll();
         bidValueInput.requestFocus();
         success = false;
       } catch (IllegalNumberException e) {
         bidDiscription.setText(e.getMessage());
-        bidDiscription.setForeground(Color.red);
+        bidDiscription.setForeground(Color.white);
         bidValueInput.selectAll();
         bidValueInput.requestFocus();
         success = false;
@@ -356,7 +362,7 @@ public class GameWindow extends JFrame {
   private class CatchPanel extends JPanel {
 
     CatchPanel() {
-      setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+      setBorder(BorderFactory.createLineBorder(new Color(110, 58, 0), 3));
       setLayout(new GridLayout(0, 1));
       setBackground(normalPanelColor);
 
@@ -365,6 +371,7 @@ public class GameWindow extends JFrame {
       row.setOpaque(false);
       JLabel panelName = new JLabel("Catch Panel", JLabel.CENTER);
       panelName.setFont(new Font("Phosphate", Font.BOLD, 48));
+      panelName.setForeground(new Color(100, 100, 100));
       row.add(panelName);
       catchMessage = new JLabel("", JLabel.CENTER);
       catchMessage.setFont(new Font("Nanum Pen Script", Font.BOLD, 28));
@@ -411,8 +418,9 @@ public class GameWindow extends JFrame {
     
     DiceSet() {
       setLayout(new GridLayout(1, 5));
+      setBackground(new Color(191, 116, 105));
       setPreferredSize(new Dimension(675, 135));
-      setBorder(BorderFactory.createLineBorder(new Color(30, 70, 50), 3));
+      setBorder(BorderFactory.createLineBorder(new Color(110, 58, 0), 3));
       
       for (int i = 0; i < 5; i++) {
         dicePanel[i] = new DicePanel(i);
@@ -432,6 +440,8 @@ public class GameWindow extends JFrame {
     private int num;
     
     DicePanel(final int num) {
+      setOpaque(false);
+
       this.num = num;
     }
     
@@ -486,15 +496,16 @@ public class GameWindow extends JFrame {
     Chatroom() {
       setLayout(new BorderLayout());
       setPreferredSize(new Dimension(300, 585));
-      setBackground(new Color(190, 235, 237));
       setBorder(BorderFactory.createLineBorder(new Color(130, 70, 0), 8));
 
       console = new JTextArea();
+      console.setBackground(new Color(240, 255, 255));
       console.setEditable(false);
       ((DefaultCaret) console.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
       console.setLineWrap(true);
       console.setWrapStyleWord(true);
       JScrollPane consoleSP = new JScrollPane(console);
+      consoleSP.setBackground(new Color(240, 255, 255));
       consoleSP.setBorder(BorderFactory.createTitledBorder("Console"));
       add(consoleSP, BorderLayout.CENTER);
 
@@ -760,6 +771,7 @@ public class GameWindow extends JFrame {
     askPanel.setLayout(new GridLayout(0, 1));
 
     JPanel row = new JPanel(new GridLayout(0, 1));
+    row.setOpaque(false);
     JLabel question = new JLabel("Continue?", JLabel.CENTER);
     question.setFont(new Font("Phosphate", Font.BOLD, 48));
     row.add(question);
@@ -771,17 +783,19 @@ public class GameWindow extends JFrame {
     askPanel.add(row);
 
     JPanel diceShow = new JPanel();
+    diceShow.setOpaque(false);
     diceShow.setLayout(new GridLayout(2, 3));
     diceShow.setPreferredSize(new Dimension(380, 100));
 
     DiceShowPanel[] dicePanel = new DiceShowPanel[7];
     for (int i = 1; i != 7; i++) {
       row = new JPanel();
-      //row.setLayout(new GridLayout(1, 3));
       row.setLayout(new FlowLayout(FlowLayout.CENTER));
+      row.setOpaque(false);
 
       JPanel column = new JPanel();
       column.setPreferredSize(new Dimension(30, 50));
+      column.setOpaque(false);
       JLabel num = new JLabel("" + diceTable[i], JLabel.CENTER);
       num.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
       column.add(num);
@@ -789,6 +803,7 @@ public class GameWindow extends JFrame {
 
       column = new JPanel();
       column.setPreferredSize(new Dimension(30, 50));
+      column.setOpaque(false);
       JLabel x = new JLabel("X", JLabel.CENTER);
       x.setFont(new Font("Nanum Pen Script", Font.PLAIN, 36));
       column.add(x);
