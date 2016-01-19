@@ -135,7 +135,7 @@ public class Robot extends Client {
                 double myNum = evaluateMyNumber();
                 if (myNum < lastNumber)
                     myNum = lastNumber;
-                double gap = (myNum - (double)lastNumber);
+                double gap = (myNum - (double)lastNumber) * 0.3;
                 if (gap < 0)
                     gap = 0;
                 double point = lastNumber + gap + (gap) * ((entropy - 0.5) * 2.0);
