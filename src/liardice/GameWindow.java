@@ -865,9 +865,9 @@ public class GameWindow extends JFrame {
   }
 
   private void sortDice() {
-    for (int i = 0; i != 5; i++) {
-      for (int j = i + 1; j != 5; j++) {
-        synchronized(lock) {
+    synchronized(lock) {
+      for (int i = 0; i != 5; i++) {
+        for (int j = i + 1; j != 5; j++) {
           if (dice[j].value < dice[i].value) {
             Dice temp = dice[i];
             dice[i] = dice[j];
@@ -875,9 +875,8 @@ public class GameWindow extends JFrame {
           }
         }
       }
+      diceSet.reDraw();
     }
-
-    diceSet.reDraw();
   }
 
   private void randomDice() {
@@ -910,7 +909,7 @@ public class GameWindow extends JFrame {
         synchronized(lock) {
           for (int i = 0; i != 5; i++)
             dice[i] = new Dice(savedDice[i]);
-          dice[i].reDraw();
+          diceSet.reDraw();
         }
 
         connection.send(new ReadyMessage());
