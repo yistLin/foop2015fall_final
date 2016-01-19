@@ -520,7 +520,7 @@ public class GameWindow extends JFrame {
 
     protected void messageReceived(final Object forwardedMessage) {
       if (forwardedMessage instanceof ForwardedMessage) {
-        ForwardedMessage fm = (ForwardedMessage)forwardedMessage;
+        final ForwardedMessage fm = (ForwardedMessage)forwardedMessage;
         SwingUtilities.invokeLater(new Runnable() {
           public void run() {
             if (fm.message instanceof ChatMessage) {
