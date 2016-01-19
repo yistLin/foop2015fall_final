@@ -120,7 +120,7 @@ public class Main {
     column.add(new JLabel("Number of AI (0~6):"));
     column.add(aiNumberInput);
     column.add(Box.createHorizontalStrut(5)); // reserved space
-    column.add(new JLabel("(Total players <= 10)"));
+    column.add(new JLabel("(Total players < 10)"));
     row.add(column);
     
     column = new JPanel(); // port input
@@ -195,7 +195,7 @@ public class Main {
         try {
           if (playerNumber < 2)
             throw new IllegalPlayerNumberException("Total number of players isn't enough");
-          if (playerNumber > 10)
+          if (playerNumber >= 10)
             throw new IllegalPlayerNumberException("Total number of players is too much");
         } catch (IllegalPlayerNumberException e) {
           message.setText(e.getMessage());
