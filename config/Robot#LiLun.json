@@ -1,0 +1,92 @@
+{
+  "name": "朱立倫",
+  "get_dice": [
+    {
+      "message": "三環三線，我能實現",
+      "probability": "0.15"
+    }
+  ],
+  "round_start": [
+    {
+      "message": "這屆市長，我一定會做好做滿",
+      "probability": "0.3"
+    }
+  ],
+  "do_bid": {
+    "me" : [
+        {
+          "message": "民進黨如果執政會讓很多人的工作，做不好，做不滿",
+          "probability": "0.2"
+        }
+    ],
+    "other" : [
+        {
+          "message": "我不想選總統，但是我無法拒絕全代會的決議",
+          "probability": "0.05"
+        }
+    ]
+  },
+  "do_catch": {
+    "yes" : [
+        {
+          "message": "我再請假選總統的期間，每天都有在處理市政",
+          "probability": "0.3"
+        }
+    ],
+    "no" : [
+        {
+          "message": "有一天我到淡水拜拜，遇到了一個阿嬤",
+          "probability": "0.2"
+        }
+    ]
+  },
+  "no_catch": [
+    {
+      "message": "阿嬤叫我不能只想到自己，要出來選總統",
+      "probability": "0.1"
+    }
+  ],
+  "yes_catch": [
+    {
+      "message": "我一定會做的比馬英九好",
+      "probability": "0.3"
+    }
+  ],
+  "round_end": {
+    "win" : [
+        {
+          "message": "我會一直陪伴新北市民",
+          "probability": "0.4"
+        }
+    ],
+    "lose" : [
+        {
+          "message": "不能因為國民黨做錯就票投民進黨",
+          "probability": "0.3"
+        }
+    ]
+  },
+  "random_talk": [
+    {
+      "message": "我會做好做滿，不會參選總統",
+      "probability": "0.2"
+    },
+    {
+      "message": "你們希望新北市長忙著選總統嗎？",
+      "probability": "0.2"
+    }
+  ],
+  "other_talk": [
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    },
+    {
+      "title": "",
+      "message": "",
+      "probability": ""
+    }
+  ]
+}
+
