@@ -28,11 +28,12 @@ public class ChatRobot {
     	rand = new Random(seed);
 
     	StringBuilder sb = new StringBuilder();
-    	FileReader in = null;
-    	try {
-    		in = new FileReader(filename);
-    	} catch (FileNotFoundException e) {}
-    	BufferedReader br = new BufferedReader(in);
+      BufferedReader br = null;
+      try {
+      	br = new BufferedReader(new InputStreamReader(new FileInputStream(filename), "UTF-8"));
+      } catch(FileNotFoundException e) {
+      } catch(UnsupportedEncodingException e) {
+      }
     	String line;
 
     	try {
