@@ -136,7 +136,7 @@ public class Robot extends Client {
                 int range = (int)(Math.random() * limit - 1);
 
                 if (lastValue == 0)
-                    send(new BidMessage(myNum + range, maxDice));
+                    send(new BidMessage((int)(Math.random()*myNum+1), maxDice));
                 else if (maxDice > lastValue)
                     send(new BidMessage(((lastNumber>myNum) ? lastNumber:myNum) + range, maxDice));
                 else
