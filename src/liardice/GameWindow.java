@@ -866,12 +866,12 @@ public class GameWindow extends JFrame {
   private void randomDice() {
     java.util.Random random = new java.util.Random();
 
-    Dice[] savedDice = new Dice[5];
-    for (int i = 0; i != 5; i++)
-      savedDice[i] = new Dice(dice[i]);
-
     new Thread() {
       public void run() {
+        Dice[] savedDice = new Dice[5];
+        for (int i = 0; i != 5; i++)
+          savedDice[i] = new Dice(dice[i]);
+
         for (int times = 0; times != 10; times++) {
           for (int i = 4; i >= 0; i--)
             dice[i] = new Dice();
@@ -880,12 +880,12 @@ public class GameWindow extends JFrame {
             Thread.sleep(300);
           } catch (InterruptedException e) {}
         }
+
+        for (int i = 0; i != 5; i++)
+          dice[i] = new Dice(savedDice[i]);
+        diceSet.reDraw();
       }
     }.start();
-
-    for (int i = 0; i != 5; i++)
-      dice[i] = new Dice(savedDice[i]);
-    diceSet.reDraw();
   }
 
   private void drunkDice() {
