@@ -85,8 +85,13 @@ public class GameHub extends Hub {
 
     public void shutDownHub() {
         super.shutDownHub();
-        writer.println("[Status] shutdown");
+        write2log("[Status] shutdown");
         writer.close();
+    }
+
+    protected void connectionUnexpectedClosed() {
+    	write2log("[Status] some connection unexpectedly closed.");
+    	shutDownHub();
     }
 
     //deal dices to all players

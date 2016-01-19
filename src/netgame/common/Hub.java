@@ -240,7 +240,11 @@ public class Hub {
         for (ConnectionToClient pc : playerConnections.values())
             pc.close();
     }
-    
+
+    /**
+     * Modify by Yist Lin
+     */
+    protected void connectionUnexpectedClosed() {}
     
     /**
      * Sends a specified non-null Object as a message to all connected client.
@@ -534,6 +538,7 @@ public class Hub {
                     if (! closed) {
                         closedWithError("Error while reading data from client.");
                         System.out.println("Hub receive thread terminated by IOException: " + e);
+                        connectionUnexpectedClosed();
                     }
                 }
                 catch (Exception e) {
