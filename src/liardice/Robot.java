@@ -136,14 +136,8 @@ public class Robot extends Client {
                 if (myNum < lastNumber)
                     myNum = lastNumber;
                 double gap = (myNum - (double)lastNumber) * 0.3;
-                if (gap < 0)
-                    gap = 0;
                 double range = Math.random() * (gap + gap * ((entropy - 0.5) * 2.0));
                 double point = lastNumber + range;
-                if ((int)point < lastNumber) {
-                    point = (double)lastNumber;
-                }
-                System.out.println("entropy = " + entropy + ", point = " + point + ", lastNumber = " + lastNumber);
 
                 if (lastValue == 0)
                     send(new BidMessage( (int)point + 1, maxDice));
