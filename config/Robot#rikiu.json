@@ -1,6 +1,6 @@
 {
   "name": "RikiBot",
-  "entropy": "0.5",
+  "entropy": "0.3",
   "get_dice": [
     {
       "message": "好多一啊～",
@@ -69,11 +69,15 @@
     "no": [
       {
         "message": "偏不抓",
-        "probability": "0.5"
+        "probability": "0.3"
       },
       {
         "message": "數量還太少啊",
         "probability": "0.2"
+      },
+      {
+        "message": "我的一都比你喊的還要多",
+        "probability": "0.3"
       }
     ]
   },
@@ -101,6 +105,10 @@
     "win": [
       {
         "message": "真弱",
+        "probability": "0.3"
+      },
+      {
+        "message": "就說別喊那麼大，你偏要喊",
         "probability": "0.3"
       }
     ],
@@ -138,7 +146,7 @@
     },
     {
       "message": "さすが、高校最強！",
-      "probability": "0.3"
+      "probability": "0.1"
     },
     {
       "message": "大腦是個很棒的東西，真希望你也有一個",
@@ -147,6 +155,10 @@
     {
       "message": "剛剛喝了點酒，骰子都在亂跑",
       "probability": "0.4"
+    },
+    {
+      "message": "鐵",
+      "probability": "0.3"
     }
   ],
   "other_talk": [
